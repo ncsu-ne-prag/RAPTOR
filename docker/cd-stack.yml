@@ -54,7 +54,7 @@ secrets:
     file: docker/secrets/DSF_JWT_SECRET
 
 services:
-  job-broker:
+  raptor-manager:
     image: ${IMAGE_BACKEND}
     <<: *shared-nestjs_conf
     healthcheck:
@@ -78,19 +78,19 @@ services:
         - traefik.enable=true
         - traefik.docker.network=traefik-public
         - traefik.constraint-label=traefik-public
-        - traefik.http.routers.${APP_NAME}-job-broker-http.rule=Host(`${HOST_URL?Variable not set}`) && PathPrefix(`/q`)
-        - traefik.http.routers.${APP_NAME}-job-broker-http.entrypoints=http
-        - traefik.http.routers.${APP_NAME}-job-broker-http.middlewares=https-redirect,gzip
-        - traefik.http.routers.${APP_NAME}-job-broker-http.service=${APP_NAME}-job-broker
-        - traefik.http.routers.${APP_NAME}-job-broker-https.rule=Host(`${HOST_URL?Variable not set}`) && PathPrefix(`/q`)
-        - traefik.http.routers.${APP_NAME}-job-broker-https.entrypoints=https
-        - traefik.http.routers.${APP_NAME}-job-broker-https.tls=true
-        - traefik.http.routers.${APP_NAME}-job-broker-https.tls.certresolver=le
-        - traefik.http.routers.${APP_NAME}-job-broker-https.middlewares=gzip
-        - traefik.http.routers.${APP_NAME}-job-broker-https.service=${APP_NAME}-job-broker
-        - traefik.http.services.${APP_NAME}-job-broker.loadbalancer.server.port=3000
+        - traefik.http.routers.${APP_NAME}-raptor-manager-http.rule=Host(`${HOST_URL?Variable not set}`) && PathPrefix(`/q`)
+        - traefik.http.routers.${APP_NAME}-raptor-manager-http.entrypoints=http
+        - traefik.http.routers.${APP_NAME}-raptor-manager-http.middlewares=https-redirect,gzip
+        - traefik.http.routers.${APP_NAME}-raptor-manager-http.service=${APP_NAME}-raptor-manager
+        - traefik.http.routers.${APP_NAME}-raptor-manager-https.rule=Host(`${HOST_URL?Variable not set}`) && PathPrefix(`/q`)
+        - traefik.http.routers.${APP_NAME}-raptor-manager-https.entrypoints=https
+        - traefik.http.routers.${APP_NAME}-raptor-manager-https.tls=true
+        - traefik.http.routers.${APP_NAME}-raptor-manager-https.tls.certresolver=le
+        - traefik.http.routers.${APP_NAME}-raptor-manager-https.middlewares=gzip
+        - traefik.http.routers.${APP_NAME}-raptor-manager-https.service=${APP_NAME}-raptor-manager
+        - traefik.http.services.${APP_NAME}-raptor-manager.loadbalancer.server.port=3000
 
-  job-worker:
+  raptor-engine:
     image: ${IMAGE_BACKEND}
     <<: *shared-nestjs_conf
     command: "nx run --verbose microservice-job-broker:deploy-consumer:$CI_BUILD_TYPE"

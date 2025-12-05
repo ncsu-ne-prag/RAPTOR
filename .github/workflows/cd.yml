@@ -79,7 +79,9 @@ jobs:
           CI_BUILD_TYPE: production
           CI_DEBUG: false
           NUM_BROKERS: 1
+          NUM_WORKERS: 4
           DEPLOYMENT_BROKER_POOL: node.role==worker
+          DEPLOYMENT_WORKER_POOL: node.role==worker
         run: |
           # Deploy Application
           docker stack deploy -c docker/cd-stack.yml microservices
