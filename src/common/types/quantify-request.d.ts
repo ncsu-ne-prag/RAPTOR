@@ -1,5 +1,5 @@
-import { Model } from "./model";
-import { ConvergenceCriteria } from "./convergence-criteria";
+import { Model } from './model';
+import { ConvergenceCriteria } from './convergence-criteria';
 
 /**
  * Schema for command-line options
@@ -24,7 +24,7 @@ export interface CommandLineOptions {
   /**
    * Calculate prime implicants
    */
-  "prime-implicants"?: boolean;
+  'prime-implicants'?: boolean;
   /**
    * Perform probability analysis
    */
@@ -48,7 +48,7 @@ export interface CommandLineOptions {
   /**
    * Use the rare event approximation
    */
-  "rare-event"?: boolean;
+  'rare-event'?: boolean;
   /**
    * Use the MCUB approximation
    */
@@ -56,35 +56,35 @@ export interface CommandLineOptions {
   /**
    * Use Monte Carlo simulation
    */
-  "monte-carlo"?: boolean;
+  'monte-carlo'?: boolean;
   /**
    * Upper limit for the product order
    */
-  "limit-order"?: number;
+  'limit-order'?: number;
   /**
    * Cut-off probability for products
    */
-  "cut-off"?: number;
+  'cut-off'?: number;
   /**
    * System mission time in hours
    */
-  "mission-time"?: number;
+  'mission-time'?: number;
   /**
    * Time step in hours for probability analysis
    */
-  "time-step"?: number;
+  'time-step'?: number;
   /**
    * Number of trials for Monte Carlo simulations
    */
-  "num-trials"?: number;
+  'num-trials'?: number;
   /**
    * Number of quantiles for distributions
    */
-  "num-quantiles"?: number;
+  'num-quantiles'?: number;
   /**
    * Number of bins for histograms
    */
-  "num-bins"?: number;
+  'num-bins'?: number;
   /**
    * Seed for the pseudo-random number generator
    */
@@ -100,55 +100,55 @@ export interface CommandLineOptions {
   /**
    * Burn-in trials before convergence checks
    */
-  "burn-in"?: number;
+  'burn-in'?: number;
   /**
    * Enable early stopping on convergence
    */
-  "early-stop"?: boolean;
+  'early-stop'?: boolean;
   /**
    * Convergence interval policy (bayes or wald)
    */
-  "ci-policy"?: "bayes" | "wald";
+  'ci-policy'?: 'bayes' | 'wald';
   /**
    * Batch size for Monte Carlo simulations
    */
-  "batch-size"?: number;
+  'batch-size'?: number;
   /**
    * Sample size for Monte Carlo simulations
    */
-  "sample-size"?: number;
+  'sample-size'?: number;
   /**
    * Node allocation overhead ratio
    */
-  "overhead-ratio"?: number;
+  'overhead-ratio'?: number;
   /**
    * Expand at-least gates (disable K/N optimization)
    */
-  "no-kn"?: boolean;
+  'no-kn'?: boolean;
   /**
    * Expand XOR gates (disable XOR optimization)
    */
-  "no-xor"?: boolean;
+  'no-xor'?: boolean;
   /**
    * Keep null gates
    */
-  "keep-null-gates"?: boolean;
+  'keep-null-gates'?: boolean;
   /**
    * Compilation level (0-8)
    */
-  "compilation-level"?: number;
+  'compilation-level'?: number;
   /**
    * Oracle probability for diagnostics
    */
-  "oracle-p"?: number;
+  'oracle-p'?: number;
   /**
    * Display analysis status on TTY
    */
-  "watch-mode"?: boolean;
+  'watch-mode'?: boolean;
   /**
    * Omit indentation whitespace in output XML
    */
-  "no-indent"?: boolean;
+  'no-indent'?: boolean;
   /**
    * Set log verbosity
    */
@@ -156,7 +156,7 @@ export interface CommandLineOptions {
   /**
    * Don't generate analysis report
    */
-  "no-report"?: boolean;
+  'no-report'?: boolean;
   /**
    * Path for the output/report file
    */
@@ -173,12 +173,12 @@ export interface ScramNodeOptions {
   zbdd?: boolean;
   pdag?: boolean;
   adaptive?: boolean;
-  
+
   // Approximations
   rareEvent?: boolean;
   mcub?: boolean;
   monteCarlo?: boolean;
-  
+
   // Analysis types
   primeImplicants?: boolean;
   probability?: boolean;
@@ -186,7 +186,7 @@ export interface ScramNodeOptions {
   uncertainty?: boolean;
   ccf?: boolean;
   sil?: boolean;
-  
+
   // Basic parameters
   limitOrder?: number;
   cutOff?: number;
@@ -196,26 +196,26 @@ export interface ScramNodeOptions {
   numQuantiles?: number;
   numBins?: number;
   seed?: number;
-  
+
   // Monte Carlo specific parameters
-  confidence?: number;        // Confidence level for convergence (0-1)
-  delta?: number;             // Relative margin of error for convergence (>0)
-  burnIn?: number;            // Burn-in trials before convergence checks
-  earlyStop?: boolean;        // Enable early stopping on convergence
-  ciPolicy?: "bayes" | "wald"; // Convergence interval policy
-  batchSize?: number;         // Batch size for Monte Carlo
-  sampleSize?: number;        // Sample size for Monte Carlo
-  overheadRatio?: number;     // Node allocation overhead ratio (>=0)
-  
+  confidence?: number; // Confidence level for convergence (0-1)
+  delta?: number; // Relative margin of error for convergence (>0)
+  burnIn?: number; // Burn-in trials before convergence checks
+  earlyStop?: boolean; // Enable early stopping on convergence
+  ciPolicy?: 'bayes' | 'wald'; // Convergence interval policy
+  batchSize?: number; // Batch size for Monte Carlo
+  sampleSize?: number; // Sample size for Monte Carlo
+  overheadRatio?: number; // Node allocation overhead ratio (>=0)
+
   // Graph compilation and preprocessing flags
-  noKn?: boolean;             // Expand at-least gates (disable K/N optimization)
-  noXor?: boolean;            // Expand XOR gates (disable XOR optimization)
-  keepNullGates?: boolean;    // Keep null gates (don't remove gates with no effect)
-  compilationLevel?: number;  // Compilation level (0-8, higher = more optimization)
-  
+  noKn?: boolean; // Expand at-least gates (disable K/N optimization)
+  noXor?: boolean; // Expand XOR gates (disable XOR optimization)
+  keepNullGates?: boolean; // Keep null gates (don't remove gates with no effect)
+  compilationLevel?: number; // Compilation level (0-8, higher = more optimization)
+
   // Diagnostics
-  oracleP?: number;           // Oracle probability for diagnostics (>=0)
-  watchMode?: boolean;        // Display analysis status on TTY
+  oracleP?: number; // Oracle probability for diagnostics (>=0)
+  watchMode?: boolean; // Display analysis status on TTY
 }
 
 export interface ModelOptions {

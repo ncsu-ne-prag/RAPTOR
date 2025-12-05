@@ -1,12 +1,14 @@
-import { parentPort, workerData } from "node:worker_threads";
-import * as path from "path";
+import { parentPort, workerData } from 'node:worker_threads';
+import * as path from 'path';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { QuantifyModel } = require(path.resolve(__dirname, "../../../../scram-node"));
-import type { QuantifyModelResult } from "../../common/types/quantify-result";
-import type { NodeQuantRequest } from "../../common/types/quantify-request";
+const { QuantifyModel } = require(
+  path.resolve(__dirname, '../../../../scram-node'),
+);
+import type { QuantifyModelResult } from '../../common/types/quantify-result';
+import type { NodeQuantRequest } from '../../common/types/quantify-request';
 
 interface QuantWorkerData {
-  quantRequest: Omit<NodeQuantRequest, "_id">;
+  quantRequest: Omit<NodeQuantRequest, '_id'>;
 }
 
 const data = workerData as QuantWorkerData;

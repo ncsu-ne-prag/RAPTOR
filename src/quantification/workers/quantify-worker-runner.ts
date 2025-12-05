@@ -1,10 +1,8 @@
-// @ts-nocheck
-
-import { Worker } from "node:worker_threads";
-import { existsSync } from "fs";
-import { join } from "path";
-import type { NodeQuantRequest } from "../../common/types/quantify-request";
-import type { QuantifyModelResult } from "../../common/types/quantify-result";
+import { Worker } from 'node:worker_threads';
+import { existsSync } from 'fs';
+import { join } from 'path';
+import type { NodeQuantRequest } from '../../common/types/quantify-request';
+import type { QuantifyModelResult } from '../../common/types/quantify-result';
 
 interface QuantWorkerMessage {
   result?: QuantifyModelResult;
@@ -14,10 +12,10 @@ interface QuantWorkerMessage {
 
 const workerPath = (() => {
   const candidates = [
-    join(__dirname, "quantify.worker.js"),
-    join(__dirname, "workers", "quantify.worker.js"),
-    join(__dirname, "quantification", "workers", "quantify.worker.js"),
-    join(process.cwd(), "quantification", "workers", "quantify.worker.js"),
+    join(__dirname, 'quantify.worker.js'),
+    join(__dirname, 'workers', 'quantify.worker.js'),
+    join(__dirname, 'quantification', 'workers', 'quantify.worker.js'),
+    join(process.cwd(), 'quantification', 'workers', 'quantify.worker.js'),
   ];
 
   for (const candidate of candidates) {
@@ -26,10 +24,14 @@ const workerPath = (() => {
     }
   }
 
-  throw new Error("Unable to locate quantify.worker.js for SCRAM quantification.");
+  throw new Error(
+    'Unable to locate quantify.worker.js for SCRAM quantification.',
+  );
 })();
 
-export function runQuantificationWithWorker(quantRequest: Omit<NodeQuantRequest, "_id">): Promise<QuantifyModelResult> {
+export function runQuantificationWithWorker(
+  quantRequest: Omit<NodeQuantRequest, '_id'>,
+): Promise<QuantifyModelResult> {
   return new Promise((resolve, reject) => {
     const worker = new Worker(workerPath, {
       workerData: { quantRequest },
@@ -50,7 +52,7 @@ export function runQuantificationWithWorker(quantRequest: Omit<NodeQuantRequest,
       }
     };
 
-    worker.once("message", async (message: QuantWorkerMessage) => {
+    worker.once('message', async (message: QuantWorkerMessage) => {
       if (settled) {
         return;
       }
@@ -69,13 +71,13 @@ export function runQuantificationWithWorker(quantRequest: Omit<NodeQuantRequest,
 
       await terminateSafely();
       if (!message?.result) {
-        reject(new Error("SCRAM quantification worker returned no result."));
+        reject(new Error('SCRAM quantification worker returned no result.'));
         return;
       }
       resolve(message.result);
     });
 
-    worker.once("error", async (error: unknown) => {
+    worker.once('error', async (error: unknown) => {
       if (settled) {
         return;
       }
@@ -85,16 +87,22 @@ export function runQuantificationWithWorker(quantRequest: Omit<NodeQuantRequest,
       reject(error);
     });
 
-    worker.once("exit", (code: number) => {
+    worker.once('exit', (code: number) => {
       if (settled) {
         return;
       }
 
       finalize();
       if (code === 0) {
-        reject(new Error("SCRAM quantification worker exited before returning a result."));
+        reject(
+          new Error(
+            'SCRAM quantification worker exited before returning a result.',
+          ),
+        );
       } else {
-        reject(new Error(`SCRAM quantification worker exited with code ${code}`));
+        reject(
+          new Error(`SCRAM quantification worker exited with code ${code}`),
+        );
       }
     });
   });

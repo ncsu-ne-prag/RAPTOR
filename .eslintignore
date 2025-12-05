@@ -8,3 +8,4 @@ tmp
 build
 cmake-build-*
 cmake
+scram-node

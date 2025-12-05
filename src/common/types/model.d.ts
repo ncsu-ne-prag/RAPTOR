@@ -27,14 +27,14 @@ export interface HouseEvent {
 }
 
 export type LogicExpr =
-| { event: string }
-| { op: "and"; args: LogicExpr[] }
-| { op: "or";  args: LogicExpr[] }
-| { op: "not"; arg:  LogicExpr }
-| { op: "xor"; args: LogicExpr[] }
-| { op: "nand"; args: LogicExpr[] }
-| { op: "nor"; args: LogicExpr[] }
-| { op: "atleast"; k: number; args: LogicExpr[] }
+  | { event: string }
+  | { op: 'and'; args: LogicExpr[] }
+  | { op: 'or'; args: LogicExpr[] }
+  | { op: 'not'; arg: LogicExpr }
+  | { op: 'xor'; args: LogicExpr[] }
+  | { op: 'nand'; args: LogicExpr[] }
+  | { op: 'nor'; args: LogicExpr[] }
+  | { op: 'atleast'; k: number; args: LogicExpr[] };
 
 export interface EventTree {
   name: string;
@@ -48,7 +48,7 @@ export interface InitiatingEvent {
   name: string;
   description?: string;
   frequency: number;
-  unit?: "yr-1";
+  unit?: 'yr-1';
 }
 
 export interface FunctionalEventDef {
@@ -61,18 +61,18 @@ export interface EventSequence {
   functionalStates: FunctionalState[];
   endState: string;
   frequency?: number;
-  unit?: "yr-1";
+  unit?: 'yr-1';
 }
 
 export interface FunctionalState {
   name: string;
-  state: "failure" | "success" | "bypass";
+  state: 'failure' | 'success' | 'bypass';
 }
 
 export interface CcfGroup {
   name: string;
   description?: string;
-  model: "beta-factor" | "alpha-factor" | "MGL" | "phi-factor";
+  model: 'beta-factor' | 'alpha-factor' | 'MGL' | 'phi-factor';
   members: string[];
   distribution?: number;
   factors?: CcfFactor[];

@@ -19,7 +19,7 @@ export interface CutSets {
 }
 
 export interface CutSet {
-  order: number;                     // number of literals in this set
+  order: number; // number of literals in this set
   literals: CutSetLiteral[];
   // If probability analysis ran:
   probability?: number;
@@ -27,8 +27,8 @@ export interface CutSet {
 }
 
 export type CutSetLiteral =
-| { type: "basic-event";     name: string }
-| { type: "not-basic-event"; name: string };
+  | { type: 'basic-event'; name: string }
+  | { type: 'not-basic-event'; name: string };
 
 export interface EventTreeResult {
   name: string;
@@ -46,9 +46,9 @@ export interface SequenceResult {
   endState: string;
   frequencyPerYear: number;
   functionalStates?: FunctionalStateResult[];
-  }
-  
-  export interface FunctionalStateResult {
-    name: string;
-    state: "failure" | "success";
-  }
+}
+
+export interface FunctionalStateResult {
+  name: string;
+  state: 'failure' | 'success';
+}

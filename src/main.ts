@@ -1,10 +1,10 @@
-import { NestFactory } from "@nestjs/core";
-import { NestiaSwaggerComposer } from "@nestia/sdk";
-import { OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
-import { INestApplication, Logger } from "@nestjs/common";
-import { json, urlencoded } from "express";
-import { HttpExceptionFilter } from "./http-exception.filter";
-import { RaptorManagerModule } from "./raptor-manager.module";
+import { NestFactory } from '@nestjs/core';
+import { NestiaSwaggerComposer } from '@nestia/sdk';
+import { OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
+import { INestApplication, Logger } from '@nestjs/common';
+import { json, urlencoded } from 'express';
+import { HttpExceptionFilter } from './http-exception.filter';
+import { RaptorManagerModule } from './raptor-manager.module';
 
 // Setup global error handlers to prevent process crashes
 const logger = new Logger('ProcessErrorHandler');
@@ -39,25 +39,25 @@ async function bootstrap(): Promise<void> {
   const logger = new Logger();
 
   // Creating an instance of the application by passing the root module (`RaptorManagerModule`) to `NestFactory.create`.
-  logger.debug("Initializing the app...");
+  logger.debug('Initializing the app...');
   const app: INestApplication = await NestFactory.create(RaptorManagerModule);
 
   // Apply the HttpExceptionFilter globally to handle all HTTP exceptions.
-  logger.debug("Attaching the exception filter...");
+  logger.debug('Attaching the exception filter...');
   app.useGlobalFilters(new HttpExceptionFilter());
 
   const document: OpenAPIObject = (await NestiaSwaggerComposer.document(app, {
     // The OpenAPI specification version used for the generated documentation.
-    openapi: "3.0",
+    openapi: '3.0',
 
     // Provides general information about the API including title, description, and version.
     info: {
-      title: "OpenPRA Distributed Multi-Queue API",
-      description: "PRA quantification and task execution message-broker",
-      version: "0.0.1",
+      title: 'OpenPRA Distributed Multi-Queue API',
+      description: 'PRA quantification and task execution message-broker',
+      version: '0.0.1',
       license: {
-        name: "MIT",
-        identifier: "MIT",
+        name: 'MIT',
+        identifier: 'MIT',
       },
     },
 
@@ -73,19 +73,19 @@ async function bootstrap(): Promise<void> {
     additional: true,
   })) as OpenAPIObject;
 
-  logger.debug("Creating the API Documentation...");
-  SwaggerModule.setup("/q/docs", app, document, {
-    customSiteTitle: "OpenPRA-MQ API Docs",
+  logger.debug('Creating the API Documentation...');
+  SwaggerModule.setup('/q/docs', app, document, {
+    customSiteTitle: 'OpenPRA-MQ API Docs',
     explorer: true,
     swaggerOptions: {},
   });
 
   // Increase the maximum request body limit to 50 MB.
-  app.use(json({ limit: "50mb" }));
-  app.use(urlencoded({ extended: true, limit: "50mb" }));
+  app.use(json({ limit: '50mb' }));
+  app.use(urlencoded({ extended: true, limit: '50mb' }));
 
   // Start listening for incoming requests on port 3000.
-  logger.debug("Microservices have been initialized.");
+  logger.debug('Microservices have been initialized.');
   await app.listen(3000);
 }
 

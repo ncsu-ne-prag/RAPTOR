@@ -1,5 +1,5 @@
-import { Injectable, Logger } from "@nestjs/common";
-import { MinioService, JobMetadata } from "../../shared/minio.service";
+import { Injectable, Logger } from '@nestjs/common';
+import { MinioService, JobMetadata } from '../../shared/minio.service';
 
 export interface ChildJobOutput {
   jobId: string;
@@ -47,21 +47,30 @@ export class StorageService {
     };
   }
 
-  public async getAggregatedJobOutput(jobId: string): Promise<JobOutputResponse> {
+  public async getAggregatedJobOutput(
+    jobId: string,
+  ): Promise<JobOutputResponse> {
     const metadata = await this.minioService.getJobMetadata(jobId);
     const childOutputsResult = await this.collectChildOutputs(metadata);
 
     const parentOutput = await this.safeLoadOutput(metadata.outputId);
-    const aggregatedOutput = childOutputsResult.sequenceResults.length > 0
-      ? this.aggregateSequenceResults(childOutputsResult.sequenceResults)
-      : undefined;
+    const aggregatedOutput =
+      childOutputsResult.sequenceResults.length > 0
+        ? this.aggregateSequenceResults(childOutputsResult.sequenceResults)
+        : undefined;
 
     return {
       jobId: metadata.jobId ?? jobId,
       output: parentOutput,
-      childOutputs: childOutputsResult.childOutputs.length > 0 ? childOutputsResult.childOutputs : undefined,
+      childOutputs:
+        childOutputsResult.childOutputs.length > 0
+          ? childOutputsResult.childOutputs
+          : undefined,
       aggregatedOutput,
-      failedJobs: childOutputsResult.failedJobs.length > 0 ? childOutputsResult.failedJobs : undefined,
+      failedJobs:
+        childOutputsResult.failedJobs.length > 0
+          ? childOutputsResult.failedJobs
+          : undefined,
     };
   }
 
@@ -77,15 +86,25 @@ export class StorageService {
     sentAt?: number;
     receivedAt?: number;
     stats?: JobMetadata['stats'];
-    childStats?: Array<{ jobId: string; sentAt?: number; receivedAt?: number; stats?: JobMetadata['stats'] }>;
+    childStats?: Array<{
+      jobId: string;
+      sentAt?: number;
+      receivedAt?: number;
+      stats?: JobMetadata['stats'];
+    }>;
   }> {
     const metadata = await this.minioService.getJobMetadata(jobId);
-    
+
     const result: {
       sentAt?: number;
       receivedAt?: number;
       stats?: JobMetadata['stats'];
-      childStats?: Array<{ jobId: string; sentAt?: number; receivedAt?: number; stats?: JobMetadata['stats'] }>;
+      childStats?: Array<{
+        jobId: string;
+        sentAt?: number;
+        receivedAt?: number;
+        stats?: JobMetadata['stats'];
+      }>;
     } = {
       sentAt: metadata.sentAt,
       receivedAt: metadata.receivedAt,
@@ -94,11 +113,17 @@ export class StorageService {
 
     // If there are child jobs, collect their stats too
     if (metadata.childJobs && metadata.childJobs.length > 0) {
-      const childStats: Array<{ jobId: string; sentAt?: number; receivedAt?: number; stats?: JobMetadata['stats'] }> = [];
-      
+      const childStats: Array<{
+        jobId: string;
+        sentAt?: number;
+        receivedAt?: number;
+        stats?: JobMetadata['stats'];
+      }> = [];
+
       for (const childJobId of metadata.childJobs) {
         try {
-          const childMetadata = await this.minioService.getJobMetadata(childJobId);
+          const childMetadata =
+            await this.minioService.getJobMetadata(childJobId);
           childStats.push({
             jobId: childJobId,
             sentAt: childMetadata.sentAt,
@@ -106,10 +131,12 @@ export class StorageService {
             stats: childMetadata.stats,
           });
         } catch (error: any) {
-          this.logger.warn(`Could not fetch stats for child job ${childJobId}: ${error?.message || String(error)}`);
+          this.logger.warn(
+            `Could not fetch stats for child job ${childJobId}: ${error?.message || String(error)}`,
+          );
         }
       }
-      
+
       if (childStats.length > 0) {
         result.childStats = childStats;
       }
@@ -120,7 +147,10 @@ export class StorageService {
 
   private aggregateSequenceResults(sequenceResults: any[]): any {
     if (!sequenceResults || sequenceResults.length === 0) {
-      return { modelFeatures: {}, results: { initiatingEvents: [], sumOfProducts: [] } };
+      return {
+        modelFeatures: {},
+        results: { initiatingEvents: [], sumOfProducts: [] },
+      };
     }
 
     const aggregatedResult = {
@@ -131,7 +161,10 @@ export class StorageService {
       },
     };
 
-    const ieMap = new Map<string, { name: string; description?: string; sequences: any[] }>();
+    const ieMap = new Map<
+      string,
+      { name: string; description?: string; sequences: any[] }
+    >();
 
     for (const res of sequenceResults) {
       const ies = res?.results?.initiatingEvents ?? [];
@@ -147,8 +180,10 @@ export class StorageService {
         const entry = ieMap.get(key)!;
         const seqs = ie?.sequences ?? [];
         for (const seq of seqs) {
-          const seqName = seq?.name ?? "";
-          if (!entry.sequences.some((existing: any) => existing?.name === seqName)) {
+          const seqName = seq?.name ?? '';
+          if (
+            !entry.sequences.some((existing: any) => existing?.name === seqName)
+          ) {
             entry.sequences.push(seq);
           }
         }
@@ -157,10 +192,10 @@ export class StorageService {
 
     for (const entry of ieMap.values()) {
       entry.sequences.sort((a: any, b: any) => {
-        const an = String(a?.name ?? "");
-        const bn = String(b?.name ?? "");
-        const anum = parseInt(an.replace(/\D+/g, ""), 10);
-        const bnum = parseInt(bn.replace(/\D+/g, ""), 10);
+        const an = String(a?.name ?? '');
+        const bn = String(b?.name ?? '');
+        const anum = parseInt(an.replace(/\D+/g, ''), 10);
+        const bnum = parseInt(bn.replace(/\D+/g, ''), 10);
         if (!Number.isNaN(anum) && !Number.isNaN(bnum)) {
           return anum - bnum;
         }
@@ -196,31 +231,37 @@ export class StorageService {
 
     for (const childJobId of metadata.childJobs) {
       try {
-        const childMetadata = await this.minioService.getJobMetadata(childJobId);
+        const childMetadata =
+          await this.minioService.getJobMetadata(childJobId);
 
-        if (childMetadata.status === "completed" && childMetadata.outputId) {
+        if (childMetadata.status === 'completed' && childMetadata.outputId) {
           const output = await this.safeLoadOutput(childMetadata.outputId);
           if (output === undefined) {
-            failedJobs.push({ jobId: childJobId, error: "Output not available" });
+            failedJobs.push({
+              jobId: childJobId,
+              error: 'Output not available',
+            });
             continue;
           }
 
           childOutputs.push({ jobId: childJobId, output });
 
-          if (output && typeof output === "object") {
+          if (output && typeof output === 'object') {
             sequenceResults.push(output);
           }
-        } else if (childMetadata.status === "failed") {
+        } else if (childMetadata.status === 'failed') {
           failedJobs.push({ jobId: childJobId, error: childMetadata.error });
         } else {
           failedJobs.push({
             jobId: childJobId,
-            error: `Job status ${childMetadata.status ?? "unknown"} does not have output available`,
+            error: `Job status ${childMetadata.status ?? 'unknown'} does not have output available`,
           });
         }
       } catch (error: any) {
         const message = error?.message || String(error);
-        this.logger.error(`Failed to load metadata or output for child job ${childJobId}: ${message}`);
+        this.logger.error(
+          `Failed to load metadata or output for child job ${childJobId}: ${message}`,
+        );
         failedJobs.push({ jobId: childJobId, error: message });
       }
     }
@@ -241,7 +282,9 @@ export class StorageService {
         return rawOutput;
       }
     } catch (error: any) {
-      this.logger.error(`Failed to load output for ID ${outputId}: ${error?.message || String(error)}`);
+      this.logger.error(
+        `Failed to load output for ID ${outputId}: ${error?.message || String(error)}`,
+      );
       return undefined;
     }
   }

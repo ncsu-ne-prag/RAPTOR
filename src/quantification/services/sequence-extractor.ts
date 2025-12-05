@@ -10,7 +10,10 @@ interface SequenceExtractionResult {
 export class SequenceExtractorService {
   private readonly logger = new Logger(SequenceExtractorService.name);
 
-  public extractSequenceRequests(originalRequest: NodeQuantRequest, parentJobId: string): SequenceExtractionResult {
+  public extractSequenceRequests(
+    originalRequest: NodeQuantRequest,
+    parentJobId: string,
+  ): SequenceExtractionResult {
     if (!originalRequest.model?.eventTrees?.length) {
       throw new Error('No event trees found in the model');
     }
@@ -32,7 +35,7 @@ export class SequenceExtractorService {
           originalRequest,
           eventTree.name,
           String(sequence.name),
-          sequenceJobId
+          sequenceJobId,
         );
 
         sequenceRequests.push(sequenceRequest);
@@ -40,12 +43,12 @@ export class SequenceExtractorService {
     }
 
     this.logger.debug(
-      `Extracted ${sequenceRequests.length} sequence requests from parent job ${parentJobId}`
+      `Extracted ${sequenceRequests.length} sequence requests from parent job ${parentJobId}`,
     );
 
     return {
       sequenceRequests,
-      sequenceJobIds
+      sequenceJobIds,
     };
   }
 
@@ -53,26 +56,30 @@ export class SequenceExtractorService {
     originalRequest: NodeQuantRequest,
     eventTreeName: string,
     sequenceName: string,
-    sequenceJobId: string
+    sequenceJobId: string,
   ): NodeQuantRequest {
     const originalModel = originalRequest.model!;
-    const eventTree = originalModel.eventTrees!.find(et => et.name === eventTreeName)!;
-    const sequence = eventTree.sequences!.find(seq => seq.name === sequenceName)!;
+    const eventTree = originalModel.eventTrees!.find(
+      (et) => et.name === eventTreeName,
+    )!;
+    const sequence = eventTree.sequences!.find(
+      (seq) => seq.name === sequenceName,
+    )!;
 
     const singleSequenceEventTree = {
       ...eventTree,
-      sequences: [sequence]
+      sequences: [sequence],
     };
 
     const sequenceModel = {
       ...originalModel,
-      eventTrees: [singleSequenceEventTree]
+      eventTrees: [singleSequenceEventTree],
     };
 
     const sequenceRequest: NodeQuantRequest = {
       _id: sequenceJobId,
       settings: originalRequest.settings,
-      model: sequenceModel
+      model: sequenceModel,
     };
 
     return sequenceRequest;
