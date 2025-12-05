@@ -1,0 +1,184 @@
+networks:
+  svc_net:
+    driver: overlay
+    attachable: true
+  rmq_net:
+    driver: overlay
+    attachable: true
+  traefik-public:
+    external: true
+
+configs:
+  rabbitmq_plugins:
+    file: docker/configs/rabbitmq/enabled_plugins
+  rabbitmq_conf:
+    file: docker/configs/rabbitmq/rabbitmq.conf
+  nestjs_env_vars:
+    file: docker/configs/cd.stack.env
+
+x-base-shared-vols: &volumes-timezone
+  volumes:
+    - "/etc/localtime:/etc/localtime:ro"
+    - "/etc/timezone:/etc/timezone:ro"
+
+x-base-shared-confs: &shared-nestjs_conf
+    configs:
+      - source: nestjs_env_vars
+        target: /data/project/.env
+    <<: *volumes-timezone
+
+x-base-replicated: &shared-replicated
+  mode: replicated
+  update_config:
+    parallelism: 16
+    delay: 1s
+    failure_action: rollback
+    order: start-first
+    monitor: 120s
+  rollback_config:
+    parallelism: 16
+    delay: 1s
+    failure_action: continue
+    order: start-first
+    monitor: 120s
+
+x-base-healthcheck: &healthcheck-fragments
+  interval: 10s
+  timeout: 2s
+  retries: 5
+  start_period: 300s
+  start_interval: 2s
+
+secrets:
+  CI_JWT_SECRET:
+    file: docker/secrets/DSF_JWT_SECRET
+
+services:
+  job-broker:
+    image: ${IMAGE_BACKEND}
+    <<: *shared-nestjs_conf
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/q/job-types"]
+      <<: *healthcheck-fragments
+    command: "nx run --verbose microservice-job-broker:deploy:$CI_BUILD_TYPE"
+    environment:
+      NODE_ENV: ${CI_BUILD_TYPE}
+      DEBUG: ${CI_DEBUG}
+    networks:
+      - traefik-public
+      - rmq_net
+    deploy:
+      <<: *shared-replicated
+      replicas: ${NUM_BROKERS}
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "${DEPLOYMENT_BROKER_POOL}"
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.${APP_NAME}-job-broker-http.rule=Host(`${HOST_URL?Variable not set}`) && PathPrefix(`/q`)
+        - traefik.http.routers.${APP_NAME}-job-broker-http.entrypoints=http
+        - traefik.http.routers.${APP_NAME}-job-broker-http.middlewares=https-redirect,gzip
+        - traefik.http.routers.${APP_NAME}-job-broker-http.service=${APP_NAME}-job-broker
+        - traefik.http.routers.${APP_NAME}-job-broker-https.rule=Host(`${HOST_URL?Variable not set}`) && PathPrefix(`/q`)
+        - traefik.http.routers.${APP_NAME}-job-broker-https.entrypoints=https
+        - traefik.http.routers.${APP_NAME}-job-broker-https.tls=true
+        - traefik.http.routers.${APP_NAME}-job-broker-https.tls.certresolver=le
+        - traefik.http.routers.${APP_NAME}-job-broker-https.middlewares=gzip
+        - traefik.http.routers.${APP_NAME}-job-broker-https.service=${APP_NAME}-job-broker
+        - traefik.http.services.${APP_NAME}-job-broker.loadbalancer.server.port=3000
+
+  job-worker:
+    image: ${IMAGE_BACKEND}
+    <<: *shared-nestjs_conf
+    command: "nx run --verbose microservice-job-broker:deploy-consumer:$CI_BUILD_TYPE"
+    environment:
+      NODE_ENV: ${CI_BUILD_TYPE}
+      DEBUG: ${CI_DEBUG}
+    networks:
+      - rmq_net
+    deploy:
+      mode: replicated
+      replicas: ${NUM_WORKERS}
+      <<: *shared-replicated
+      placement:
+        max_replicas_per_node: 128
+        constraints:
+          - "${DEPLOYMENT_WORKER_POOL}"
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    volumes:
+      - "$ENV_SHARED_VOLUME_PATH/rabbitmq:/var/lib/rabbitmq"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    networks:
+      - traefik-public
+      - rmq_net
+    configs:
+      - source: rabbitmq_plugins
+        target: /etc/rabbitmq/enabled_plugins
+      - source: rabbitmq_conf
+        target: /etc/rabbitmq/rabbitmq.conf
+    deploy:
+      placement:
+        constraints:
+          - node.labels.host_performance != low
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.${APP_NAME}-rmq-http.rule=Host(`rmq-${HOST_URL?Variable not set}`)
+        - traefik.http.routers.${APP_NAME}-rmq-http.entrypoints=http
+        - traefik.http.routers.${APP_NAME}-rmq-http.middlewares=https-redirect,gzip
+        - traefik.http.routers.${APP_NAME}-rmq-http.service=${APP_NAME}-rmq
+        - traefik.http.routers.${APP_NAME}-rmq-https.rule=Host(`rmq-${HOST_URL?Variable not set}`)
+        - traefik.http.routers.${APP_NAME}-rmq-https.entrypoints=https
+        - traefik.http.routers.${APP_NAME}-rmq-https.tls=true
+        - traefik.http.routers.${APP_NAME}-rmq-https.tls.certresolver=le
+        - traefik.http.routers.${APP_NAME}-rmq-https.middlewares=gzip,traefik-forward-auth
+        - traefik.http.routers.${APP_NAME}-rmq-https.service=${APP_NAME}-rmq
+        - traefik.http.services.${APP_NAME}-rmq.loadbalancer.server.port=15672
+
+  minio:
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    volumes:
+      - "$ENV_SHARED_VOLUME_PATH/minio:/data"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    networks:
+      - traefik-public
+      - rmq_net
+    deploy:
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.${APP_NAME}-minio-api-http.rule=Host(`minio-api-${HOST_URL?Variable not set}`)
+        - traefik.http.routers.${APP_NAME}-minio-api-http.entrypoints=http
+        - traefik.http.routers.${APP_NAME}-minio-api-http.middlewares=https-redirect,gzip
+        - traefik.http.routers.${APP_NAME}-minio-api-http.service=${APP_NAME}-minio-api
+        - traefik.http.routers.${APP_NAME}-minio-api-https.rule=Host(`minio-api-${HOST_URL?Variable not set}`)
+        - traefik.http.routers.${APP_NAME}-minio-api-https.entrypoints=https
+        - traefik.http.routers.${APP_NAME}-minio-api-https.tls=true
+        - traefik.http.routers.${APP_NAME}-minio-api-https.tls.certresolver=le
+        - traefik.http.routers.${APP_NAME}-minio-api-https.middlewares=gzip
+        - traefik.http.routers.${APP_NAME}-minio-api-https.service=${APP_NAME}-minio-api
+        - traefik.http.services.${APP_NAME}-minio-api.loadbalancer.server.port=9000
+        - traefik.http.routers.${APP_NAME}-minio-console-http.rule=Host(`minio-${HOST_URL?Variable not set}`)
+        - traefik.http.routers.${APP_NAME}-minio-console-http.entrypoints=http
+        - traefik.http.routers.${APP_NAME}-minio-console-http.middlewares=https-redirect,gzip
+        - traefik.http.routers.${APP_NAME}-minio-console-http.service=${APP_NAME}-minio-console
+        - traefik.http.routers.${APP_NAME}-minio-console-https.rule=Host(`minio-${HOST_URL?Variable not set}`)
+        - traefik.http.routers.${APP_NAME}-minio-console-https.entrypoints=https
+        - traefik.http.routers.${APP_NAME}-minio-console-https.tls=true
+        - traefik.http.routers.${APP_NAME}-minio-console-https.tls.certresolver=le
+        - traefik.http.routers.${APP_NAME}-minio-console-https.middlewares=gzip
+        - traefik.http.routers.${APP_NAME}-minio-console-https.service=${APP_NAME}-minio-console
+        - traefik.http.services.${APP_NAME}-minio-console.loadbalancer.server.port=9001

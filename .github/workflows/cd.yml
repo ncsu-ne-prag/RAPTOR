@@ -1,0 +1,87 @@
+name: CD Pipeline
+
+on:
+  release:
+    types: [published]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=raw,value=latest
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/cd.Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    needs: build-and-push
+    runs-on: [self-hosted, gaia]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create configuration files
+        run: |
+          # Create .stack.env from secret
+          echo "${{ secrets.STACK_ENV }}" > docker/configs/cd.stack.env
+          
+          # Create secrets directory and JWT secret file
+          mkdir -p docker/secrets
+          echo "${{ secrets.JWT_SECRET }}" > docker/secrets/DSF_JWT_SECRET
+
+      - name: Deploy to Swarm
+        env:
+          # Use the tag from the release
+          IMAGE_BACKEND: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.release.tag_name }}
+          # These should be set in repository secrets or adjusted as needed
+          HOST_URL: ${{ secrets.HOST_URL }}
+          APP_NAME: raptor
+          CI_BUILD_TYPE: production
+          CI_DEBUG: false
+          NUM_BROKERS: 1
+          DEPLOYMENT_BROKER_POOL: node.role==worker
+        run: |
+          # Deploy Traefik (Infrastructure)
+          docker stack deploy -c docker/traefik-stack.yml traefik
+          
+          # Deploy Application
+          docker stack deploy -c docker/cd-stack.yml microservices
+          docker image prune -f
