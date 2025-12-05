@@ -2,9 +2,7 @@ version: "3.8"
 
 networks:
   traefik-public:
-    driver: overlay
-    attachable: true
-    name: traefik-public
+    external: true
 
 services:
   traefik:

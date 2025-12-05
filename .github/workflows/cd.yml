@@ -81,9 +81,6 @@ jobs:
           NUM_BROKERS: 1
           DEPLOYMENT_BROKER_POOL: node.role==worker
         run: |
-          # Deploy Traefik (Infrastructure)
-          docker stack deploy -c docker/traefik-stack.yml traefik
-          
           # Deploy Application
           docker stack deploy -c docker/cd-stack.yml microservices
           docker image prune -f
