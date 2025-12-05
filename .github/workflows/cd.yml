@@ -72,7 +72,8 @@ jobs:
       - name: Deploy to Swarm
         env:
           # Use the tag from the release
-          IMAGE_BACKEND: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.release.tag_name }}
+          # Lowercase the image name because Docker requires it
+          IMAGE_BACKEND: ${{ env.REGISTRY }}/ncsu-ne-prag/raptor:${{ github.event.release.tag_name }}
           # These should be set in repository secrets or adjusted as needed
           HOST_URL: ${{ secrets.HOST_URL }}
           APP_NAME: raptor
