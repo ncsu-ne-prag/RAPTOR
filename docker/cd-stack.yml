@@ -60,7 +60,7 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/q/job-types"]
       <<: *healthcheck-fragments
-    command: "nx run --verbose microservice-job-broker:deploy:$CI_BUILD_TYPE"
+    command: "nx run --verbose raptor-manager:deploy:$CI_BUILD_TYPE"
     environment:
       NODE_ENV: ${CI_BUILD_TYPE}
       DEBUG: ${CI_DEBUG}
@@ -93,7 +93,7 @@ services:
   raptor-engine:
     image: ${IMAGE_BACKEND}
     <<: *shared-nestjs_conf
-    command: "nx run --verbose microservice-job-broker:deploy-consumer:$CI_BUILD_TYPE"
+    command: "nx run --verbose raptor-manager:deploy-consumer:$CI_BUILD_TYPE"
     environment:
       NODE_ENV: ${CI_BUILD_TYPE}
       DEBUG: ${CI_DEBUG}

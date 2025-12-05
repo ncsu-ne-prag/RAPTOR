@@ -85,5 +85,5 @@ jobs:
           DEPLOYMENT_WORKER_POOL: node.role==worker
         run: |
           # Deploy Application
-          docker stack deploy -c docker/cd-stack.yml microservices
+          docker stack deploy -c docker/cd-stack.yml raptor
           docker image prune -f
