@@ -4,6 +4,7 @@ import request from 'supertest';
 import { RaptorManagerModule } from '../src/raptor-manager.module';
 import { ProducerService } from '../src/quantification/services/producer.service';
 import { StorageService } from '../src/quantification/services/storage.service';
+import { MinioService } from '../src/shared/minio.service';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { json, urlencoded } from 'express';
@@ -36,6 +37,11 @@ describe('AppController (e2e)', () => {
     // Add methods if needed by the controller during the request
   };
 
+  const mockMinioService = {
+    bucketExists: vi.fn().mockResolvedValue(true),
+    makeBucket: vi.fn().mockResolvedValue(undefined),
+  };
+
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [RaptorManagerModule],
@@ -44,6 +50,8 @@ describe('AppController (e2e)', () => {
       .useValue(mockProducerService)
       .overrideProvider(StorageService)
       .useValue(mockStorageService)
+      .overrideProvider(MinioService)
+      .useValue(mockMinioService)
       .compile();
 
     app = moduleFixture.createNestApplication();
