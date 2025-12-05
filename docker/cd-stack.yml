@@ -10,11 +10,11 @@ networks:
 
 configs:
   rabbitmq_plugins:
-    file: docker/configs/rabbitmq/enabled_plugins
+    file: configs/rabbitmq/enabled_plugins
   rabbitmq_conf:
-    file: docker/configs/rabbitmq/rabbitmq.conf
+    file: configs/rabbitmq/rabbitmq.conf
   nestjs_env_vars:
-    file: docker/configs/cd.stack.env
+    file: configs/cd.stack.env
 
 x-base-shared-vols: &volumes-timezone
   volumes:
@@ -51,7 +51,7 @@ x-base-healthcheck: &healthcheck-fragments
 
 secrets:
   CI_JWT_SECRET:
-    file: docker/secrets/DSF_JWT_SECRET
+    file: secrets/DSF_JWT_SECRET
 
 services:
   raptor-manager:
