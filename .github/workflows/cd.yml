@@ -73,6 +73,11 @@ jobs:
           mkdir -p docker/secrets
           echo "${{ secrets.JWT_SECRET }}" > docker/secrets/DSF_JWT_SECRET
 
+      - name: Create Cloudflare Tunnel Secret
+        run: |
+          # Create Docker secret for Cloudflare tunnel token
+          echo "${{ secrets.CLOUDFLARE_TUNNEL_TOKEN }}" | docker secret create CLOUDFLARE_TUNNEL_TOKEN - || true
+
       - name: Deploy to Swarm
         env:
           # Use the version from metadata action
@@ -87,6 +92,14 @@ jobs:
           DEPLOYMENT_BROKER_POOL: node.role==worker
           DEPLOYMENT_WORKER_POOL: node.role==worker
         run: |
-          # Deploy Application
+          # Deploy Application with Cloudflare Tunnel
           docker stack deploy -c docker/cd-stack.yml raptor
+          
+          # Wait for services to stabilize
+          sleep 10
+          
+          # Verify tunnel is running
+          docker service logs raptor_cloudflared --tail 50
+          
+          # Cleanup old images
           docker image prune -f

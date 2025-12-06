@@ -52,8 +52,32 @@ x-base-healthcheck: &healthcheck-fragments
 secrets:
   CI_JWT_SECRET:
     file: secrets/DSF_JWT_SECRET
+  CLOUDFLARE_TUNNEL_TOKEN:
+    external: true
 
 services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run
+    secrets:
+      - source: CLOUDFLARE_TUNNEL_TOKEN
+        target: /etc/cloudflared/token
+    environment:
+      TUNNEL_TOKEN_FILE: /etc/cloudflared/token
+    networks:
+      - traefik-public
+      - rmq_net
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+
   raptor-manager:
     image: ${IMAGE_BACKEND}
     <<: *shared-nestjs_conf
