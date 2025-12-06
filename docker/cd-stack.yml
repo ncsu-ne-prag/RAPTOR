@@ -58,7 +58,11 @@ secrets:
 services:
   cloudflared:
     image: cloudflare/cloudflared:latest
-    command: sh -c 'cloudflared tunnel --no-autoupdate run --token $$(cat /run/secrets/CLOUDFLARE_TUNNEL_TOKEN)'
+    command:
+      - sh
+      - -c
+      - |
+        cloudflared tunnel --no-autoupdate run --token $(cat /run/secrets/CLOUDFLARE_TUNNEL_TOKEN)
     secrets:
       - CLOUDFLARE_TUNNEL_TOKEN
     networks:
