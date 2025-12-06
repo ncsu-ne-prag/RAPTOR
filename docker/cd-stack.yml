@@ -58,12 +58,9 @@ secrets:
 services:
   cloudflared:
     image: cloudflare/cloudflared:latest
-    command: tunnel --no-autoupdate run
+    command: sh -c 'cloudflared tunnel --no-autoupdate run --token $$(cat /run/secrets/CLOUDFLARE_TUNNEL_TOKEN)'
     secrets:
-      - source: CLOUDFLARE_TUNNEL_TOKEN
-        target: /etc/cloudflared/token
-    environment:
-      TUNNEL_TOKEN_FILE: /etc/cloudflared/token
+      - CLOUDFLARE_TUNNEL_TOKEN
     networks:
       - traefik-public
       - rmq_net
