@@ -69,14 +69,10 @@ jobs:
           # Create .stack.env from secret
           echo "${{ secrets.STACK_ENV }}" > docker/configs/cd.stack.env
           
-          # Create secrets directory and JWT secret file
+          # Create secrets directory and files
           mkdir -p docker/secrets
           echo "${{ secrets.JWT_SECRET }}" > docker/secrets/DSF_JWT_SECRET
-
-      - name: Create Cloudflare Tunnel Secret
-        run: |
-          # Create Docker secret for Cloudflare tunnel token
-          echo "${{ secrets.CLOUDFLARE_TUNNEL_TOKEN }}" | docker secret create CLOUDFLARE_TUNNEL_TOKEN - || true
+          echo "${{ secrets.CLOUDFLARE_TUNNEL_TOKEN }}" > docker/secrets/CLOUDFLARE_TUNNEL_TOKEN
 
       - name: Deploy to Swarm
         env:
