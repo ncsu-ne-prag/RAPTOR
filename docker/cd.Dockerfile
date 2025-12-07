@@ -45,4 +45,9 @@ COPY docker/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
+# Install runtime dependencies again in the final stage if it's a fresh image
+# But here 'serve' is based on 'base' which already has them installed.
+# However, 'base' has the source code and build artifacts.
+# We need to make sure we are running from the right place.
+
 EXPOSE 3000
