@@ -37,7 +37,8 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
 
 COPY . .
 RUN source /root/.bashrc && \
-    pnpm install
+    pnpm install && \
+    pnpm run build
 
 FROM base AS serve
 COPY docker/entrypoint.sh /

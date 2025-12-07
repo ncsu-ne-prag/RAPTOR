@@ -12,6 +12,8 @@
     "start:engine": "nest start --watch --entryFile main-engine",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "start:prod:manager": "node dist/src/main",
+    "start:prod:engine": "node dist/src/main-engine",
     "lint": "eslint \"{src,apps,libs}/**/*.ts\" --fix",
     "test": "vitest run --coverage"
   },
