@@ -41,7 +41,7 @@ echo 'deb [signed-by=/usr/share/keyrings/cloudflare-public-v2.gpg] https://pkg.c
 # install cloudflared
 sudo apt-get update && sudo apt-get install cloudflared
 
-sudo cloudflared service install eyJhIjoiMWIzZTkwZTRkMGEzNDBkZGUwNWJiOGE4MDZlMzNiNzgiLCJ0IjoiNGJhYjhhNTMtYTY5Yy00YmRmLTk4MWMtYTE4NDNmNTZlODg3IiwicyI6IlpqVXhOalF5TnpZdE4yVm1OQzAwTURoa0xXSTRaRE10WTJJd1ltSTJabVppWm1NNSJ9
+sudo cloudflared service install eyJhIjoiMWIzZTkwZTRkMGEzNDBkZGUwNWJiOGE4MDZlMzNiNzgiLCJ0IjoiNGJhYjhhNTMtYTY5Yy00YmRmLTk4MWMtYTE4NDNmNTZlODg3IiwicyI6Ik1UZGhZakl4TVRBdE9EWXhPQzAwTVRRMkxUbGlNRFV0TXpNeVl6VTJOV1U1T0RBdyJ9
 ```
 
 8. **Copy the tunnel token** - and keep this safe!

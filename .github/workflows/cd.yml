@@ -65,14 +65,32 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create configuration files
+        env:
+          STACK_ENV: ${{ secrets.STACK_ENV }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          CLOUDFLARE_TUNNEL_TOKEN: ${{ secrets.CLOUDFLARE_TUNNEL_TOKEN }}
         run: |
+          # Validate secrets
+          if [ -z "$STACK_ENV" ]; then
+            echo "::error::STACK_ENV secret is not set"
+            exit 1
+          fi
+          if [ -z "$JWT_SECRET" ]; then
+            echo "::error::JWT_SECRET secret is not set"
+            exit 1
+          fi
+          if [ -z "$CLOUDFLARE_TUNNEL_TOKEN" ]; then
+            echo "::error::CLOUDFLARE_TUNNEL_TOKEN secret is not set"
+            exit 1
+          fi
+
           # Create .stack.env from secret
-          printf "%s" "${{ secrets.STACK_ENV }}" > docker/configs/cd.stack.env
+          printf "%s" "$STACK_ENV" > docker/configs/cd.stack.env
           
           # Create secrets directory and files
           mkdir -p docker/secrets
-          printf "%s" "${{ secrets.JWT_SECRET }}" > docker/secrets/DSF_JWT_SECRET
-          printf "%s" "${{ secrets.CLOUDFLARE_TUNNEL_TOKEN }}" > docker/secrets/CLOUDFLARE_TUNNEL_TOKEN
+          printf "%s" "$JWT_SECRET" > docker/secrets/DSF_JWT_SECRET
+          printf "%s" "$CLOUDFLARE_TUNNEL_TOKEN" > docker/secrets/CLOUDFLARE_TUNNEL_TOKEN
 
       - name: Deploy to Swarm
         env:
