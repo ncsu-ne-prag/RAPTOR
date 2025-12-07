@@ -48,7 +48,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
     outputs:
-      version: v${{ steps.meta.outputs.version }}
+      version: ${{ steps.meta.outputs.version }}
 
   deploy:
     needs: build-and-push
