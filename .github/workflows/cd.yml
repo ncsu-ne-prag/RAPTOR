@@ -67,12 +67,12 @@ jobs:
       - name: Create configuration files
         run: |
           # Create .stack.env from secret
-          echo "${{ secrets.STACK_ENV }}" > docker/configs/cd.stack.env
+          printf "%s" "${{ secrets.STACK_ENV }}" > docker/configs/cd.stack.env
           
           # Create secrets directory and files
           mkdir -p docker/secrets
-          echo "${{ secrets.JWT_SECRET }}" > docker/secrets/DSF_JWT_SECRET
-          echo "${{ secrets.CLOUDFLARE_TUNNEL_TOKEN }}" > docker/secrets/CLOUDFLARE_TUNNEL_TOKEN
+          printf "%s" "${{ secrets.JWT_SECRET }}" > docker/secrets/DSF_JWT_SECRET
+          printf "%s" "${{ secrets.CLOUDFLARE_TUNNEL_TOKEN }}" > docker/secrets/CLOUDFLARE_TUNNEL_TOKEN
 
       - name: Deploy to Swarm
         env:
@@ -89,7 +89,7 @@ jobs:
           DEPLOYMENT_WORKER_POOL: node.role==worker
         run: |
           # Deploy Application with Cloudflare Tunnel
-          docker stack deploy -c docker/cd-stack.yml raptor
+          docker stack deploy --with-registry-auth -c docker/cd-stack.yml raptor
           
           # Wait for services to stabilize
           sleep 10
