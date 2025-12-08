@@ -1,53 +1,80 @@
-FROM node:20.17.0-slim AS base
+# ------------------------------------------------------------------------------
+# Stage 1: Builder
+# ------------------------------------------------------------------------------
+FROM node:20.17.0-slim AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV NX_VERSION=19.6.2
-ENV NX_SOCKET_DIR="/tmp/nx"
-ENV BUILD_PACKAGES="make cmake g++ git python3 curl ca-certificates libboost-all-dev wget lsb-release software-properties-common gnupg"
-ENV CLANG_VERSION=18
-ENV LLVM_PACKAGES="libclang-18-dev clang-tools-18 libomp-18-dev llvm-18-dev lld-18"
 
-ENV SCRAM_BUILD_PACKAGES="libxml2-dev libomp-dev \
+# Install build tools and dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 make g++ cmake git \
+    ca-certificates curl gnupg \
     libxml2-dev libomp-dev \
+    libboost-all-dev \
     libgoogle-perftools-dev libboost-program-options-dev \
     libboost-math-dev libboost-random-dev libboost-filesystem-dev \
-    libboost-test-dev libboost-date-time-dev libjemalloc-dev"
-
-ENV SCRAM_RUNTIME_PACKAGES="libxml2 \
-    libboost-filesystem1.74.0 libboost-program-options1.74.0 \
-    libtcmalloc-minimal4 libjemalloc2"
-
-ENV PATH="/root/.local/bin:${PATH}"
+    libboost-test-dev libboost-date-time-dev libjemalloc-dev \
+    && update-ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /data/project
-SHELL ["/bin/bash", "-c"]
-RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
-    --mount=target=/var/cache/apt,type=cache,sharing=locked \
-    rm -f /etc/apt/apt.conf.d/docker-clean && \
-    apt update && \
-    apt install -y --no-install-recommends $BUILD_PACKAGES $SCRAM_BUILD_PACKAGES $SCRAM_RUNTIME_PACKAGES && \
-    update-ca-certificates && \
-    wget https://apt.llvm.org/llvm.sh && \
-    chmod +x llvm.sh && \
-    ./llvm.sh $CLANG_VERSION && \
-    apt update && \
-    apt install -y --no-install-recommends $LLVM_PACKAGES && \
-    npm install --global pnpm nx@$NX_VERSION && \
-    SHELL=bash pnpm setup
 
-COPY . .
-RUN source /root/.bashrc && \
-    pnpm install && \
-    pnpm run build
+# --- 1. Build scram-node first ---
+COPY scram-node ./scram-node
 
-FROM base AS serve
+WORKDIR /data/project/scram-node
+RUN npm install && npm run install
+
+# --- 2. Build NestJS App ---
+WORKDIR /data/project
+
+# Copy app source
+COPY src ./src
+COPY config ./config
+COPY package.json tsconfig.json tsconfig.build.json nest-cli.json ./
+
+# Install app dependencies (this will link scram-node via "file:./scram-node")
+RUN npm install
+
+# Patch TypeScript for Typia
+RUN ./node_modules/.bin/ts-patch install -s
+
+# Build the app
+RUN npm run build
+
+# Prune dev dependencies
+RUN npm prune --production
+
+# ------------------------------------------------------------------------------
+# Stage 2: Runtime
+# ------------------------------------------------------------------------------
+FROM node:20.17.0-slim AS runtime
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install ONLY runtime shared libraries
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libxml2 \
+    libboost-filesystem1.74.0 \
+    libboost-program-options1.74.0 \
+    libtcmalloc-minimal4 \
+    libjemalloc2 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /data/project
+
+# Copy built artifacts from builder
+COPY --from=builder /data/project/node_modules ./node_modules
+COPY --from=builder /data/project/dist ./dist
+COPY --from=builder /data/project/scram-node ./scram-node
+COPY --from=builder /data/project/package.json ./package.json
+
+# Copy entrypoint
 COPY docker/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
 
-# Install runtime dependencies again in the final stage if it's a fresh image
-# But here 'serve' is based on 'base' which already has them installed.
-# However, 'base' has the source code and build artifacts.
-# We need to make sure we are running from the right place.
+ENV NODE_ENV=production
 
 EXPOSE 3000
+
+ENTRYPOINT ["/entrypoint.sh"]
