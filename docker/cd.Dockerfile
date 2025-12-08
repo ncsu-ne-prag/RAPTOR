@@ -52,13 +52,14 @@ FROM node:20.17.0-slim AS runtime
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install ONLY runtime shared libraries
+# Install ONLY runtime shared libraries and curl for healthcheck
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libxml2 \
     libboost-filesystem1.74.0 \
     libboost-program-options1.74.0 \
     libtcmalloc-minimal4 \
     libjemalloc2 \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /data/project
