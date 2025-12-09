@@ -747,4 +747,16 @@ describe('MinioService', () => {
       expect(mockMinioClient.makeBucket).toHaveBeenCalled();
     });
   });
+
+  describe('getCompletedSequenceCount edge cases', () => {
+    it('should throw error when stream fails', async () => {
+      mockMinioClient.listObjects.mockImplementation(() => {
+        throw new Error('Stream error');
+      });
+
+      await expect(service.getCompletedSequenceCount('parent')).rejects.toThrow(
+        'Failed to count completed sequences: Stream error',
+      );
+    });
+  });
 });

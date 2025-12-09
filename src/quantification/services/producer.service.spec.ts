@@ -148,4 +148,23 @@ describe('ProducerService', () => {
       expect(mockChannel.publish).toHaveBeenCalledTimes(2);
     });
   });
+
+  describe('onApplicationShutdown', () => {
+    it('should cleanup exchanges and close connections', async () => {
+      await service.onApplicationShutdown();
+
+      expect(mockChannel.deleteExchange).toHaveBeenCalledTimes(3);
+      expect(mockChannel.deleteExchange).toHaveBeenCalledWith('quant');
+      expect(mockChannel.deleteExchange).toHaveBeenCalledWith('dist');
+      expect(mockChannel.deleteExchange).toHaveBeenCalledWith('adapt');
+      expect(mockChannel.close).toHaveBeenCalled();
+      expect(mockChannelModel.close).toHaveBeenCalled();
+    });
+
+    it('should throw RpcException if cleanup fails', async () => {
+      mockChannel.deleteExchange.mockRejectedValueOnce(new Error('Cleanup failed'));
+
+      await expect(service.onApplicationShutdown()).rejects.toThrow(RpcException);
+    });
+  });
 });

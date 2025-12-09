@@ -89,36 +89,50 @@ describe('QueueService', () => {
     });
 
     it('should throw RpcException if exchange assertion fails', async () => {
-      mockChannel.assertExchange.mockRejectedValueOnce(new Error('Failed'));
-      // First call is for DLX, let's make the second one fail (main exchange)
+      // First call is for DLX (succeeds), second call is for main exchange (fails)
       mockChannel.assertExchange.mockResolvedValueOnce(undefined);
       mockChannel.assertExchange.mockRejectedValueOnce(new Error('Failed'));
 
       await expect(
         service.setupQueue(mockQueueConfig as any, mockChannel as any),
-      ).rejects.toThrow(RpcException);
+      ).rejects.toThrow(`Failed to initialize ${mockQueueConfig.exchange.name}`);
     });
 
     it('should throw RpcException if queue assertion fails', async () => {
-      mockChannel.assertQueue.mockRejectedValueOnce(new Error('Failed'));
-      // First call is for DLQ, let's make the second one fail (main queue)
+      // First call is for DLQ (succeeds), second call is for main queue (fails)
       mockChannel.assertQueue.mockResolvedValueOnce(undefined);
       mockChannel.assertQueue.mockRejectedValueOnce(new Error('Failed'));
 
       await expect(
         service.setupQueue(mockQueueConfig as any, mockChannel as any),
-      ).rejects.toThrow(RpcException);
+      ).rejects.toThrow(`Failed to set up ${mockQueueConfig.name}`);
     });
 
     it('should throw RpcException if binding fails', async () => {
-      mockChannel.bindQueue.mockRejectedValueOnce(new Error('Failed'));
-      // First call is for DLQ binding, let's make the second one fail (main binding)
+      // First call is for DLQ binding (succeeds), second call is for main binding (fails)
       mockChannel.bindQueue.mockResolvedValueOnce(undefined);
       mockChannel.bindQueue.mockRejectedValueOnce(new Error('Failed'));
 
       await expect(
         service.setupQueue(mockQueueConfig as any, mockChannel as any),
-      ).rejects.toThrow(RpcException);
+      ).rejects.toThrow(`Failed to bind ${mockQueueConfig.exchange.name} and ${mockQueueConfig.name} queue`);
+    });
+
+    it('should not call prefetch if not provided', async () => {
+      const configWithoutPrefetch = { ...mockQueueConfig, prefetch: undefined };
+
+      await service.setupQueue(configWithoutPrefetch as any, mockChannel as any);
+
+      expect(mockChannel.prefetch).not.toHaveBeenCalled();
+    });
+
+    it('should throw RpcException if dead letter setup fails', async () => {
+      // Make the dead letter exchange assertion fail
+      mockChannel.assertExchange.mockRejectedValueOnce(new Error('DLX Failed'));
+
+      await expect(
+        service.setupQueue(mockQueueConfig as any, mockChannel as any),
+      ).rejects.toThrow(`Failed to set up ${mockQueueConfig.deadLetter.name}`);
     });
   });
 });
