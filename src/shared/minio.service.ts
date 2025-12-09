@@ -4,7 +4,6 @@ import * as Minio from 'minio';
 import { Readable } from 'stream';
 import { v4 as uuidv4 } from 'uuid';
 import { EnvVarKeys } from '../../config/env_vars.config';
-import { ConvergenceCriteria } from '../common/types/convergence-criteria';
 
 export interface JobMetadata {
   jobId?: string;
@@ -38,7 +37,6 @@ export interface JobMetadata {
     approximateProbability?: number; // Approximate probability from truncated ZBDD
     relativeError?: number; // Relative error between exact and approximate
   };
-  convergenceCriteria?: ConvergenceCriteria;
   adaptiveResult?: {
     converged: boolean;
     finalCutOff: number;

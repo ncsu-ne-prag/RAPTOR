@@ -1,5 +1,4 @@
 import { Model } from "./model";
-import { ConvergenceCriteria } from "./convergence-criteria";
 
 /**
  * Schema for command-line options
@@ -232,5 +231,4 @@ export interface NodeQuantRequest {
 export type QuantifyRequest = CommandLineOptions & ModelOptions;
 
 export interface ConvergenceQuantRequest extends NodeQuantRequest {
-  convergenceCriteria?: ConvergenceCriteria;
 }

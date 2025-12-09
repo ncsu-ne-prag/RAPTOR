@@ -1,0 +1,129 @@
+version: "3.9"
+
+volumes:
+  mongo_data:
+  rabbitmq_data:
+  minio_data:
+
+configs:
+  app_env:
+    file: docker/configs/.docker-compose.env
+  rabbitmq_plugins:
+    file: docker/configs/rabbitmq/enabled_plugins
+  rabbitmq_conf:
+    file: docker/configs/rabbitmq/rabbitmq.conf
+
+networks:
+  microservices_db_net:
+    external: true
+  microservices_rmq_net:
+    external: true
+  microservices_svc_net:
+    external: true
+
+services:
+  mongodb:
+    image: mongo:7
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - microservices_db_net
+    deploy:
+      placement:
+        constraints:
+          - node.labels.high_performance == true
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - microservices_rmq_net
+    ports:
+      - target: 5672
+        published: 5672
+        protocol: tcp
+        mode: ingress
+      - target: 15672
+        published: 15672
+        protocol: tcp
+        mode: ingress
+    configs:
+      - source: rabbitmq_plugins
+        target: /etc/rabbitmq/enabled_plugins
+      - source: rabbitmq_conf
+        target: /etc/rabbitmq/rabbitmq.conf
+    deploy:
+      placement:
+        constraints:
+          - node.labels.high_performance == true
+
+  minio:
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio_data:/data
+    networks:
+      - microservices_svc_net
+      - microservices_db_net
+    ports:
+      - target: 9000
+        published: 9000
+        protocol: tcp
+        mode: ingress
+      - target: 9001
+        published: 9001
+        protocol: tcp
+        mode: ingress
+    deploy:
+      placement:
+        constraints:
+          - node.labels.high_performance == true
+
+  job-broker:
+    image: rasheeqqua/microservices:latest
+    command: "nx run --verbose microservice-job-broker:serve:development"
+    networks:
+      - microservices_db_net
+      - microservices_rmq_net
+      - microservices_svc_net
+    configs:
+      - source: app_env
+        target: /data/project/.env
+    environment:
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      NODE_OPTIONS: "--max-old-space-size=8192"
+    ports:
+      - target: 3000
+        published: 3000
+        protocol: tcp
+        mode: ingress
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.high_performance == true
+
+  job-worker:
+    image: rasheeqqua/microservices:latest
+    command: "nx run --verbose microservice-job-broker:serve-consumer:development"
+    networks:
+      - microservices_db_net
+      - microservices_rmq_net
+      - microservices_svc_net
+    configs:
+      - source: app_env
+        target: /data/project/.env
+    environment:
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      NODE_OPTIONS: "--max-old-space-size=8192"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.high_performance == true

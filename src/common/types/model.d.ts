@@ -26,7 +26,7 @@ export interface HouseEvent {
   state: boolean;
 }
 
-export type LogicExpr =
+type LogicExpr =
   | { event: string }
   | { op: 'and'; args: LogicExpr[] }
   | { op: 'or'; args: LogicExpr[] }
