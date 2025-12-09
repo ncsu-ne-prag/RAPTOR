@@ -140,8 +140,9 @@ describe('ProducerService', () => {
         sequenceJobIds,
       });
 
-      const result =
-        await service.createAndQueueAdaptiveSequenceBatch(quantRequest);
+      const result = await service.createAndQueueAdaptiveSequenceBatch(
+        quantRequest,
+      );
 
       expect(result).toEqual(sequenceJobIds);
       expect(minioService.storeInputData).toHaveBeenCalledTimes(3); // 1 parent + 2 sequences
@@ -162,9 +163,13 @@ describe('ProducerService', () => {
     });
 
     it('should throw RpcException if cleanup fails', async () => {
-      mockChannel.deleteExchange.mockRejectedValueOnce(new Error('Cleanup failed'));
+      mockChannel.deleteExchange.mockRejectedValueOnce(
+        new Error('Cleanup failed'),
+      );
 
-      await expect(service.onApplicationShutdown()).rejects.toThrow(RpcException);
+      await expect(service.onApplicationShutdown()).rejects.toThrow(
+        RpcException,
+      );
     });
   });
 });

@@ -244,9 +244,9 @@ describe('MinioService', () => {
     it('should throw error on failure', async () => {
       mockMinioClient.putObject.mockRejectedValue(new Error('Storage error'));
 
-      await expect(
-        service.storeOutputData('data', 'input-id'),
-      ).rejects.toThrow('Failed to store output data: Storage error');
+      await expect(service.storeOutputData('data', 'input-id')).rejects.toThrow(
+        'Failed to store output data: Storage error',
+      );
     });
   });
 
@@ -690,7 +690,7 @@ describe('MinioService', () => {
         .mockRejectedValueOnce(error)
         .mockRejectedValueOnce(error)
         .mockRejectedValueOnce(error);
-      
+
       // Follow-up checks after error
       mockMinioClient.bucketExists
         .mockResolvedValueOnce(true)
@@ -714,7 +714,7 @@ describe('MinioService', () => {
         .mockRejectedValueOnce(error)
         .mockRejectedValueOnce(error)
         .mockRejectedValueOnce(error);
-      
+
       mockMinioClient.bucketExists
         .mockResolvedValueOnce(true)
         .mockResolvedValueOnce(true)
@@ -736,7 +736,7 @@ describe('MinioService', () => {
         .mockRejectedValueOnce(error)
         .mockRejectedValueOnce(error)
         .mockRejectedValueOnce(error);
-      
+
       mockMinioClient.bucketExists
         .mockResolvedValueOnce(true)
         .mockResolvedValueOnce(true)

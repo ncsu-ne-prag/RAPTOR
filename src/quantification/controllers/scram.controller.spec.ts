@@ -204,7 +204,7 @@ describe('ScramController', () => {
       };
       mockStorageService.getJobStats.mockResolvedValue(stats);
       const result = await controller.getJobStats('job-123');
-      
+
       expect(result.stats).toBeDefined();
       expect(result.stats?.totalSeconds).toBeUndefined();
       expect(result.stats?.reportWriteTimeMs).toBeUndefined();
@@ -220,7 +220,7 @@ describe('ScramController', () => {
       };
       mockStorageService.getJobStats.mockResolvedValue(stats);
       const result = await controller.getJobStats('job-123');
-      
+
       expect(result.stats?.analysisSeconds).toBe(12);
       expect(result.stats?.totalSeconds).toBeUndefined();
     });
@@ -242,7 +242,7 @@ describe('ScramController', () => {
       };
       mockStorageService.getJobStats.mockResolvedValue(stats);
       const result = await controller.getJobStats('job-123');
-      
+
       expect(result.childStats?.[0].stats?.totalSeconds).toBeUndefined();
       expect(result.childStats?.[0].stats?.reportWriteTimeMs).toBeUndefined();
       expect(result.childStats?.[0].stats?.analysisSeconds).toBe(3);

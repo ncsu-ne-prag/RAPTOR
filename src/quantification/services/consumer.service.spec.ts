@@ -272,13 +272,15 @@ describe('ConsumerService', () => {
       (typiaMock.default.json.assertParse as any).mockReturnValue(quantRequest);
       (runQuantificationWithWorker as any).mockResolvedValue({
         results: {
-          sumOfProducts: [{
-            originalProducts: 100,
-            products: 50,
-            exactProbability: 0.7,
-            approximateProbability: 0.69,
-            relativeError: 0.01
-          }],
+          sumOfProducts: [
+            {
+              originalProducts: 100,
+              products: 50,
+              exactProbability: 0.7,
+              approximateProbability: 0.69,
+              relativeError: 0.01,
+            },
+          ],
         },
         runtimeSummary: { analysisSeconds: 5, totalSeconds: 6 },
       });

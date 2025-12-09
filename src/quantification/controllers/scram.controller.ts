@@ -34,8 +34,9 @@ export class ScramController {
         const parentJobId = sequenceJobIds[0].split('-').slice(0, -1).join('-');
         return { parentJobId, sequenceJobIds };
       } else {
-        const jobId =
-          await this.producerService.createAndQueueQuant(quantRequest);
+        const jobId = await this.producerService.createAndQueueQuant(
+          quantRequest,
+        );
         return { jobId };
       }
     } catch {
@@ -69,8 +70,9 @@ export class ScramController {
           sequenceJobIds,
         };
       } else {
-        const jobId =
-          await this.producerService.createAndQueueQuant(quantRequest);
+        const jobId = await this.producerService.createAndQueueQuant(
+          quantRequest,
+        );
         return { jobId };
       }
     } catch (error: any) {

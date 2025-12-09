@@ -355,7 +355,9 @@ export class ConsumerService
           this.channel?.nack(msg, false, false);
           const errorMessage = err?.message || String(err);
           this.logger.error(
-            `Adaptive Job ${String(nodeQuantRequest._id)} failed: ${errorMessage}`,
+            `Adaptive Job ${String(
+              nodeQuantRequest._id,
+            )} failed: ${errorMessage}`,
           );
           await this.minioService.updateJobMetadata(
             String(nodeQuantRequest._id),
@@ -554,8 +556,9 @@ export class ConsumerService
     const parentMetadata = await this.minioService.getJobMetadata(parentJobId);
     if (!parentMetadata.childJobs || parentMetadata.childJobs.length === 0)
       return false;
-    const completedCount =
-      await this.minioService.getCompletedSequenceCount(parentJobId);
+    const completedCount = await this.minioService.getCompletedSequenceCount(
+      parentJobId,
+    );
     return completedCount === parentMetadata.childJobs.length;
   }
 
@@ -583,9 +586,9 @@ export class ConsumerService
   } {
     return Boolean(
       result &&
-      typeof result === 'object' &&
-      (result as Record<string, unknown>).type === 'file' &&
-      typeof (result as Record<string, unknown>).path === 'string',
+        typeof result === 'object' &&
+        (result as Record<string, unknown>).type === 'file' &&
+        typeof (result as Record<string, unknown>).path === 'string',
     );
   }
 
@@ -599,7 +602,7 @@ export class ConsumerService
         const sizeLabel =
           typeof result.size === 'bigint'
             ? result.size.toString()
-            : (result.size ?? 'unknown');
+            : result.size ?? 'unknown';
         this.logger.debug(
           `Uploading streamed report for job ${jobId} from ${reportPath} (size=${sizeLabel} bytes)`,
         );
@@ -609,13 +612,17 @@ export class ConsumerService
           await fsPromises.unlink(reportPath);
         } catch (unlinkErr: any) {
           this.logger.warn(
-            `Failed to delete temporary report ${reportPath}: ${unlinkErr?.message || unlinkErr}`,
+            `Failed to delete temporary report ${reportPath}: ${
+              unlinkErr?.message || unlinkErr
+            }`,
           );
         }
         return outputId;
       } catch (streamErr) {
         this.logger.error(
-          `Unable to stream report file ${reportPath} for job ${jobId}: ${String(streamErr)}`,
+          `Unable to stream report file ${reportPath} for job ${jobId}: ${String(
+            streamErr,
+          )}`,
         );
         throw streamErr;
       }

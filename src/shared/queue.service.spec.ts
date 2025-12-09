@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { QueueService } from './queue.service';
-import { RpcException } from '@nestjs/microservices';
 
 describe('QueueService', () => {
   let service: QueueService;
@@ -95,7 +94,9 @@ describe('QueueService', () => {
 
       await expect(
         service.setupQueue(mockQueueConfig as any, mockChannel as any),
-      ).rejects.toThrow(`Failed to initialize ${mockQueueConfig.exchange.name}`);
+      ).rejects.toThrow(
+        `Failed to initialize ${mockQueueConfig.exchange.name}`,
+      );
     });
 
     it('should throw RpcException if queue assertion fails', async () => {
@@ -115,13 +116,18 @@ describe('QueueService', () => {
 
       await expect(
         service.setupQueue(mockQueueConfig as any, mockChannel as any),
-      ).rejects.toThrow(`Failed to bind ${mockQueueConfig.exchange.name} and ${mockQueueConfig.name} queue`);
+      ).rejects.toThrow(
+        `Failed to bind ${mockQueueConfig.exchange.name} and ${mockQueueConfig.name} queue`,
+      );
     });
 
     it('should not call prefetch if not provided', async () => {
       const configWithoutPrefetch = { ...mockQueueConfig, prefetch: undefined };
 
-      await service.setupQueue(configWithoutPrefetch as any, mockChannel as any);
+      await service.setupQueue(
+        configWithoutPrefetch as any,
+        mockChannel as any,
+      );
 
       expect(mockChannel.prefetch).not.toHaveBeenCalled();
     });
