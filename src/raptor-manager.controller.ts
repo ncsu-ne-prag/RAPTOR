@@ -152,22 +152,4 @@ export class RaptorManagerController {
       );
     }
   }
-
-  /**
-   * Helper method to provide usage instructions for each example
-   */
-  private getUsageInstructions(exampleId: string): string {
-    switch (exampleId) {
-      case '1':
-        return 'POST to /scram with this request body (no query parameters)';
-      case '2':
-        return 'POST to /scram with this request body and query parameter: ?distributedSequences=yes';
-      case '3':
-        return 'POST to /scram/adaptive with this request body (no query parameters)';
-      case '4':
-        return 'POST to /scram/adaptive with this request body and query parameter: ?distributedSequences=yes';
-      default:
-        return '';
-    }
-  }
 }
