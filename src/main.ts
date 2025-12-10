@@ -46,23 +46,44 @@ async function bootstrap(): Promise<void> {
   logger.debug('Attaching the exception filter...');
   app.useGlobalFilters(new HttpExceptionFilter());
 
+  // Determine server URL based on environment
+  const hostUrl = process.env.HOST_URL || 'http://localhost:3000';
+  const isProduction = process.env.NODE_ENV === 'production';
+
   const document: OpenAPIObject = (await NestiaSwaggerComposer.document(app, {
     // The OpenAPI specification version used for the generated documentation.
     openapi: '3.0',
 
     // Provides general information about the API including title, description, and version.
     info: {
-      title: 'OpenPRA Distributed Multi-Queue API',
-      description: 'PRA quantification and task execution message-broker',
-      version: '0.0.1',
+      title: 'RAPTOR API',
+      description:
+        'Risk Assessment Parallel Task ORchestrator: A distributed microservice for Probabilistic Risk Assessment (PRA) quantification primarily using SCRAM engine with RabbitMQ based job orchestration and MinIO object storage.',
+      version: '1.0.3',
       license: {
         name: 'MIT',
         identifier: 'MIT',
       },
+      contact: {
+        name: 'OpenPRA',
+        url: 'https://github.com/ncsu-ne-prag',
+      },
     },
 
     // Include the url where the app is being hosted
-    servers: [],
+    servers: isProduction
+      ? [
+          {
+            url: hostUrl,
+            description: 'Production server',
+          },
+        ]
+      : [
+          {
+            url: 'http://localhost:3000',
+            description: 'Local development server',
+          },
+        ],
 
     // Indicates whether the output JSON should be beautified.
     beautify: true,
@@ -75,9 +96,15 @@ async function bootstrap(): Promise<void> {
 
   logger.debug('Creating the API Documentation...');
   SwaggerModule.setup('/q/docs', app, document, {
-    customSiteTitle: 'OpenPRA-MQ API Docs',
+    customSiteTitle: 'RAPTOR API Documentation',
     explorer: true,
-    swaggerOptions: {},
+    swaggerOptions: {
+      persistAuthorization: true,
+      displayRequestDuration: true,
+      filter: true,
+      tagsSorter: 'alpha',
+      operationsSorter: 'alpha',
+    },
   });
 
   // Increase the maximum request body limit to 50 MB.

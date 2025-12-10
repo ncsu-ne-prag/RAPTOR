@@ -3,6 +3,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { TypedRoute, TypedQuery, TypedParam, TypedBody } from '@nestia/core';
 import type { NodeQuantRequest } from '../../common/types/quantify-request';
 import { ProducerService } from '../services/producer.service';
@@ -11,8 +12,8 @@ import {
   JobStatusIds,
   JobOutputResponse,
 } from '../services/storage.service';
-import { JobMetadata } from '../../shared/minio.service';
 
+@ApiTags('SCRAM Quantification')
 @Controller()
 export class ScramController {
   constructor(
@@ -20,6 +21,9 @@ export class ScramController {
     private readonly storageService: StorageService,
   ) {}
 
+  /**
+   * @summary Creates and queues a SCRAM quantification job (supports distributed event tree sequences with query parameter distributedSequences=yes)
+   */
   @TypedRoute.Post('/scram')
   public async createAndQueueQuant(
     @TypedBody() quantRequest: NodeQuantRequest,
@@ -34,8 +38,9 @@ export class ScramController {
         const parentJobId = sequenceJobIds[0].split('-').slice(0, -1).join('-');
         return { parentJobId, sequenceJobIds };
       } else {
-        const jobId =
-          await this.producerService.createAndQueueQuant(quantRequest);
+        const jobId = await this.producerService.createAndQueueQuant(
+          quantRequest,
+        );
         return { jobId };
       }
     } catch {
@@ -45,6 +50,9 @@ export class ScramController {
     }
   }
 
+  /**
+   * @summary Creates and queues an adaptive SCRAM quantification job with automatic truncation (supports distributed sequences with query parameter distributedSequences=yes)
+   */
   @TypedRoute.Post('/scram/adaptive')
   public async createAndQueueAdaptiveQuant(
     @TypedBody() quantRequest: NodeQuantRequest,
@@ -69,8 +77,9 @@ export class ScramController {
           sequenceJobIds,
         };
       } else {
-        const jobId =
-          await this.producerService.createAndQueueQuant(quantRequest);
+        const jobId = await this.producerService.createAndQueueQuant(
+          quantRequest,
+        );
         return { jobId };
       }
     } catch (error: any) {
@@ -81,10 +90,14 @@ export class ScramController {
     }
   }
 
+  /**
+   * @summary Retrieves all quantified report job IDs
+   */
   @TypedRoute.Get('/scram')
-  public async getQuantifiedReports(): Promise<JobMetadata[]> {
+  public async getQuantifiedReports(): Promise<string[]> {
     try {
-      return await this.storageService.getQuantifiedReports();
+      const jobs = await this.storageService.getQuantifiedReports();
+      return jobs.map((job) => job.jobId).filter((id): id is string => !!id);
     } catch {
       throw new NotFoundException(
         'Server was unable to find the requested list of quantified reports.',
@@ -92,6 +105,9 @@ export class ScramController {
     }
   }
 
+  /**
+   * @summary Retrieves job status and metadata by job ID
+   */
   @TypedRoute.Get('/scram/:jobId')
   public async getJobStatus(
     @TypedParam('jobId') jobId: string,
@@ -103,6 +119,9 @@ export class ScramController {
     }
   }
 
+  /**
+   * @summary Retrieves the input data (request body) used for a quantification job
+   */
   @TypedRoute.Get('/scram/input/:inputId')
   public async getInputData(
     @TypedParam('inputId') inputId: string,
@@ -115,6 +134,9 @@ export class ScramController {
     }
   }
 
+  /**
+   * @summary Retrieves the aggregated output results for a completed job
+   */
   @TypedRoute.Get('/scram/output/:jobId')
   public async getAggregatedOutput(
     @TypedParam('jobId') jobId: string,
@@ -126,6 +148,9 @@ export class ScramController {
     }
   }
 
+  /**
+   * @summary Retrieves performance statistics and timing information for a job (includes child job statistics for distributed jobs)
+   */
   @TypedRoute.Get('/scram/stats/:id')
   public async getJobStats(@TypedParam('id') id: string): Promise<{
     sentAt?: number;

@@ -1,17 +1,20 @@
-import {
-  Controller,
-  Query,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
-import { TypedRoute } from '@nestia/core';
+import { Controller, NotFoundException } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { TypedRoute, TypedParam } from '@nestia/core';
 import { RaptorManagerService } from './raptor-manager.service';
 import { JobMetadata } from './shared/minio.service';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+export interface JobTypesResponse {
+  services: Array<{ name: string; endpoint: string }>;
+}
 
 export interface JobResponse {
   message: string;
 }
 
+@ApiTags('Job Management')
 @Controller()
 export class RaptorManagerController {
   /**
@@ -21,13 +24,10 @@ export class RaptorManagerController {
   constructor(private readonly raptorManagerService: RaptorManagerService) {}
 
   /**
-   * Retrieves a list of job types.
-   *
-   * @returns An object containing a message with the list of job types.
-   * @throws {@link NotFoundException} When the list of job types cannot be found.
+   * @summary Retrieves a list of available job types and their endpoints
    */
   @TypedRoute.Get('/job-types')
-  public getJobTypes(): JobResponse {
+  public getJobTypes(): JobTypesResponse {
     try {
       return this.raptorManagerService.getJobTypes();
     } catch {
@@ -38,41 +38,8 @@ export class RaptorManagerController {
   }
 
   /**
-   * Retrieves a list of jobs based on the status.
-   *
-   * @returns An object containing a message with the list of pending jobs.
-   * @throws {@link NotFoundException} When the list of pending jobs cannot be found.
+   * @summary Retrieves all jobs with running status
    */
-  @TypedRoute.Get('/jobs')
-  public async getJobs(
-    @Query('status') status: string,
-  ): Promise<{ jobs: JobMetadata[] }> {
-    try {
-      return await this.raptorManagerService.getJobs(status);
-    } catch {
-      throw new NotFoundException(
-        'Server was unable to find the requested list of pending jobs.',
-      );
-    }
-  }
-
-  /**
-   * Retrieves a list of pending jobs.
-   *
-   * @returns An object containing a message with the list of pending jobs.
-   * @throws {@link NotFoundException} When the list of pending jobs cannot be found.
-   */
-  @TypedRoute.Get('/pending-jobs')
-  public async getPendingJobs(): Promise<{ jobs: JobMetadata[] }> {
-    try {
-      return await this.raptorManagerService.getPendingJobs();
-    } catch {
-      throw new NotFoundException(
-        'Server was unable to find the requested list of pending jobs.',
-      );
-    }
-  }
-
   @TypedRoute.Get('/running-jobs')
   public async getRunningJobs(): Promise<{ jobs: JobMetadata[] }> {
     try {
@@ -84,6 +51,9 @@ export class RaptorManagerController {
     }
   }
 
+  /**
+   * @summary Retrieves all jobs with completed status
+   */
   @TypedRoute.Get('/completed-jobs')
   public async getCompletedJobs(): Promise<{ jobs: JobMetadata[] }> {
     try {
@@ -96,19 +66,108 @@ export class RaptorManagerController {
   }
 
   /**
-   * Creates a new job.
-   *
-   * @returns An object containing a message confirming the job creation.
-   * @throws {@link InternalServerErrorException} When there is a problem creating the job.
+   * @summary Retrieves all jobs with processing status
    */
-  @TypedRoute.Post('/create-job')
-  public createJob(): JobResponse {
+  @TypedRoute.Get('/processing-jobs')
+  public async getProcessingJobs(): Promise<{ jobs: JobMetadata[] }> {
     try {
-      return this.raptorManagerService.createJob();
+      return await this.raptorManagerService.getProcessingJobs();
     } catch {
-      throw new InternalServerErrorException(
-        'Server encountered a problem while creating a job.',
+      throw new NotFoundException(
+        'Server was unable to find the requested list of processing jobs.',
       );
+    }
+  }
+
+  /**
+   * @summary Retrieves all jobs with partial status
+   */
+  @TypedRoute.Get('/partial-jobs')
+  public async getPartialJobs(): Promise<{ jobs: JobMetadata[] }> {
+    try {
+      return await this.raptorManagerService.getPartialJobs();
+    } catch {
+      throw new NotFoundException(
+        'Server was unable to find the requested list of partial jobs.',
+      );
+    }
+  }
+
+  /**
+   * @summary Retrieves all jobs with failed status
+   */
+  @TypedRoute.Get('/failed-jobs')
+  public async getFailedJobs(): Promise<{ jobs: JobMetadata[] }> {
+    try {
+      return await this.raptorManagerService.getFailedJobs();
+    } catch {
+      throw new NotFoundException(
+        'Server was unable to find the requested list of failed jobs.',
+      );
+    }
+  }
+
+  /**
+   * @summary 1: Fault tree (non-distributed, BDD), 2: Event tree (distributed sequences), 3: Fault tree (adaptive quantification), 4: Event tree (adaptive quantification)
+   */
+  @TypedRoute.Get('/examples/:exampleId')
+  public getExample(@TypedParam('exampleId') exampleId: string): any {
+    try {
+      const fixturesPath = join(process.cwd(), 'fixtures', 'models', 'MHTGR');
+      let filePath: string;
+
+      switch (exampleId) {
+        case '1':
+          // Non-distributed fault tree with BDD
+          filePath = join(fixturesPath, 'JSON', 'chinese.json');
+          break;
+        case '2':
+          // Distributed event tree sequences
+          filePath = join(fixturesPath, 'JSON', 'demo_gas_leak.json');
+          break;
+        case '3':
+          // Adaptive fault tree
+          filePath = join(fixturesPath, 'JSON', 'chinese_adaptive.json');
+          break;
+        case '4':
+          // Adaptive event tree
+          filePath = join(fixturesPath, 'Adaptive', 'demo_gas_leak.json');
+          break;
+        default:
+          throw new NotFoundException(
+            `Example ID must be 1, 2, 3, or 4. Received: ${exampleId}`,
+          );
+      }
+
+      const fileContent = readFileSync(filePath, 'utf-8');
+      const example = JSON.parse(fileContent);
+
+      return example;
+    } catch (error: any) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new NotFoundException(
+        `Unable to load example ${exampleId}: ${error.message}`,
+      );
+    }
+  }
+
+  /**
+   * Helper method to provide usage instructions for each example
+   */
+  private getUsageInstructions(exampleId: string): string {
+    switch (exampleId) {
+      case '1':
+        return 'POST to /scram with this request body (no query parameters)';
+      case '2':
+        return 'POST to /scram with this request body and query parameter: ?distributedSequences=yes';
+      case '3':
+        return 'POST to /scram/adaptive with this request body (no query parameters)';
+      case '4':
+        return 'POST to /scram/adaptive with this request body and query parameter: ?distributedSequences=yes';
+      default:
+        return '';
     }
   }
 }

@@ -11,13 +11,7 @@ export interface JobMetadata {
   outputId?: string;
   childJobs?: string[];
   completedSequences?: string[];
-  status?:
-    | 'processing'
-    | 'pending'
-    | 'running'
-    | 'partial'
-    | 'completed'
-    | 'failed';
+  status?: 'processing' | 'running' | 'partial' | 'completed' | 'failed';
   error?: string;
   sentAt?: number; // Timestamp when job was sent to queue
   receivedAt?: number; // Timestamp when job was received by consumer
@@ -340,7 +334,7 @@ export class MinioService implements OnModuleInit {
     const metadata: JobMetadata = {
       jobId,
       inputId,
-      status: 'pending',
+      status: 'processing',
       ...initialData,
     };
 

@@ -30,9 +30,12 @@ describe('RaptorManagerService', () => {
 
   describe('getJobTypes', () => {
     it('should return job types message', () => {
-      expect(service.getJobTypes()).toEqual({
-        message: 'return the types of jobs',
-      });
+      const result = service.getJobTypes();
+      expect(result).toHaveProperty('services');
+      expect(result.services).toBeInstanceOf(Array);
+      expect(result.services.length).toBeGreaterThan(0);
+      expect(result.services[0]).toHaveProperty('name');
+      expect(result.services[0]).toHaveProperty('endpoint');
     });
   });
 
@@ -44,20 +47,22 @@ describe('RaptorManagerService', () => {
 
   describe('getJobs', () => {
     const mockJobs: JobMetadata[] = [
-      { jobId: '1', status: 'pending' },
+      { jobId: '1', status: 'processing' },
       { jobId: '2', status: 'running' },
       { jobId: '3', status: 'completed' },
+      { jobId: '4', status: 'partial' },
+      { jobId: '5', status: 'failed' },
     ];
 
     beforeEach(() => {
       mockStorageService.getQuantifiedReports.mockResolvedValue(mockJobs);
     });
 
-    it('should return pending jobs', async () => {
-      const result = await service.getPendingJobs();
+    it('should return processing jobs', async () => {
+      const result = await service.getProcessingJobs();
       expect(result.jobs).toHaveLength(1);
       expect(result.jobs[0].jobId).toBe('1');
-      expect(result.jobs[0].status).toBe('pending');
+      expect(result.jobs[0].status).toBe('processing');
     });
 
     it('should return running jobs', async () => {
@@ -74,10 +79,18 @@ describe('RaptorManagerService', () => {
       expect(result.jobs[0].status).toBe('completed');
     });
 
-    it('should filter jobs by status generic method', async () => {
-      const result = await service.getJobs('pending');
+    it('should return partial jobs', async () => {
+      const result = await service.getPartialJobs();
       expect(result.jobs).toHaveLength(1);
-      expect(result.jobs[0].status).toBe('pending');
+      expect(result.jobs[0].jobId).toBe('4');
+      expect(result.jobs[0].status).toBe('partial');
+    });
+
+    it('should return failed jobs', async () => {
+      const result = await service.getFailedJobs();
+      expect(result.jobs).toHaveLength(1);
+      expect(result.jobs[0].jobId).toBe('5');
+      expect(result.jobs[0].status).toBe('failed');
     });
   });
 });

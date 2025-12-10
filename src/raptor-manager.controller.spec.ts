@@ -5,12 +5,12 @@ import { NotFoundException } from '@nestjs/common';
 
 vi.mock('@nestia/core', () => ({
   TypedRoute: {
-    Get: vi.fn(() => vi.fn()),
-    Post: vi.fn(() => vi.fn()),
+    Get: () => () => {},
+    Post: () => () => {},
   },
-  TypedQuery: vi.fn(),
-  TypedParam: vi.fn(),
-  TypedBody: vi.fn(),
+  TypedQuery: () => () => {},
+  TypedParam: () => () => {},
+  TypedBody: () => () => {},
 }));
 
 describe('RaptorManagerController', () => {
@@ -18,11 +18,11 @@ describe('RaptorManagerController', () => {
 
   const mockService = {
     getJobTypes: vi.fn(),
-    getJobs: vi.fn(),
-    getPendingJobs: vi.fn(),
+    getProcessingJobs: vi.fn(),
     getRunningJobs: vi.fn(),
     getCompletedJobs: vi.fn(),
-    createJob: vi.fn(),
+    getPartialJobs: vi.fn(),
+    getFailedJobs: vi.fn(),
   };
 
   beforeEach(async () => {
@@ -45,7 +45,7 @@ describe('RaptorManagerController', () => {
 
   describe('getJobTypes', () => {
     it('should return job types', () => {
-      const result = { message: 'types' };
+      const result = { services: [{ name: 'Test', endpoint: '/test' }] };
       mockService.getJobTypes.mockReturnValue(result);
       expect(controller.getJobTypes()).toBe(result);
     });
@@ -58,27 +58,18 @@ describe('RaptorManagerController', () => {
     });
   });
 
-  describe('getJobs', () => {
-    it('should return jobs by status', async () => {
+  describe('getProcessingJobs', () => {
+    it('should return processing jobs', async () => {
       const result = { jobs: [] };
-      mockService.getJobs.mockResolvedValue(result);
-      expect(await controller.getJobs('pending')).toBe(result);
-      expect(mockService.getJobs).toHaveBeenCalledWith('pending');
+      mockService.getProcessingJobs.mockResolvedValue(result);
+      expect(await controller.getProcessingJobs()).toBe(result);
     });
 
     it('should throw NotFoundException on error', async () => {
-      mockService.getJobs.mockRejectedValue(new Error());
-      await expect(controller.getJobs('pending')).rejects.toThrow(
+      mockService.getProcessingJobs.mockRejectedValue(new Error());
+      await expect(controller.getProcessingJobs()).rejects.toThrow(
         NotFoundException,
       );
-    });
-  });
-
-  describe('getPendingJobs', () => {
-    it('should return pending jobs', async () => {
-      const result = { jobs: [] };
-      mockService.getPendingJobs.mockResolvedValue(result);
-      expect(await controller.getPendingJobs()).toBe(result);
     });
   });
 
@@ -88,6 +79,13 @@ describe('RaptorManagerController', () => {
       mockService.getRunningJobs.mockResolvedValue(result);
       expect(await controller.getRunningJobs()).toBe(result);
     });
+
+    it('should throw NotFoundException on error', async () => {
+      mockService.getRunningJobs.mockRejectedValue(new Error());
+      await expect(controller.getRunningJobs()).rejects.toThrow(
+        NotFoundException,
+      );
+    });
   });
 
   describe('getCompletedJobs', () => {
@@ -95,6 +93,43 @@ describe('RaptorManagerController', () => {
       const result = { jobs: [] };
       mockService.getCompletedJobs.mockResolvedValue(result);
       expect(await controller.getCompletedJobs()).toBe(result);
+    });
+
+    it('should throw NotFoundException on error', async () => {
+      mockService.getCompletedJobs.mockRejectedValue(new Error());
+      await expect(controller.getCompletedJobs()).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+  });
+
+  describe('getPartialJobs', () => {
+    it('should return partial jobs', async () => {
+      const result = { jobs: [] };
+      mockService.getPartialJobs.mockResolvedValue(result);
+      expect(await controller.getPartialJobs()).toBe(result);
+    });
+
+    it('should throw NotFoundException on error', async () => {
+      mockService.getPartialJobs.mockRejectedValue(new Error());
+      await expect(controller.getPartialJobs()).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+  });
+
+  describe('getFailedJobs', () => {
+    it('should return failed jobs', async () => {
+      const result = { jobs: [] };
+      mockService.getFailedJobs.mockResolvedValue(result);
+      expect(await controller.getFailedJobs()).toBe(result);
+    });
+
+    it('should throw NotFoundException on error', async () => {
+      mockService.getFailedJobs.mockRejectedValue(new Error());
+      await expect(controller.getFailedJobs()).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });
