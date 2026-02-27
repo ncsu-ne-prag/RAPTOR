@@ -66,6 +66,7 @@ services:
       NVIDIA_DRIVER_CAPABILITIES: compute,utility
       MINIO_ENDPOINT: minio
       MINIO_PORT: 9000
+      RUST_BACKTRACE: 1
     deploy:
       replicas: 1
       resources:
