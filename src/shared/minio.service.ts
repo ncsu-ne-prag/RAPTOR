@@ -9,6 +9,7 @@ export interface JobMetadata {
   jobId?: string;
   inputId?: string;
   outputId?: string;
+  tool?: 'scram' | 'praxis';
   childJobs?: string[];
   completedSequences?: string[];
   status?:

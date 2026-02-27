@@ -18,6 +18,8 @@ import {
   MinioService,
 } from '../../shared';
 import { runQuantificationWithWorker } from '../workers/quantify-worker-runner';
+import { runPraxisQuantificationWithWorker } from '../workers/praxis-worker-runner';
+import type { PraxisQuantRequest } from '../../common/types/praxis-quantify-request';
 
 @Injectable()
 export class ConsumerService
@@ -86,33 +88,100 @@ export class ConsumerService
             `${ConsumerService.name} consumed a null message.`,
           );
         }
-        const modelsData = ((): NodeQuantRequest => {
-          try {
-            return typia.json.assertParse<NodeQuantRequest>(
-              msg.content.toString(),
-            );
-          } catch (err) {
-            this.channel?.nack(msg, false, false);
-            throw new RpcException(
-              `${ConsumerService.name} consumed invalid message.`,
-            );
-          }
-        })();
+        const raw = msg.content.toString();
+
+        let parsed: any;
         try {
-          await this.handleRegularJob(modelsData);
+          parsed = JSON.parse(raw);
+        } catch {
+          this.channel?.nack(msg, false, false);
+          throw new RpcException(
+            `${ConsumerService.name} consumed invalid JSON message.`,
+          );
+        }
+
+        const isPraxis = parsed?.engine === 'praxis';
+
+        try {
+          if (isPraxis) {
+            const modelsData = typia.assert<PraxisQuantRequest>(parsed);
+            await this.handlePraxisJob(modelsData);
+          } else {
+            const modelsData = typia.assert<NodeQuantRequest>(parsed);
+            await this.handleRegularJob(modelsData);
+          }
         } catch (err: any) {
           this.channel?.nack(msg, false, false);
           const errorMessage = err?.message || String(err);
-          await this.minioService.updateJobMetadata(String(modelsData._id), {
-            status: 'failed',
-            error: errorMessage,
-          });
+          const jobId = String(parsed?._id ?? '');
+          if (jobId) {
+            await this.minioService.updateJobMetadata(jobId, {
+              status: 'failed',
+              error: errorMessage,
+            });
+          }
           return;
         }
+
         this.channel?.ack(msg);
       },
       { noAck: false },
     );
+  }
+
+  private async handlePraxisJob(
+    praxisRequest: PraxisQuantRequest,
+  ): Promise<void> {
+    const jobId = String(praxisRequest._id);
+    const receivedAt = Date.now();
+
+    let idleTime: number | undefined;
+    try {
+      const metadata = await this.minioService.getJobMetadata(jobId);
+      if (metadata.sentAt) idleTime = (receivedAt - metadata.sentAt) / 1000;
+    } catch {}
+
+    this.logger.debug(`Running PRAXIS job: ${jobId}`);
+    await this.minioService.updateJobMetadata(jobId, {
+      status: 'running',
+      receivedAt,
+      tool: 'praxis',
+    });
+
+    const executionStartTime = Date.now();
+    const result = await this.performPraxisQuantification(praxisRequest);
+    const executionTime = (Date.now() - executionStartTime) / 1000;
+
+    const outputId = await this.storeQuantificationResult(jobId, result);
+
+    await this.minioService.updateJobMetadata(jobId, {
+      status: 'completed',
+      outputId,
+      stats: {
+        idleTime,
+        executionTime,
+        startedAt: executionStartTime,
+        endedAt: Date.now(),
+      },
+    });
+
+    this.logger.debug(`Completed PRAXIS job: ${jobId}`);
+  }
+
+  private async performPraxisQuantification(
+    praxisQuantRequest: PraxisQuantRequest,
+  ): Promise<any> {
+    const { _id, ...quantRequest } = praxisQuantRequest;
+    try {
+      this.logger.debug(`${String(_id)} running praxis addon`);
+      const report = await runPraxisQuantificationWithWorker(quantRequest);
+      return report;
+    } catch (error: any) {
+      this.logger.error(
+        `PRAXIS quantification failed for ${String(_id)}: ${error?.message}`,
+      );
+      throw new Error(`PRAXIS quantification failed: ${error?.message}`);
+    }
   }
 
   private async consumeDistributedSequenceJobs(): Promise<void> {

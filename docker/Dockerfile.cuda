@@ -1,0 +1,95 @@
+# Dockerfile.cuda
+# Builds RAPTOR + scram-node + praxis (napi-rs) with CUDA support.
+
+# ------------------------------------------------------------------------------
+# Stage 1: Builder (CUDA devel + build toolchains)
+# ------------------------------------------------------------------------------
+FROM nvidia/cuda:12.4.1-devel-ubuntu22.04 AS builder
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# System build deps (C++ addon + Rust + TLS)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates curl gnupg git \
+    python3 make g++ cmake pkg-config \
+    libxml2-dev libomp-dev \
+    libboost-all-dev \
+    libjemalloc-dev \
+    && update-ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Node.js 20 (for Nest build and scram-node)
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get update && apt-get install -y --no-install-recommends nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+# Rust (for praxis addon)
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal --default-toolchain stable
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+WORKDIR /usr/src/app
+
+# --- 1) Build scram-node ---
+COPY scram-node ./scram-node
+WORKDIR /usr/src/app/scram-node
+RUN npm install
+RUN npm run install
+
+# --- 2) Build praxis addon (CUDA) ---
+WORKDIR /usr/src/app
+COPY praxis ./praxis
+WORKDIR /usr/src/app/praxis
+RUN cargo build --release --features "napi-rs,cuda" \
+    && cp target/release/libpraxis.so target/release/praxis.node
+
+# --- 3) Build NestJS App ---
+WORKDIR /usr/src/app
+COPY src ./src
+COPY config ./config
+
+COPY package.json ./package.json
+COPY tsconfig.json ./tsconfig.json
+COPY tsconfig.build.json ./tsconfig.build.json
+COPY nest-cli.json ./nest-cli.json
+COPY .npmrc ./.npmrc
+
+RUN npm install
+RUN ./node_modules/.bin/ts-patch install -s
+RUN npm run build
+RUN npm prune --production
+
+# ------------------------------------------------------------------------------
+# Stage 2: Runner (CUDA runtime)
+# ------------------------------------------------------------------------------
+FROM nvidia/cuda:12.4.1-runtime-ubuntu22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Node.js 20 + runtime shared libs for scram-node
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates curl \
+    libxml2 \
+    libboost-filesystem1.74.0 \
+    libboost-program-options1.74.0 \
+    libjemalloc2 \
+    && update-ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get update && apt-get install -y --no-install-recommends nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/scram-node ./scram-node
+
+# Copy just the built addon artifact to the location expected by the worker.
+COPY --from=builder /usr/src/app/praxis/target/release/praxis.node ./praxis/target/release/praxis.node
+
+ENV NODE_ENV=production
+
+EXPOSE 3000
+
+CMD ["node", "dist/src/main.js"]

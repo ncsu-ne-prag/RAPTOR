@@ -74,7 +74,10 @@ export class ProducerService
     const inputId = await this.minioService.storeInputData(quantRequest);
 
     const sentAt = Date.now();
-    await this.minioService.createJobMetadata(jobId, inputId, { sentAt });
+    await this.minioService.createJobMetadata(jobId, inputId, {
+      sentAt,
+      tool: 'scram',
+    });
 
     const modelsData = ((): string => {
       try {
