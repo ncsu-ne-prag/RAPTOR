@@ -37,6 +37,7 @@ COPY config ./config
 # Copy Root Configs
 COPY package.json ./package.json
 COPY tsconfig.json ./tsconfig.json
+COPY tsconfig.build.json ./tsconfig.build.json
 COPY nest-cli.json ./nest-cli.json
 
 # Install App Dependencies
