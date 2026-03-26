@@ -47,6 +47,7 @@
     "@nestjs/cli": "10.0.0",
     "@nestjs/testing": "10.4.1",
     "@nx/vite": "^22.6.1",
+    "@nx/webpack": "^22.6.1",
     "@nx/workspace": "22.6.1",
     "@swc/core": "1.15.3",
     "@types/amqplib": "0.10.7",

@@ -10,6 +10,7 @@ logs.txt
 dist
 tmp
 /out-tsc
+/apps/solvers/scram/node-addon/build
 
 # dependencies
 node_modules

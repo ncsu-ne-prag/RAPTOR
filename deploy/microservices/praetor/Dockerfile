@@ -30,7 +30,11 @@ RUN pnpm install
 RUN npx nx run praetor:build
 
 # Prune dev dependencies to reduce size
-RUN pnpm prune --prod --no-optional --ignore-scripts
+# We save the scram-node build dir because prepublish from prune deletes local workspaces
+RUN cp -r node_modules/scram-node/build /tmp/scram-build && \
+    pnpm prune --prod --no-optional --ignore-scripts && \
+    mkdir -p node_modules/scram-node/build && \
+    cp -r /tmp/scram-build/* node_modules/scram-node/build/
 
 # ------------------------------------------------------------------------------
 # Stage 2: Runner (Lightweight)
