@@ -15,42 +15,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && update-ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
+# Enable pnpm
+RUN corepack enable
+
 WORKDIR /usr/src/app
 
-# --- 1. Build scram-node ---
-# Copy scram-node source
-COPY scram-node ./scram-node
+# --- 1. Copy All Workspace Files ---
+COPY . .
 
-# Install and Build scram-node
-WORKDIR /usr/src/app/scram-node
-RUN npm install
-RUN npm run install
-# This produces ./build/Release/scram-node.node
+# Install Dependencies (includes scram-node building via postinstall/bindings)
+RUN pnpm install
 
-# --- 2. Build NestJS App ---
-WORKDIR /usr/src/app
-
-# Copy App Source
-COPY src ./src
-COPY config ./config
-
-# Copy Root Configs
-COPY package.json ./package.json
-COPY tsconfig.json ./tsconfig.json
-COPY nest-cli.json ./nest-cli.json
-
-# Install App Dependencies
-# This will link scram-node via "file:./scram-node"
-RUN npm install
-
-# Patch TypeScript for Typia
-RUN ./node_modules/.bin/ts-patch install -s
-
-# Build the App
-RUN npm run build
+# Build the App via Nx
+RUN npx nx run praetor:build
 
 # Prune dev dependencies to reduce size
-RUN npm prune --production
+RUN pnpm prune --prod --no-optional
 
 # ------------------------------------------------------------------------------
 # Stage 2: Runner (Lightweight)
@@ -69,10 +49,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /usr/src/app
 
 # Copy built artifacts from builder
-COPY --from=builder /usr/src/app/node_modules ./node_modules
-COPY --from=builder /usr/src/app/dist ./dist
-# Copy the built C++ addon source folder (because npm install likely symlinked it)
-COPY --from=builder /usr/src/app/scram-node ./scram-node
+COPY --from=builder /usr/src/app/node_modules ./node_modules  
+COPY --from=builder /usr/src/app/apps/microservices/praetor/dist ./dist
+COPY --from=builder /usr/src/app/apps/solvers/scram/node-addon ./apps/solvers/scram/node-addon
+
+# Ensure the library paths are set for scram-node
+ENV LD_LIBRARY_PATH="/root/.local/lib/scram:/root/.local/lib:${LD_LIBRARY_PATH}"
 
 # Set Env
 ENV NODE_ENV=production

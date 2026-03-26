@@ -5,22 +5,10 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nx/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
+      "executor": "nx:run-commands",
       "options": {
-        "target": "node",
-        "compiler": "tsc",
-        "outputPath": "dist/apps/microservices/praetor",
-        "main": "apps/microservices/praetor/src/main.ts",
-        "tsConfig": "apps/microservices/praetor/tsconfig.build.json",
-        "assets": ["apps/microservices/praetor/src/assets"],
-        "isolatedConfig": true,
-        "webpackConfig": "apps/microservices/praetor/webpack.config.js"
-      },
-      "configurations": {
-        "development": {},
-        "production": {}
+        "command": "nest build --path tsconfig.build.json",
+        "cwd": "apps/microservices/praetor"
       }
     },
     "start-manager": {
