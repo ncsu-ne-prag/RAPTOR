@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RaptorManagerController } from './raptor-manager.controller';
-import { RaptorManagerService } from './raptor-manager.service';
+import { PraetorManagerController } from './praetor-manager.controller';
+import { PraetorManagerService } from './praetor-manager.service';
 import { NotFoundException } from '@nestjs/common';
 
 vi.mock('@nestia/core', () => ({
@@ -13,8 +13,8 @@ vi.mock('@nestia/core', () => ({
   TypedBody: vi.fn(),
 }));
 
-describe('RaptorManagerController', () => {
-  let controller: RaptorManagerController;
+describe('PraetorManagerController', () => {
+  let controller: PraetorManagerController;
 
   const mockService = {
     getJobTypes: vi.fn(),
@@ -27,16 +27,16 @@ describe('RaptorManagerController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [RaptorManagerController],
+      controllers: [PraetorManagerController],
       providers: [
         {
-          provide: RaptorManagerService,
+          provide: PraetorManagerService,
           useValue: mockService,
         },
       ],
     }).compile();
 
-    controller = module.get<RaptorManagerController>(RaptorManagerController);
+    controller = module.get<PraetorManagerController>(PraetorManagerController);
   });
 
   it('should be defined', () => {

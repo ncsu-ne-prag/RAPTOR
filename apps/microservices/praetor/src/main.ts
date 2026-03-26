@@ -4,7 +4,7 @@ import { OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { INestApplication, Logger } from '@nestjs/common';
 import { json, urlencoded } from 'express';
 import { HttpExceptionFilter } from './http-exception.filter';
-import { RaptorManagerModule } from './raptor-manager.module';
+import { PraetorManagerModule } from './praetor-manager.module';
 
 // Setup global error handlers to prevent process crashes
 const logger = new Logger('ProcessErrorHandler');
@@ -24,7 +24,7 @@ process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
 /**
  * Asynchronously bootstraps the application.
  *
- * This function initializes the NestJS application by creating an instance of the `RaptorManagerModule`
+ * This function initializes the NestJS application by creating an instance of the `PraetorManagerModule`
  * and starts listening for incoming HTTP requests on a specified port (default is 3000).
  *
  * @remarks
@@ -38,9 +38,9 @@ process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
 async function bootstrap(): Promise<void> {
   const logger = new Logger();
 
-  // Creating an instance of the application by passing the root module (`RaptorManagerModule`) to `NestFactory.create`.
+  // Creating an instance of the application by passing the root module (`PraetorManagerModule`) to `NestFactory.create`.
   logger.debug('Initializing the app...');
-  const app: INestApplication = await NestFactory.create(RaptorManagerModule);
+  const app: INestApplication = await NestFactory.create(PraetorManagerModule);
 
   // Apply the HttpExceptionFilter globally to handle all HTTP exceptions.
   logger.debug('Attaching the exception filter...');

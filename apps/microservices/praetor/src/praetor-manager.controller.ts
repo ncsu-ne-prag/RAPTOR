@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { TypedRoute } from '@nestia/core';
-import { RaptorManagerService } from './raptor-manager.service';
+import { PraetorManagerService } from './praetor-manager.service';
 import { JobMetadata } from './shared/minio.service';
 
 export interface JobResponse {
@@ -13,12 +13,12 @@ export interface JobResponse {
 }
 
 @Controller()
-export class RaptorManagerController {
+export class PraetorManagerController {
   /**
-   * Constructs the RaptorManagerController with the necessary service.
-   * @param raptorManagerService - The service to handle job broker operations.
+   * Constructs the PraetorManagerController with the necessary service.
+   * @param praetorManagerService - The service to handle job broker operations.
    */
-  constructor(private readonly raptorManagerService: RaptorManagerService) {}
+  constructor(private readonly praetorManagerService: PraetorManagerService) {}
 
   /**
    * Retrieves a list of job types.
@@ -29,7 +29,7 @@ export class RaptorManagerController {
   @TypedRoute.Get('/job-types')
   public getJobTypes(): JobResponse {
     try {
-      return this.raptorManagerService.getJobTypes();
+      return this.praetorManagerService.getJobTypes();
     } catch {
       throw new NotFoundException(
         'Server was unable to find the requested list of job types.',
@@ -48,7 +48,7 @@ export class RaptorManagerController {
     @Query('status') status: string,
   ): Promise<{ jobs: JobMetadata[] }> {
     try {
-      return await this.raptorManagerService.getJobs(status);
+      return await this.praetorManagerService.getJobs(status);
     } catch {
       throw new NotFoundException(
         'Server was unable to find the requested list of pending jobs.',
@@ -65,7 +65,7 @@ export class RaptorManagerController {
   @TypedRoute.Get('/pending-jobs')
   public async getPendingJobs(): Promise<{ jobs: JobMetadata[] }> {
     try {
-      return await this.raptorManagerService.getPendingJobs();
+      return await this.praetorManagerService.getPendingJobs();
     } catch {
       throw new NotFoundException(
         'Server was unable to find the requested list of pending jobs.',
@@ -76,7 +76,7 @@ export class RaptorManagerController {
   @TypedRoute.Get('/running-jobs')
   public async getRunningJobs(): Promise<{ jobs: JobMetadata[] }> {
     try {
-      return await this.raptorManagerService.getRunningJobs();
+      return await this.praetorManagerService.getRunningJobs();
     } catch {
       throw new NotFoundException(
         'Server was unable to find the requested list of running jobs.',
@@ -87,7 +87,7 @@ export class RaptorManagerController {
   @TypedRoute.Get('/completed-jobs')
   public async getCompletedJobs(): Promise<{ jobs: JobMetadata[] }> {
     try {
-      return await this.raptorManagerService.getCompletedJobs();
+      return await this.praetorManagerService.getCompletedJobs();
     } catch {
       throw new NotFoundException(
         'Server was unable to find the requested list of completed jobs.',
@@ -104,7 +104,7 @@ export class RaptorManagerController {
   @TypedRoute.Post('/create-job')
   public createJob(): JobResponse {
     try {
-      return this.raptorManagerService.createJob();
+      return this.praetorManagerService.createJob();
     } catch {
       throw new InternalServerErrorException(
         'Server encountered a problem while creating a job.',

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { JobResponse } from './raptor-manager.controller';
+import { JobResponse } from './praetor-manager.controller';
 import { StorageService } from './quantification/services/storage.service';
 import { JobMetadata } from './shared/minio.service';
 
 @Injectable()
-export class RaptorManagerService {
+export class PraetorManagerService {
   constructor(private readonly storageService: StorageService) {}
   /**
    * Retrieves the types of jobs available.

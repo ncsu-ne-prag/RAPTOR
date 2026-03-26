@@ -16,4 +16,4 @@ import { ConsumerService } from './quantification/services/consumer.service';
   ],
   providers: [ConsumerService],
 })
-export class RaptorEngineModule {}
+export class PraetorEngineModule {}

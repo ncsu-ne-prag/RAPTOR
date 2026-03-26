@@ -42,9 +42,9 @@ x-base-service: &base-service
     # Removed max-old-space-size to let Node manage memory naturally for small footprint
 
 services:
-  raptor-manager:
+  praetor-manager:
     <<: *base-service
-    image: raptor-manager:latest
+    image: praetor-manager:latest
     ports:
       - "3000:3000"
     # Default CMD is "node dist/main.js" which runs the broker
@@ -55,9 +55,9 @@ services:
       timeout: 2s
       retries: 5
       start_period: 30s
-  raptor-engine:
+  praetor-engine:
     <<: *base-service
-    image: raptor-engine:latest
+    image: praetor-engine:latest
     # Override command to run the consumer entry point
     command: "node dist/src/main-engine.js"
     deploy:

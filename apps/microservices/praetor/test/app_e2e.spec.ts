@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { RaptorManagerModule } from '../src/raptor-manager.module';
+import { PraetorManagerModule } from '../src/praetor-manager.module';
 import { ProducerService } from '../src/quantification/services/producer.service';
 import { StorageService } from '../src/quantification/services/storage.service';
 import { MinioService } from '../src/shared/minio.service';
@@ -44,7 +44,7 @@ describe('AppController (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [RaptorManagerModule],
+      imports: [PraetorManagerModule],
     })
       .overrideProvider(ProducerService)
       .useValue(mockProducerService)

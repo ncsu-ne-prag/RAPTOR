@@ -3,13 +3,13 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import { EnvVarKeys } from '../config/env_vars.config';
-import { RaptorEngineModule } from './raptor-engine.module';
+import { PraetorEngineModule } from './praetor-engine.module';
 
 async function bootstrap(): Promise<void> {
   const logger = new Logger();
 
   logger.debug('Initializing the app...');
-  const app = await NestFactory.create(RaptorEngineModule);
+  const app = await NestFactory.create(PraetorEngineModule);
 
   logger.debug('Configuring consumer microservice...');
   const configService: ConfigService = app.get(ConfigService);

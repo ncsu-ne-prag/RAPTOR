@@ -1,0 +1,49 @@
+{
+  "name": "praetor",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/microservices/praetor/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/microservices/praetor",
+        "main": "apps/microservices/praetor/src/main.ts",
+        "tsConfig": "apps/microservices/praetor/tsconfig.build.json",
+        "assets": ["apps/microservices/praetor/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/microservices/praetor/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "start-manager": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nest start --path tsconfig.build.json --exec \"node -r tsconfig-paths/register -r ts-node/register\" src/main.ts",
+        "cwd": "apps/microservices/praetor"
+      }
+    },
+    "start-engine": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nest start --path tsconfig.build.json --exec \"node -r tsconfig-paths/register -r ts-node/register\" src/main-engine.ts",
+        "cwd": "apps/microservices/praetor"
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../../coverage/apps/microservices/praetor"
+      }
+    }
+  }
+}

@@ -78,7 +78,7 @@ services:
         delay: 5s
         max_attempts: 3
 
-  raptor-manager:
+  praetor-manager:
     image: ${IMAGE_BACKEND}
     <<: *shared-nestjs_conf
     healthcheck:
@@ -103,7 +103,7 @@ services:
         condition: any
         delay: 10s
         max_attempts: 5
-  raptor-engine:
+  praetor-engine:
     image: ${IMAGE_BACKEND}
     <<: *shared-nestjs_conf
     command: "npm run start:prod:engine"

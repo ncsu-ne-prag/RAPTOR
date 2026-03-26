@@ -3,8 +3,8 @@ import { Module } from '@nestjs/common';
 import { APP_FILTER, RouterModule } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { HttpExceptionFilter } from './http-exception.filter';
-import { RaptorManagerController } from './raptor-manager.controller';
-import { RaptorManagerService } from './raptor-manager.service';
+import { PraetorManagerController } from './praetor-manager.controller';
+import { PraetorManagerService } from './praetor-manager.service';
 import { QuantificationModule } from './quantification/quantification.module';
 
 @Module({
@@ -20,7 +20,7 @@ import { QuantificationModule } from './quantification/quantification.module';
     RouterModule.register([
       {
         path: 'q', // Define the base path for the API.
-        module: RaptorManagerModule,
+        module: PraetorManagerModule,
         children: [
           // Define child modules for specific endpoint prefixes.
           {
@@ -31,13 +31,13 @@ import { QuantificationModule } from './quantification/quantification.module';
       },
     ]),
   ],
-  controllers: [RaptorManagerController], // Register the controller for this module.
+  controllers: [PraetorManagerController], // Register the controller for this module.
   providers: [
-    RaptorManagerService, // Register the service for dependency injection.
+    PraetorManagerService, // Register the service for dependency injection.
     {
       provide: APP_FILTER, // Register the global exception filter.
       useClass: HttpExceptionFilter,
     },
   ],
 })
-export class RaptorManagerModule {}
+export class PraetorManagerModule {}

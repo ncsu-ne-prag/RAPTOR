@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RaptorManagerService } from './raptor-manager.service';
+import { PraetorManagerService } from './praetor-manager.service';
 import { StorageService } from './quantification/services/storage.service';
 import { JobMetadata } from './shared/minio.service';
 
-describe('RaptorManagerService', () => {
-  let service: RaptorManagerService;
+describe('PraetorManagerService', () => {
+  let service: PraetorManagerService;
 
   const mockStorageService = {
     getQuantifiedReports: vi.fn(),
@@ -13,7 +13,7 @@ describe('RaptorManagerService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        RaptorManagerService,
+        PraetorManagerService,
         {
           provide: StorageService,
           useValue: mockStorageService,
@@ -21,7 +21,7 @@ describe('RaptorManagerService', () => {
       ],
     }).compile();
 
-    service = module.get<RaptorManagerService>(RaptorManagerService);
+    service = module.get<PraetorManagerService>(PraetorManagerService);
   });
 
   it('should be defined', () => {
