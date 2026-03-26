@@ -4,7 +4,7 @@ volumes:
 
 configs:
   rabbitmq_plugins:
-    file: ../docker/configs/rabbitmq/enabled_plugins
+    file: ../deploy/microservices/praetor/configs/rabbitmq/enabled_plugins
 
 services:
   devcontainer:
