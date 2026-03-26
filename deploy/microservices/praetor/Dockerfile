@@ -30,7 +30,7 @@ RUN pnpm install
 RUN npx nx run praetor:build
 
 # Prune dev dependencies to reduce size
-RUN pnpm prune --prod --no-optional
+RUN pnpm prune --prod --no-optional --ignore-scripts
 
 # ------------------------------------------------------------------------------
 # Stage 2: Runner (Lightweight)
