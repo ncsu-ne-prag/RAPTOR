@@ -26,14 +26,14 @@
     "start-manager": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "nest start --path tsconfig.build.json --exec \"node -r tsconfig-paths/register -r ts-node/register\" src/main.ts",
+        "command": "nest start --path tsconfig.build.json --entryFile src/main.ts --exec \"node -r tsconfig-paths/register -r ts-node/register\"",
         "cwd": "apps/microservices/praetor"
       }
     },
     "start-engine": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "nest start --path tsconfig.build.json --exec \"node -r tsconfig-paths/register -r ts-node/register\" src/main-engine.ts",
+        "command": "nest start --path tsconfig.build.json --entryFile src/main-engine.ts --exec \"node -r tsconfig-paths/register -r ts-node/register\"",
         "cwd": "apps/microservices/praetor"
       }
     },
