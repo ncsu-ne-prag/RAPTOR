@@ -1,8 +1,11 @@
-declare module "scram-node" {
-  import { Callback } from "napi";
-  import { Model } from "../../../types/model";
-  import { QuantifyRequest, ScramNodeOptions } from "../../../types/quantify-request";
-  import { QuantifyModelResult } from "../../../types/quantify-result";
+declare module 'scram-node' {
+  import { Callback } from 'napi';
+  import { Model } from '../../../types/model';
+  import {
+    QuantifyRequest,
+    ScramNodeOptions,
+  } from '../../../types/quantify-request';
+  import { QuantifyModelResult } from '../../../types/quantify-result';
   /**
    * @remarks Defines a class for asynchronous execution of SCRAM engine.
    *
@@ -64,7 +67,10 @@ declare module "scram-node" {
    * @param callback -
    * @returns Returns undefined on successful queuing of the task, or throws a JavaScript exception on error.
    */
-  export function AsyncRunScramCli(info: QuantifyRequest, callback: Callback): void;
+  export function AsyncRunScramCli(
+    info: QuantifyRequest,
+    callback: Callback,
+  ): void;
 
   /**
    * @remarks Main Node.js wrapper function to run the SCRAM CLI synchronously.
@@ -74,5 +80,8 @@ declare module "scram-node" {
    */
   export function RunScramCli(info: QuantifyRequest): void;
 
-  export function QuantifyModel(options?: ScramNodeOptions, model?: Model): QuantifyModelResult;
+  export function QuantifyModel(
+    options?: ScramNodeOptions,
+    model?: Model,
+  ): QuantifyModelResult;
 }
