@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  benchmark:
+    build: 
+      context: ../../../
+      dockerfile: deploy/tools/benchmarking/Dockerfile
+    environment:
+      - MODEL_NAME=${MODEL_NAME:-MHTGR}
+    volumes:
+      # Mount the configurable input directory to /data in the container
+      # Defaults to the MHTGR dataset if BENCHMARK_INPUT_DIR is not set
+      - ${BENCHMARK_INPUT_DIR:-../../../fixtures/models/MHTGR}:/data
+      # Mount the current directory so the benchmark script and results are accessible
+      - ./scripts:/benchmark/scripts
+      - ../../../fixtures/results:/benchmark/results
+    working_dir: /benchmark
+    command: ["bash", "/benchmark/scripts/run_benchmark.sh"]
