@@ -8,7 +8,7 @@
   "scripts": {
     "postinstall": "node -e \"if (process.platform !== 'win32') { require('child_process').execSync('cd build && cmake --install . --prefix \\\"$HOME/.local\\\" && cd .. && chmod +x ./scripts/inform_update_paths.sh && ./scripts/inform_update_paths.sh', { stdio: 'inherit' }); }\"",
     "install": "cmake-js -C --parallel 4 compile",
-    "build": "cmake-js --parallel 4 compile",
+    "build:addon": "cmake-js --parallel 4 compile",
     "rebuild": "cmake-js -C --parallel 4 rebuild",
     "configure": "cmake-js -C --parallel 4 configure",
     "clean": "cmake-js clean",

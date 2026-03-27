@@ -6,12 +6,6 @@
     "production": ["!{projectRoot}/**/*.spec.tsx"]
   },
   "targets": {
-    "native-build": {
-      "executor": "nx:run-script",
-      "options": {
-        "script": "build"
-      }
-    },
     "clean": {},
     "distclean": {},
     "build-deps": {},
