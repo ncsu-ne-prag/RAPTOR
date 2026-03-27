@@ -122,8 +122,9 @@ export class StorageService {
 
       for (const childJobId of metadata.childJobs) {
         try {
-          const childMetadata =
-            await this.minioService.getJobMetadata(childJobId);
+          const childMetadata = await this.minioService.getJobMetadata(
+            childJobId,
+          );
           childStats.push({
             jobId: childJobId,
             sentAt: childMetadata.sentAt,
@@ -132,7 +133,9 @@ export class StorageService {
           });
         } catch (error: any) {
           this.logger.warn(
-            `Could not fetch stats for child job ${childJobId}: ${error?.message || String(error)}`,
+            `Could not fetch stats for child job ${childJobId}: ${
+              error?.message || String(error)
+            }`,
           );
         }
       }
@@ -231,8 +234,9 @@ export class StorageService {
 
     for (const childJobId of metadata.childJobs) {
       try {
-        const childMetadata =
-          await this.minioService.getJobMetadata(childJobId);
+        const childMetadata = await this.minioService.getJobMetadata(
+          childJobId,
+        );
 
         if (childMetadata.status === 'completed' && childMetadata.outputId) {
           const output = await this.safeLoadOutput(childMetadata.outputId);
@@ -254,7 +258,9 @@ export class StorageService {
         } else {
           failedJobs.push({
             jobId: childJobId,
-            error: `Job status ${childMetadata.status ?? 'unknown'} does not have output available`,
+            error: `Job status ${
+              childMetadata.status ?? 'unknown'
+            } does not have output available`,
           });
         }
       } catch (error: any) {
@@ -283,7 +289,9 @@ export class StorageService {
       }
     } catch (error: any) {
       this.logger.error(
-        `Failed to load output for ID ${outputId}: ${error?.message || String(error)}`,
+        `Failed to load output for ID ${outputId}: ${
+          error?.message || String(error)
+        }`,
       );
       return undefined;
     }

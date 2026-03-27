@@ -25,7 +25,6 @@ vi.mock('@nestia/core', async () => {
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
-  let producerService: ProducerService;
 
   const mockProducerService = {
     createAndQueueQuant: vi.fn(),
@@ -58,8 +57,6 @@ describe('AppController (e2e)', () => {
     app.use(json({ limit: '50mb' }));
     app.use(urlencoded({ extended: true, limit: '50mb' }));
     await app.init();
-
-    producerService = moduleFixture.get<ProducerService>(ProducerService);
   });
 
   afterEach(async () => {
@@ -67,7 +64,9 @@ describe('AppController (e2e)', () => {
   });
 
   const loadFixture = (path: string) => {
-    return JSON.parse(readFileSync(join(__dirname, '../fixtures/models/MHTGR', path), 'utf-8'));
+    return JSON.parse(
+      readFileSync(join(__dirname, '../fixtures/models/MHTGR', path), 'utf-8'),
+    );
   };
 
   it('/scram (POST) - distributedSequences=no', async () => {
@@ -87,7 +86,9 @@ describe('AppController (e2e)', () => {
   it('/scram (POST) - distributedSequences=yes', async () => {
     const payload = loadFixture('JSON/ATRS.json');
     const mockSequenceJobIds = ['job-1-seq1', 'job-1-seq2'];
-    mockProducerService.createAndQueueSequenceBatch.mockResolvedValue(mockSequenceJobIds);
+    mockProducerService.createAndQueueSequenceBatch.mockResolvedValue(
+      mockSequenceJobIds,
+    );
 
     const response = await request(app.getHttpServer())
       .post('/q/quantify/scram?distributedSequences=yes')

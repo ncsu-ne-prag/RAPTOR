@@ -1,4 +1,4 @@
-export enum MinioConfigKeys{
+export enum MinioConfigKeys {
   ENV_MINIO_ENDPOINT = 'MINIO_ENDPOINT',
   ENV_MINIO_PORT = 'MINIO_PORT',
   ENV_MINIO_ACCESS_KEY = 'MINIO_ACCESS_KEY',

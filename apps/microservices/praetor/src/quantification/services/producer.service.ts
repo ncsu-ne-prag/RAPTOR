@@ -134,8 +134,9 @@ export class ProducerService
 
     for (const sequenceRequest of sequenceRequests) {
       // Store sequence job input and create metadata
-      const sequenceInputId =
-        await this.minioService.storeInputData(sequenceRequest);
+      const sequenceInputId = await this.minioService.storeInputData(
+        sequenceRequest,
+      );
       const sentAt = Date.now();
       await this.minioService.createJobMetadata(
         sequenceRequest._id!,
@@ -209,8 +210,9 @@ export class ProducerService
 
     for (const sequenceRequest of sequenceRequests) {
       // Store sequence job input and create metadata
-      const sequenceInputId =
-        await this.minioService.storeInputData(sequenceRequest);
+      const sequenceInputId = await this.minioService.storeInputData(
+        sequenceRequest,
+      );
       const sentAt = Date.now();
       await this.minioService.createJobMetadata(
         sequenceRequest._id!,

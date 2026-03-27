@@ -140,8 +140,9 @@ describe('ProducerService', () => {
         sequenceJobIds,
       });
 
-      const result =
-        await service.createAndQueueAdaptiveSequenceBatch(quantRequest);
+      const result = await service.createAndQueueAdaptiveSequenceBatch(
+        quantRequest,
+      );
 
       expect(result).toEqual(sequenceJobIds);
       expect(minioService.storeInputData).toHaveBeenCalledTimes(3); // 1 parent + 2 sequences

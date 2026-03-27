@@ -84,7 +84,7 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/q/job-types"]
       <<: *healthcheck-fragments
-    command: "npm run start:prod:manager"
+    command: "node dist/src/main.js"
     environment:
       NODE_ENV: ${CI_BUILD_TYPE}
       DEBUG: ${CI_DEBUG}
@@ -106,7 +106,7 @@ services:
   praetor-engine:
     image: ${IMAGE_BACKEND}
     <<: *shared-nestjs_conf
-    command: "npm run start:prod:engine"
+    command: "node dist/src/main-engine.js"
     environment:
       NODE_ENV: ${CI_BUILD_TYPE}
       DEBUG: ${CI_DEBUG}

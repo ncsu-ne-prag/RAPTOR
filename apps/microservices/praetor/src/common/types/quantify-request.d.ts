@@ -230,5 +230,4 @@ export interface NodeQuantRequest {
 
 export type QuantifyRequest = CommandLineOptions & ModelOptions;
 
-export interface ConvergenceQuantRequest extends NodeQuantRequest {
-}
+export interface ConvergenceQuantRequest extends NodeQuantRequest {}

@@ -1,5 +1,4 @@
 import { parentPort, workerData } from 'node:worker_threads';
-import * as path from 'path';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { QuantifyModel } = require('scram-node');
 import type { QuantifyModelResult } from '../../common/types/quantify-result';

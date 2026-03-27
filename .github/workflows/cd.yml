@@ -42,7 +42,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: docker/cd.Dockerfile
+          file: deploy/microservices/praetor/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -85,13 +85,13 @@ jobs:
           fi
 
           # Create .stack.env from secret
-          printf "%s" "$STACK_ENV" > docker/configs/cd.stack.env
-          
-          # Create secrets directory and files
-          mkdir -p docker/secrets
-          printf "%s" "$JWT_SECRET" > docker/secrets/DSF_JWT_SECRET
-          printf "%s" "$CLOUDFLARE_TUNNEL_TOKEN" > docker/secrets/CLOUDFLARE_TUNNEL_TOKEN
+          mkdir -p deploy/microservices/praetor/configs
+          printf "%s" "$STACK_ENV" > deploy/microservices/praetor/configs/cd.stack.env
 
+          # Create secrets directory and files
+          mkdir -p deploy/microservices/praetor/secrets
+          printf "%s" "$JWT_SECRET" > deploy/microservices/praetor/secrets/DSF_JWT_SECRET
+          printf "%s" "$CLOUDFLARE_TUNNEL_TOKEN" > deploy/microservices/praetor/secrets/CLOUDFLARE_TUNNEL_TOKEN
       - name: Deploy to Swarm
         env:
           # Use the version from metadata action
@@ -107,7 +107,7 @@ jobs:
           DEPLOYMENT_WORKER_POOL: node.labels.high_performance == true
         run: |
           # Deploy Application with Cloudflare Tunnel
-          docker stack deploy --with-registry-auth -c docker/cd-stack.yml raptor
+          docker stack deploy --with-registry-auth -c deploy/microservices/praetor/cd-stack.yml raptor
           
           # Wait for services to stabilize
           sleep 10
