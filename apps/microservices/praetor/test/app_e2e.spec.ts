@@ -65,7 +65,10 @@ describe('AppController (e2e)', () => {
 
   const loadFixture = (path: string) => {
     return JSON.parse(
-      readFileSync(join(__dirname, '../fixtures/models/MHTGR', path), 'utf-8'),
+      readFileSync(
+        join(__dirname, '../../../../fixtures/models/MHTGR', path),
+        'utf-8',
+      ),
     );
   };
 
