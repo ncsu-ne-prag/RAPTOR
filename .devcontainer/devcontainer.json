@@ -14,7 +14,7 @@
     "cpus": 4,
     "storage": "32gb"
   },
-  "postCreateCommand": "pnpm install && cd scram-node && pnpm install",
+  "postCreateCommand": "pnpm install && cd apps/solvers/scram/node-addon && pnpm install",
   // "postStartCommand": "/standalone_entrypoint.sh",
   "shutdownAction": "none"
 }

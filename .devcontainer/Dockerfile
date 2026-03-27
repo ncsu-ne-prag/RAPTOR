@@ -16,6 +16,7 @@ ENV SCRAM_RUNTIME_PACKAGES="libxml2 \
     libtcmalloc-minimal4 libjemalloc2"
 
 ENV PATH="/root/.local/bin:${PATH}"
+ENV LD_LIBRARY_PATH="/root/.local/lib/scram:/root/.local/lib:${LD_LIBRARY_PATH}"
 
 WORKDIR /workspaces/microservices
 SHELL ["/bin/bash", "-c"]

@@ -1,21 +1,28 @@
 {
-  "name": "raptor",
+  "name": "openpra",
   "version": "0.0.1",
   "private": true,
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@swc/core",
+      "esbuild",
+      "nx",
+      "scram-node"
+    ]
+  },
   "scripts": {
     "postinstall": "ts-patch install -s",
     "prebuild": "rimraf dist",
-    "build": "tsc -p tsconfig.build.json",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "start": "nest start",
-    "start:manager": "nest start --watch",
-    "start:engine": "nest start --watch --entryFile main-engine",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
-    "start:prod:manager": "node dist/src/main",
-    "start:prod:engine": "node dist/src/main-engine",
-    "lint": "eslint \"{src,apps,libs}/**/*.ts\" --fix",
-    "test": "vitest run --coverage"
+    "build": "nx run-many -t build",
+    "format": "prettier --write \"**/*.ts\"",
+    "format:check": "prettier --check \"**/*.ts\"",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+    "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "nx run-many -t test",
+    "start": "nx run praetor:start",
+    "start:manager": "nx run praetor:start-manager",
+    "start:engine": "nx run praetor:start-engine"
   },
   "dependencies": {
     "@nestia/core": "3.12.0",
@@ -34,7 +41,7 @@
     "minio": "8.0.6",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.8.1",
-    "scram-node": "file:./scram-node",
+    "scram-node": "file:./apps/solvers/scram/node-addon",
     "tmp": "0.2.3",
     "typescript": "5.5.4",
     "typia": "6.9.0",
@@ -43,6 +50,9 @@
   "devDependencies": {
     "@nestjs/cli": "10.0.0",
     "@nestjs/testing": "10.4.1",
+    "@nx/vite": "^22.6.1",
+    "@nx/webpack": "^22.6.1",
+    "@nx/workspace": "22.6.1",
     "@swc/core": "1.15.3",
     "@types/amqplib": "0.10.7",
     "@types/express": "4.17.17",
@@ -55,6 +65,7 @@
     "eslint": "8.42.0",
     "eslint-config-prettier": "9.0.0",
     "eslint-plugin-prettier": "5.0.0",
+    "nx": "22.6.1",
     "prettier": "3.0.0",
     "rimraf": "5.0.0",
     "supertest": "7.1.4",
