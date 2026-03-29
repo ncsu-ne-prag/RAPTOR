@@ -37,6 +37,10 @@ RUN ln -s /build/scram/build/targets/scram/scram-cli /usr/local/bin/scram || \
 # Copy the Pracciolini tools into the container
 COPY apps/tools/pracciolini /build/pracciolini
 
+# Copy the XFTA Linux binary and make it executable
+COPY apps/solvers/xfta/xftar /usr/local/bin/xftar
+RUN chmod +x /usr/local/bin/xftar
+
 # Set up working directory for benchmarks
 WORKDIR /benchmark
 

@@ -69,3 +69,4 @@ fixtures/models/ENT
 fixtures/models/aralia-fault-tree-dataset
 fixtures/models/generic-pwr-model
 fixtures/models/synthetic-models
+fixtures/results/
