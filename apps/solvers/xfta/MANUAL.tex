@@ -244,4 +244,131 @@ StateVariableDeclaration ::= ('state' | 'basic-event') Path '=' StochasticExpres
 SourceVariableDeclaration ::= ('source' | 'house-event') Path '=' ('false' | 'true') ';'
 \end{lstlisting}
 
+\section*{1. Building and Customizing Minimal Cutset Extraction}
+The \texttt{build BDT} command is used to extract minimal cutsets, and its behavior is controlled by several key options:
+
+\begin{itemize}
+    \item \textbf{Cutoffs:} These define the limits of the extraction process to ensure efficiency and manage memory:
+    \begin{itemize}
+        \item \textbf{Maximum Number (\texttt{maximum-number}):} Limits the total number of minimal cutsets extracted. The default is 1,000,000, but it can be increased depending on computer memory.
+        \item \textbf{Maximum Order (\texttt{maximum-order}):} Limits the number of basic events allowed within a single minimal cutset.
+        \item \textbf{Minimum Probability (\texttt{minimum-probability}):} Sets a threshold where only cutsets with a probability above this value are extracted.
+        \item \textbf{Mission Time (\texttt{mission-time}):} Specifies the time at which probabilities are calculated.
+    \end{itemize}
+    \item \textbf{Variable Ordering Heuristics:} Building a binary decision tree (BDT) requires a total order of variables. Users can choose a heuristic via the \texttt{variable-ordering-heuristic} option (default is \textbf{DLFM}).
+\end{itemize}
+
+Values for these options can be set directly within a command (e.g., \texttt{build BDT Top mission-time 8760;}) or globally using the \texttt{set option} command.
+
+\section*{2. Managing Memory with Handles}
+XFTA uses ``handles'' to manage sums of minimal cutsets stored in memory:
+\begin{itemize}
+    \item \textbf{Default Handle:} By default, the BDT encoding minimal cutsets is named \textbf{BDT}.
+    \item \textbf{Source Handles:} Commands for printing or computing risk indicators use a \texttt{source-handle} to identify which set of cutsets to use (e.g., \texttt{print minimal-cutsets Top source-handle MCS2}).
+    \item \textbf{Resetting Memory:} To free up memory, the \texttt{reset source-handle} command can be used to delete sums of minimal cutsets that are no longer needed.
+\end{itemize}
+
+\section*{3. Printing Minimal Cutsets}
+The \texttt{print minimal-cutsets} command outputs extracted cutsets into a text file in \textbf{TSV (Tab-Separated Values)} format. The output is sorted by decreasing probability.
+
+Several indicators can be included in the output for each cutset:
+\begin{itemize}
+    \item \textbf{Rank:} The index of the cutset in the sorted list.
+    \item \textbf{Order:} The number of basic events in the cutset.
+    \item \textbf{Probability:} The calculated probability at the specified mission time.
+    \item \textbf{Contribution:} The probability of the specific cutset divided by the total probability of all minimal cutsets.
+    \item \textbf{Unconditional Failure Intensity:} A value defined by the sum of intensities and factors within the cutset.
+\end{itemize}
+
+\textbf{Table: Options for \texttt{print minimal-cutsets}}
+
+\begin{center}
+\begin{tabular}{lll}
+\hline
+\textbf{Option} & \textbf{Type} & \textbf{Default Value} \\ \hline
+\texttt{top-event} & Identifier & None \\
+\texttt{source-handle} & Identifier & BDT \\
+\texttt{mission-time} & Positive real & 0.0 \\
+\texttt{print-minimal-cutset-rank} & Boolean & true \\
+\texttt{print-minimal-cutset-order} & Boolean & false \\
+\texttt{print-minimal-cutset-probability} & Boolean & true \\
+\texttt{print-minimal-cutset-contribution} & Boolean & true \\
+\texttt{print-minimal-cutset-failure-intensity} & Boolean & false \\
+\texttt{output} & String & result.txt \\
+\texttt{mode} & write/append & write \\ \hline
+\end{tabular}
+\end{center}
+
+\section*{4. Computing Statistics}
+The \texttt{compute} command allows users to generate various additional statistics regarding the minimal cutsets, referencing the same source handles and options as the printing commands.
+
+\section*{1. Mathematical and Algorithmic Framework}
+XFTA assesses the probability of the top event using either exact quantification (disjoint products) or approximation methods (minimal cutsets).
+
+\begin{itemize}
+    \item \textbf{Exact Quantification:} Performed using sums of disjoint products encoded as Binary Decision Diagrams (BDD). This relies on the \textbf{Shannon Decomposition}, allowing the calculation to run in linear time relative to the size of the BDD.
+    \item \textbf{Approximation Methods:} When using minimal cutsets (encoded as BDT or ZBDD), the exact probability is often too resource-intensive to calculate, necessitating approximations:
+    \begin{itemize}
+        \item \textbf{Rare Event Approximation (REA):} The simplest method, accurate when basic event probabilities are low. It runs in linear time but may yield pessimistic results (exceeding 1) if probabilities are high.
+        \item \textbf{Mincut Upper Bound (MCUB):} Provides a better approximation than REA and never exceeds 1. However, it cannot be calculated recursively, meaning its complexity is linear relative to the number of products rather than the data structure size.
+        \item \textbf{Pivotal Upper Bound (PUB):} An original XFTA algorithm that generally provides better results than REA or MCUB. It runs in linear time but is sensitive to the variable ordering used in the underlying data structure.
+    \end{itemize}
+\end{itemize}
+
+\section*{2. The \texttt{compute probability} Command}
+The primary command for assessing top-event probability is \texttt{compute probability}. Its behavior is defined by various options:
+
+\begin{itemize}
+    \item \textbf{Source and Method:}
+    \begin{itemize}
+        \item \textbf{\texttt{source-handle}:} Specifies the data structure (e.g., BDT, BDD) to use.
+        \item \textbf{\texttt{quantification-method}:} Selects between \texttt{rare-event-approximation}, \texttt{mincut-upper-bound}, or \texttt{pivotal-upper-bound}.
+    \end{itemize}
+    \item \textbf{Mission Times:} Mission times can be defined in three formats:
+    \begin{itemize}
+        \item A single real value (e.g., \texttt{8760}).
+        \item A list of values (e.g., \texttt{[0, 2190, 8760]}).
+        \item A range iterator (e.g., \texttt{range(0, 8760, 2190)}).
+    \end{itemize}
+    \item \textbf{Accuracy and Curve Fitting:}
+    \begin{itemize}
+        \item \textbf{\texttt{add-singular-points}:} Automatically adds dates where maintenance starts or stops, capturing discontinuities in unavailability.
+        \item \textbf{\texttt{smooth-curve}:} Adds intermediate points if the difference between successive dates exceeds the \texttt{smoothing-ratio}.
+    \end{itemize}
+\end{itemize}
+
+\textbf{Table: Options for \texttt{compute probability}}
+
+\begin{center}
+\begin{tabular}{lll}
+\hline
+\textbf{Option} & \textbf{Type} & \textbf{Default Value} \\ \hline
+\texttt{source-handle} & Identifier & None \\
+\texttt{quantification-method} & Identifier & pivotal-upper-bound \\
+\texttt{mission-time} & List descriptor & 0.0 \\
+\texttt{add-singular-points} & Boolean & false \\
+\texttt{smooth-curve} & Boolean & false \\
+\texttt{smoothing-ratio} & Real & 0.1 \\
+\texttt{print-unavailability} & Boolean & true \\
+\texttt{print-mean-unavailability} & Boolean & false \\
+\texttt{output} & String & results.txt \\
+\texttt{mode} & write/append & write \\ \hline
+\end{tabular}
+\end{center}
+
+\section*{3. Unavailability Indicators}
+XFTA can print different indicators based on the probability distribution:
+\begin{itemize}
+    \item \textbf{Unavailability ($Q_S(t)$):} The probability that the system is not working at time $t$.
+    \item \textbf{Mean Unavailability:} The empirical average value of unavailability from time 0 to $t$. It is calculated as the mean of the values calculated across mission times.
+\end{itemize}
+
+\section*{4. Auxiliary Quantification Commands}
+In addition to the main probability command, XFTA provides specialized assessment tools:
+\begin{itemize}
+    \item \textbf{\texttt{compute values-of-parameters}:} Calculates the values of all parameters involved in the top event at a specific mission time.
+    \item \textbf{\texttt{compute probabilities-of-basic-events}:} Recursively collects all basic events in the top event and calculates their individual probabilities.
+    \item \textbf{\texttt{compute time-to-probability}:} Performs a dichotomic search to find the mission time at which a variable reaches a target probability value. This command assumes that unavailability is monotonically increasing over the specified time interval.
+\end{itemize}
+
 \end{document}

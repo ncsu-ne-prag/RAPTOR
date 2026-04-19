@@ -65,8 +65,13 @@ lerna-debug.log*
 
 #/fixtures/
 # Don't addd test input and output folders
+fixtures/temp_input
 fixtures/models/ENT
 fixtures/models/aralia-fault-tree-dataset
 fixtures/models/generic-pwr-model
 fixtures/models/synthetic-models
+fixtures/models/benchexec-models
 fixtures/results/
+
+# FTREX sensitive files
+apps/solvers/ftrex
