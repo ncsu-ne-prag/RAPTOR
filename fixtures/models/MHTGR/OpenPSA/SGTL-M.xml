@@ -1,10 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <opsa-mef>
-  <define-initiating-event name="SGTR-IE" event-tree="SGTL-M">
-    <frequency>
-      <float value="0.04" />
-    </frequency>
-  </define-initiating-event>
+  <define-initiating-event name="SGTR-IE" event-tree="SGTL-M"/>
   <define-event-tree name="SGTL-M">
     <define-functional-event name="FT4">
       <label>CR3-G7-A</label>

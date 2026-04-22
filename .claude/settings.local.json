@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cargo build *)",
+      "Bash(/c/Users/hrashee/AppData/Local/Programs/Python/Python312/python -)"
+    ]
+  }
+}

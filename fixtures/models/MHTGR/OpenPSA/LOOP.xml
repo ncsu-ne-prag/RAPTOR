@@ -1,10 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <opsa-mef>
-  <define-initiating-event name="LOOP-IE" event-tree="LOOP">
-    <frequency>
-      <float value="0.005" />
-    </frequency>
-  </define-initiating-event>
+  <define-initiating-event name="LOOP-IE" event-tree="LOOP"/>
   <define-event-tree name="LOOP">
     <define-functional-event name="FT23">
       <label>1MOD-LOOP-F</label>

@@ -1,10 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <opsa-mef>
-  <define-initiating-event name="INIT-EV" event-tree="LOHTL">
-    <frequency>
-      <float value="1.0" />
-    </frequency>
-  </define-initiating-event>
+  <define-initiating-event name="INIT-EV" event-tree="LOHTL"/>
   <define-event-tree name="LOHTL">
     <define-functional-event name="FT24">
       <label>1MOD-SCS-F</label>

@@ -1,10 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <opsa-mef>
-  <define-initiating-event name="GT-IE" event-tree="ATRS">
-    <frequency>
-      <float value="27.00" />
-    </frequency>
-  </define-initiating-event>
+  <define-initiating-event name="GT-IE" event-tree="ATRS"/>
   <define-event-tree name="ATRS">
     <define-functional-event name="FT1">
       <label>CR3-G7-A-GT-MANUAL</label>

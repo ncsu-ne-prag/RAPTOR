@@ -1,10 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <opsa-mef>
-  <define-initiating-event name="DEP-IE" event-tree="PCL">
-    <frequency>
-      <float value="0.26" />
-    </frequency>
-  </define-initiating-event>
+  <define-initiating-event name="DEP-IE" event-tree="PCL"/>
   <define-event-tree name="PCL">
     <define-functional-event name="FT33">
       <label>CR3-G4-A</label>
