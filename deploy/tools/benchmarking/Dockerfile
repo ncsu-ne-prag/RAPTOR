@@ -31,18 +31,16 @@ RUN wine winecfg /v win10 || true
 WORKDIR /build
 
 # Copy the SCRAM source code into the container
-COPY apps/solvers/scram/node-addon /build/scram
+COPY apps/solvers/scram /build/scram
 
 # Build SCRAM
+RUN mkdir -p /build/scram/build
 WORKDIR /build/scram/build
 RUN cmake -DCMAKE_BUILD_TYPE=Release -G Ninja .. && \
     cmake --build . --target scram-cli
 
-# The binary should be available in the build directory.
-# We will create a symlink to make it available in the PATH
-RUN ln -s /build/scram/build/targets/scram/scram-cli /usr/local/bin/scram || \
-    ln -s /build/scram/build/bin/scram-cli /usr/local/bin/scram || \
-    find /build/scram/build -name scram-cli -type f -executable -exec ln -s {} /usr/local/bin/scram \;
+# Create a symlink to make scram-cli available in the PATH
+RUN find /build/scram/build -name scram-cli -type f -executable -exec ln -s {} /usr/local/bin/scram-cli \;
 
 # Copy the Pracciolini tools into the container
 COPY apps/tools/pracciolini /build/pracciolini
