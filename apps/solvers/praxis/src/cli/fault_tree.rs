@@ -1,4 +1,7 @@
 use crate::cli::args::{Algorithm, Analysis, Approximation, Args, Backend, Vrt as CliVrt};
+use crate::cli::metadata::{
+    display_zbdd_metadata, prompt_for_limits, ZbddSequenceMetadata,
+};
 use crate::cli::optimize::{
     estimate_fault_tree_nodes, optimize_run_params_for_cpu, optimize_run_params_for_cuda,
 };
@@ -34,6 +37,274 @@ pub enum FaultTreePreOutcome {
     ExitOk,
     Continue(Box<FaultTreePreState>),
 }
+
+// ---------------------------------------------------------------------------
+// Shared helpers
+// ---------------------------------------------------------------------------
+
+fn build_pdag_and_bdd(
+    fault_tree: &praxis::core::fault_tree::FaultTree,
+) -> Result<(BddPdag, BddEngine, praxis::algorithms::bdd_engine::BddRef), Box<dyn std::error::Error>>
+{
+    let mut pdag = BddPdag::from_fault_tree(fault_tree)?;
+    pdag.compute_ordering_and_modules()?;
+    let (bdd, bdd_root) = BddEngine::build_from_pdag(&pdag)?;
+    Ok((pdag, bdd, bdd_root))
+}
+
+fn enumerate_cut_sets(
+    zbdd: &ZbddEngine,
+    root: praxis::algorithms::zbdd_engine::ZbddRef,
+    pdag: &BddPdag,
+) -> Vec<CutSet> {
+    let var_order = pdag.variable_order().to_vec();
+    zbdd.enumerate(root)
+        .iter()
+        .map(|set| {
+            let events: Vec<String> = set
+                .iter()
+                .filter_map(|&pos| {
+                    var_order
+                        .get(pos)
+                        .and_then(|&idx| pdag.node(idx))
+                        .and_then(|n| n.id().map(|s| s.to_string()))
+                })
+                .collect();
+            CutSet::new(events)
+        })
+        .collect()
+}
+
+fn print_cut_sets_summary(
+    label: &str,
+    ft_id: &str,
+    cut_sets: &[CutSet],
+    verbosity_level: u32,
+) {
+    println!("\n=== {} Minimal Cut Sets ===", label);
+    println!("Fault Tree: {}", ft_id);
+    println!("Total cut sets: {}", cut_sets.len());
+    println!();
+
+    let mut order_counts: std::collections::HashMap<usize, usize> =
+        std::collections::HashMap::new();
+    for cs in cut_sets {
+        *order_counts.entry(cs.order()).or_insert(0) += 1;
+    }
+    let mut orders: Vec<_> = order_counts.keys().cloned().collect();
+    orders.sort();
+    println!("{:<10} {:<15}", "Order", "Count");
+    println!("{}", "-".repeat(25));
+    for order in orders {
+        println!("{:<10} {:<15}", order, order_counts[&order]);
+    }
+
+    if verbosity_level >= 2 {
+        println!("\nCut Sets:");
+        for (i, cs) in cut_sets.iter().enumerate() {
+            let events: Vec<_> = cs.events.iter().cloned().collect();
+            println!("  {}: {{ {} }}", i + 1, events.join(", "));
+        }
+    }
+    println!("==============================\n");
+}
+
+// ---------------------------------------------------------------------------
+// ZBDD Workflow 1 — no approximation, no limits upfront
+//
+// Sweep BDD → cache exact probability.
+// Build full ZBDD → show metadata → prompt user for limits.
+// Filter existing ZBDD in-graph → materialize last.
+// ---------------------------------------------------------------------------
+
+fn zbdd_wf1_no_approx_no_limits(
+    cli: &Args,
+    fault_tree: &praxis::core::fault_tree::FaultTree,
+    pdag: &BddPdag,
+    bdd: &mut BddEngine,
+    bdd_root: praxis::algorithms::bdd_engine::BddRef,
+    verbosity_level: u32,
+) -> Result<(Vec<CutSet>, f64), Box<dyn std::error::Error>> {
+    let exact_prob = bdd.probability(bdd_root);
+    bdd.freeze();
+
+    let (mut zbdd, zbdd_root) = ZbddEngine::build_from_bdd(bdd, bdd_root, false);
+
+    let raw_stats = zbdd.stats_by_order(zbdd_root);
+    let meta = vec![ZbddSequenceMetadata::from_stats(
+        fault_tree.element().id().to_string(),
+        exact_prob,
+        raw_stats,
+        1.0,
+    )];
+    display_zbdd_metadata(&meta);
+
+    let (limit_order, cut_off) = prompt_for_limits();
+
+    let filtered_root = apply_zbdd_filters(&mut zbdd, zbdd_root, limit_order, cut_off);
+
+    let cut_sets = enumerate_cut_sets(&zbdd, filtered_root, pdag);
+
+    if cli.print || verbosity_level > 0 {
+        print_cut_sets_summary("ZBDD", fault_tree.element().id(), &cut_sets, verbosity_level);
+    }
+
+    Ok((cut_sets, exact_prob))
+}
+
+// ---------------------------------------------------------------------------
+// ZBDD Workflow 2 — approximation, no limits upfront
+//
+// Build full ZBDD → compute approximate probability → show metadata
+// → prompt for limits → filter in-graph → recompute approximate probability
+// → materialize last.
+// ---------------------------------------------------------------------------
+
+fn zbdd_wf2_approx_no_limits(
+    cli: &Args,
+    fault_tree: &praxis::core::fault_tree::FaultTree,
+    pdag: &BddPdag,
+    bdd: &mut BddEngine,
+    bdd_root: praxis::algorithms::bdd_engine::BddRef,
+    verbosity_level: u32,
+) -> Result<(Vec<CutSet>, f64), Box<dyn std::error::Error>> {
+    bdd.freeze();
+    let (mut zbdd, zbdd_root) = ZbddEngine::build_from_bdd(bdd, bdd_root, false);
+
+    let approx_prob = compute_approx(&zbdd, zbdd_root, cli.approximation);
+
+    let raw_stats = zbdd.stats_by_order(zbdd_root);
+    let meta = vec![ZbddSequenceMetadata::from_stats(
+        fault_tree.element().id().to_string(),
+        approx_prob,
+        raw_stats,
+        1.0,
+    )];
+    display_zbdd_metadata(&meta);
+
+    let (limit_order, cut_off) = prompt_for_limits();
+
+    let filtered_root = apply_zbdd_filters(&mut zbdd, zbdd_root, limit_order, cut_off);
+
+    let final_prob = if limit_order.is_some() || cut_off.is_some() {
+        compute_approx(&zbdd, filtered_root, cli.approximation)
+    } else {
+        approx_prob
+    };
+
+    let cut_sets = enumerate_cut_sets(&zbdd, filtered_root, pdag);
+
+    if cli.print || verbosity_level > 0 {
+        print_cut_sets_summary("ZBDD", fault_tree.element().id(), &cut_sets, verbosity_level);
+    }
+
+    Ok((cut_sets, final_prob))
+}
+
+// ---------------------------------------------------------------------------
+// ZBDD Workflow 3 — no approximation, limits upfront
+//
+// Sweep BDD → cache exact probability.
+// Build ZBDD with on-the-fly discard (limits baked into conversion).
+// Materialize last. No metadata shown.
+// ---------------------------------------------------------------------------
+
+fn zbdd_wf3_no_approx_limits(
+    cli: &Args,
+    fault_tree: &praxis::core::fault_tree::FaultTree,
+    pdag: &BddPdag,
+    bdd: &mut BddEngine,
+    bdd_root: praxis::algorithms::bdd_engine::BddRef,
+    verbosity_level: u32,
+) -> Result<(Vec<CutSet>, f64), Box<dyn std::error::Error>> {
+    let exact_prob = bdd.probability(bdd_root);
+    bdd.freeze();
+
+    let limit_order = cli.limit_order.map(|n| n as usize);
+    let cut_off = cli.cut_off;
+
+    let (zbdd, zbdd_root) =
+        ZbddEngine::build_from_bdd_with_limits(bdd, bdd_root, false, limit_order, cut_off);
+
+    let cut_sets = enumerate_cut_sets(&zbdd, zbdd_root, pdag);
+
+    if cli.print || verbosity_level > 0 {
+        print_cut_sets_summary("ZBDD", fault_tree.element().id(), &cut_sets, verbosity_level);
+    }
+
+    Ok((cut_sets, exact_prob))
+}
+
+// ---------------------------------------------------------------------------
+// ZBDD Workflow 4 — approximation, limits upfront
+//
+// Build ZBDD with on-the-fly discard (limits baked into conversion).
+// Compute approximate probability from the already-pruned ZBDD.
+// Materialize last. No metadata shown.
+// ---------------------------------------------------------------------------
+
+fn zbdd_wf4_approx_limits(
+    cli: &Args,
+    fault_tree: &praxis::core::fault_tree::FaultTree,
+    pdag: &BddPdag,
+    bdd: &mut BddEngine,
+    bdd_root: praxis::algorithms::bdd_engine::BddRef,
+    verbosity_level: u32,
+) -> Result<(Vec<CutSet>, f64), Box<dyn std::error::Error>> {
+    bdd.freeze();
+
+    let limit_order = cli.limit_order.map(|n| n as usize);
+    let cut_off = cli.cut_off;
+
+    let (zbdd, zbdd_root) =
+        ZbddEngine::build_from_bdd_with_limits(bdd, bdd_root, false, limit_order, cut_off);
+
+    let approx_prob = compute_approx(&zbdd, zbdd_root, cli.approximation);
+
+    let cut_sets = enumerate_cut_sets(&zbdd, zbdd_root, pdag);
+
+    if cli.print || verbosity_level > 0 {
+        print_cut_sets_summary("ZBDD", fault_tree.element().id(), &cut_sets, verbosity_level);
+    }
+
+    Ok((cut_sets, approx_prob))
+}
+
+// ---------------------------------------------------------------------------
+// Shared ZBDD utilities
+// ---------------------------------------------------------------------------
+
+fn apply_zbdd_filters(
+    zbdd: &mut ZbddEngine,
+    root: praxis::algorithms::zbdd_engine::ZbddRef,
+    limit_order: Option<usize>,
+    cut_off: Option<f64>,
+) -> praxis::algorithms::zbdd_engine::ZbddRef {
+    let mut r = root;
+    if let Some(n) = limit_order {
+        r = zbdd.limit_order(r, n);
+    }
+    if let Some(p) = cut_off {
+        r = zbdd.prune_below_probability(r, p);
+    }
+    r
+}
+
+fn compute_approx(
+    zbdd: &ZbddEngine,
+    root: praxis::algorithms::zbdd_engine::ZbddRef,
+    approximation: Option<Approximation>,
+) -> f64 {
+    match approximation {
+        Some(Approximation::RareEvent) => zbdd.rare_event_probability(root),
+        Some(Approximation::Mcub) => zbdd.min_cut_upper_bound_graph(root),
+        None => f64::NAN,
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Main pre-event-tree implementation
+// ---------------------------------------------------------------------------
 
 fn run_pre_event_tree_impl(
     cli: &Args,
@@ -95,9 +366,6 @@ fn run_pre_event_tree_impl(
 
     if verbose {
         eprintln!("Using algorithm: {:?}", cli.algorithm);
-    }
-
-    if verbose {
         if let Some(approx) = cli.approximation {
             let approx_name = match approx {
                 Approximation::RareEvent => "rare-event",
@@ -114,36 +382,42 @@ fn run_pre_event_tree_impl(
             basic_events_count: fault_tree.basic_events().len(),
         };
 
-    match cli.algorithm {
-        Algorithm::Bdd => {
-            if verbose {
-                eprintln!("Computing top event probability using BDD...");
-            }
-            let mut pdag = BddPdag::from_fault_tree(&fault_tree)?;
-            pdag.compute_ordering_and_modules()?;
-            let (mut bdd_engine, root) = BddEngine::build_from_pdag(&pdag)?;
-            let p = bdd_engine.probability(root);
-            bdd_engine.freeze();
-            result.top_event_probability = p;
-            if verbose {
-                eprintln!("BDD analysis complete!");
-                eprintln!("Top event probability: {}", result.top_event_probability);
-            }
+    // BDD exact probability
+    if cli.algorithm == Algorithm::Bdd {
+        if verbose {
+            eprintln!("Computing top event probability using BDD...");
         }
-        Algorithm::MonteCarlo | Algorithm::Mocus | Algorithm::Zbdd => {
+        let mut pdag = BddPdag::from_fault_tree(&fault_tree)?;
+        pdag.compute_ordering_and_modules()?;
+        let (mut bdd_engine, root) = BddEngine::build_from_pdag(&pdag)?;
+        let p = if cli.limit_order.is_some() || cli.cut_off.is_some() {
+            bdd_engine.probability_with_limits(
+                root,
+                cli.limit_order.map(|n| n as usize),
+                cli.cut_off,
+            )
+        } else {
+            bdd_engine.probability(root)
+        };
+        bdd_engine.freeze();
+        result.top_event_probability = p;
+        if verbose {
+            eprintln!("BDD analysis complete!");
+            eprintln!("Top event probability: {}", result.top_event_probability);
         }
     }
 
     let mut computed_cut_sets: Option<Vec<CutSet>> = None;
 
-    let needs_cut_sets = cli.approximation.is_some()
+    // MOCUS cut sets
+    let needs_mocus_cut_sets = cli.approximation.is_some()
         || matches!(
             cli.analysis,
             Analysis::CutsetsOnly | Analysis::CutsetsAndProbability
         )
-        || matches!(cli.algorithm, Algorithm::Mocus | Algorithm::Zbdd);
+        || cli.algorithm == Algorithm::Mocus;
 
-    if needs_cut_sets && cli.algorithm == Algorithm::Mocus {
+    if needs_mocus_cut_sets && cli.algorithm == Algorithm::Mocus {
         if verbose {
             eprintln!("\nPerforming MOCUS qualitative analysis...");
         }
@@ -223,194 +497,160 @@ fn run_pre_event_tree_impl(
         }
     }
 
-    if needs_cut_sets && cli.algorithm == Algorithm::Zbdd {
+    // ZBDD — 4 independent workflows dispatched here
+    if cli.algorithm == Algorithm::Zbdd {
         if verbose {
-            eprintln!("\nGenerating minimal cut sets using ZBDD...");
+            eprintln!("\nRunning ZBDD analysis...");
         }
 
-        let mut pdag = BddPdag::from_fault_tree(&fault_tree)?;
-        pdag.compute_ordering_and_modules()?;
-        let (mut bdd_engine, bdd_root) = BddEngine::build_from_pdag(&pdag)?;
-        bdd_engine.freeze();
+        let (pdag, mut bdd, bdd_root) = build_pdag_and_bdd(&fault_tree)?;
 
-        let (zbdd, zbdd_root) = ZbddEngine::build_from_bdd(&bdd_engine, bdd_root, false);
+        let has_limits = cli.limit_order.is_some() || cli.cut_off.is_some();
+        let has_approx = cli.approximation.is_some();
 
-        let var_order = pdag.variable_order().to_vec();
-        let sets = zbdd.enumerate(zbdd_root);
+        let (cut_sets, probability) = match (has_approx, has_limits) {
+            (false, false) => zbdd_wf1_no_approx_no_limits(
+                cli,
+                &fault_tree,
+                &pdag,
+                &mut bdd,
+                bdd_root,
+                verbosity_level,
+            )?,
+            (true, false) => zbdd_wf2_approx_no_limits(
+                cli,
+                &fault_tree,
+                &pdag,
+                &mut bdd,
+                bdd_root,
+                verbosity_level,
+            )?,
+            (false, true) => zbdd_wf3_no_approx_limits(
+                cli,
+                &fault_tree,
+                &pdag,
+                &mut bdd,
+                bdd_root,
+                verbosity_level,
+            )?,
+            (true, true) => zbdd_wf4_approx_limits(
+                cli,
+                &fault_tree,
+                &pdag,
+                &mut bdd,
+                bdd_root,
+                verbosity_level,
+            )?,
+        };
 
-        let mut cut_sets: Vec<CutSet> = sets
-            .iter()
-            .map(|set| {
-                let events: Vec<String> = set
-                    .iter()
-                    .filter_map(|&pos| {
-                        var_order
-                            .get(pos)
-                            .and_then(|&idx| pdag.node(idx))
-                            .and_then(|n| n.id().map(|s| s.to_string()))
-                    })
-                    .collect();
-                CutSet::new(events)
-            })
-            .collect();
-
-        if let Some(max_order) = cli.limit_order {
-            cut_sets.retain(|cs| cs.order() <= max_order as usize);
-        }
-
-        if let Some(cutoff) = cli.cut_off {
-            if verbose {
-                eprintln!("Applying probability cut-off: {}", cutoff);
-            }
-
-            let mut event_probs: std::collections::HashMap<String, f64> =
-                std::collections::HashMap::new();
-            for (event_id, event) in fault_tree.basic_events() {
-                event_probs.insert(event_id.clone(), event.probability());
-            }
-
-            let original_count = cut_sets.len();
-            cut_sets =
-                praxis::analysis::fault_tree::filter_by_probability(cut_sets, &event_probs, cutoff);
-
-            if verbose {
-                eprintln!(
-                    "Filtered {} cut sets below {:.6e} (kept {})",
-                    original_count - cut_sets.len(),
-                    cutoff,
-                    cut_sets.len()
-                );
-            }
-        }
+        computed_cut_sets = Some(cut_sets);
+        result.top_event_probability = probability;
 
         if verbose {
-            eprintln!("ZBDD cut set generation complete!");
-            eprintln!("Minimal cut sets found: {}", cut_sets.len());
+            eprintln!("ZBDD analysis complete!");
+            if let Some(ref cs) = computed_cut_sets {
+                eprintln!("Minimal cut sets found: {}", cs.len());
+            }
+            eprintln!("Top event probability: {}", result.top_event_probability);
         }
-
-        computed_cut_sets = Some(cut_sets.to_vec());
-
-        if cli.print || verbose {
-            println!("\n=== ZBDD Minimal Cut Sets ===");
-            println!("Fault Tree: {}", fault_tree.element().id());
-            println!("Total cut sets: {}", cut_sets.len());
-            println!();
-
-            let mut order_counts: std::collections::HashMap<usize, usize> =
-                std::collections::HashMap::new();
-            for cs in &cut_sets {
-                *order_counts.entry(cs.order()).or_insert(0) += 1;
-            }
-
-            let mut orders: Vec<_> = order_counts.keys().cloned().collect();
-            orders.sort();
-
-            println!("{:<10} {:<15}", "Order", "Count");
-            println!("{}", "-".repeat(25));
-            for order in orders {
-                println!("{:<10} {:<15}", order, order_counts[&order]);
-            }
-
-            if verbosity_level >= 2 {
-                println!("\nCut Sets:");
-                for (i, cs) in cut_sets.iter().enumerate() {
-                    let events: Vec<_> = cs.events.iter().cloned().collect();
-                    println!("  {}: {{ {} }}", i + 1, events.join(", "));
-                }
-            }
-            println!("==============================\n");
-        }
+        let _ = pdag;
     }
 
-    if let Some(ref cut_sets) = computed_cut_sets {
-        let mut event_probs: std::collections::HashMap<i32, f64> = std::collections::HashMap::new();
-        for (idx, (_event_id, event)) in fault_tree.basic_events().iter().enumerate() {
-            event_probs.insert(idx as i32 + 1, event.probability());
+    // Approximation from MOCUS cut sets (ZBDD handles its own approximation above)
+    if cli.algorithm == Algorithm::Mocus {
+        if let Some(ref cut_sets) = computed_cut_sets {
+            let mut event_probs: std::collections::HashMap<i32, f64> =
+                std::collections::HashMap::new();
+            for (idx, (_event_id, event)) in fault_tree.basic_events().iter().enumerate() {
+                event_probs.insert(idx as i32 + 1, event.probability());
+            }
+
+            if matches!(cli.approximation, Some(Approximation::RareEvent)) {
+                if verbose {
+                    eprintln!("\nComputing Rare Event Approximation...");
+                }
+
+                let cut_sets_i32: Vec<Vec<i32>> = cut_sets
+                    .iter()
+                    .map(|cs| {
+                        cs.events
+                            .iter()
+                            .filter_map(|event_id| {
+                                fault_tree
+                                    .basic_events()
+                                    .keys()
+                                    .position(|k| k == event_id)
+                                    .map(|pos| (pos + 1) as i32)
+                            })
+                            .collect()
+                    })
+                    .collect();
+
+                let rea_prob = praxis::analysis::approximations::rare_event_approximation(
+                    &cut_sets_i32,
+                    &event_probs,
+                );
+
+                result.top_event_probability = rea_prob;
+
+                if cli.print || verbose {
+                    println!("\n=== Rare Event Approximation ===");
+                    println!("REA Approximation:       {:.6e}", rea_prob);
+                    println!();
+                    println!("Note: REA sums cut set probabilities (assumes disjoint sets)");
+                    println!("      Works well when cut set probabilities are << 1");
+                    println!("================================\n");
+                }
+
+                if verbose {
+                    eprintln!("Rare Event Approximation complete");
+                }
+            }
+
+            if matches!(cli.approximation, Some(Approximation::Mcub)) {
+                if verbose {
+                    eprintln!("\nComputing MCUB (Minimal Cut Upper Bound) Approximation...");
+                }
+
+                let cut_sets_i32: Vec<Vec<i32>> = cut_sets
+                    .iter()
+                    .map(|cs| {
+                        cs.events
+                            .iter()
+                            .filter_map(|event_id| {
+                                fault_tree
+                                    .basic_events()
+                                    .keys()
+                                    .position(|k| k == event_id)
+                                    .map(|pos| (pos + 1) as i32)
+                            })
+                            .collect()
+                    })
+                    .collect();
+
+                let mcub_prob = praxis::analysis::approximations::mcub_approximation(
+                    &cut_sets_i32,
+                    &event_probs,
+                );
+
+                result.top_event_probability = mcub_prob;
+
+                if cli.print || verbose {
+                    println!("\n=== MCUB Approximation ===");
+                    println!("MCUB Approximation:      {:.6e}", mcub_prob);
+                    println!();
+                    println!("Note: MCUB uses 1 - ∏(1 - P_cs) formula");
+                    println!("      Provides upper bound on probability");
+                    println!("==========================\n");
+                }
+
+                if verbose {
+                    eprintln!("MCUB Approximation complete");
+                }
+            }
+        } else if cli.approximation.is_some() && verbose {
+            eprintln!("Warning: --approximation requires cut sets (use --algorithm mocus or --algorithm zbdd)");
         }
-
-        if matches!(cli.approximation, Some(Approximation::RareEvent)) {
-            if verbose {
-                eprintln!("\nComputing Rare Event Approximation...");
-            }
-
-            let cut_sets_i32: Vec<Vec<i32>> = cut_sets
-                .iter()
-                .map(|cs| {
-                    cs.events
-                        .iter()
-                        .filter_map(|event_id| {
-                            fault_tree
-                                .basic_events()
-                                .keys()
-                                .position(|k| k == event_id)
-                                .map(|pos| (pos + 1) as i32)
-                        })
-                        .collect()
-                })
-                .collect();
-
-            let rea_prob = praxis::analysis::approximations::rare_event_approximation(
-                &cut_sets_i32,
-                &event_probs,
-            );
-
-            result.top_event_probability = rea_prob;
-
-            if cli.print || verbose {
-                println!("\n=== Rare Event Approximation ===");
-                println!("REA Approximation:       {:.6e}", rea_prob);
-                println!();
-                println!("Note: REA sums cut set probabilities (assumes disjoint sets)");
-                println!("      Works well when cut set probabilities are << 1");
-                println!("================================\n");
-            }
-
-            if verbose {
-                eprintln!("Rare Event Approximation complete");
-            }
-        }
-
-        if matches!(cli.approximation, Some(Approximation::Mcub)) {
-            if verbose {
-                eprintln!("\nComputing MCUB (Minimal Cut Upper Bound) Approximation...");
-            }
-
-            let cut_sets_i32: Vec<Vec<i32>> = cut_sets
-                .iter()
-                .map(|cs| {
-                    cs.events
-                        .iter()
-                        .filter_map(|event_id| {
-                            fault_tree
-                                .basic_events()
-                                .keys()
-                                .position(|k| k == event_id)
-                                .map(|pos| (pos + 1) as i32)
-                        })
-                        .collect()
-                })
-                .collect();
-
-            let mcub_prob =
-                praxis::analysis::approximations::mcub_approximation(&cut_sets_i32, &event_probs);
-
-            result.top_event_probability = mcub_prob;
-
-            if cli.print || verbose {
-                println!("\n=== MCUB Approximation ===");
-                println!("MCUB Approximation:      {:.6e}", mcub_prob);
-                println!();
-                println!("Note: MCUB uses 1 - ∏(1 - P_cs) formula");
-                println!("      Provides upper bound on probability");
-                println!("==========================\n");
-            }
-
-            if verbose {
-                eprintln!("MCUB Approximation complete");
-            }
-        }
-    } else if cli.approximation.is_some() && verbose {
-        eprintln!("Warning: --approximation requires cut sets (use --algorithm mocus or --algorithm zbdd)");
     }
 
     Ok(FaultTreePreOutcome::Continue(Box::new(FaultTreePreState {

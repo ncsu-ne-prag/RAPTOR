@@ -363,6 +363,95 @@ impl ZbddEngine {
         (z, result)
     }
 
+    pub fn build_from_bdd_with_limits(
+        bdd: &Bdd,
+        root: BddRef,
+        coherent: bool,
+        limit_order: Option<usize>,
+        cut_off: Option<f64>,
+    ) -> (ZbddEngine, ZbddRef) {
+        let mut z = ZbddEngine::new();
+        z.var_probs = bdd.var_probs().to_vec();
+        let min_prob = cut_off.unwrap_or(0.0);
+        let mut cache: HashMap<(BddRef, Option<usize>, u64), ZbddRef> = HashMap::new();
+        let raw = z.convert_bdd_limited(bdd, root, limit_order, 1.0, min_prob, &mut cache);
+        let result = if coherent { raw } else { z.minimize(raw) };
+        (z, result)
+    }
+
+    fn convert_bdd_limited(
+        &mut self,
+        bdd: &Bdd,
+        f: BddRef,
+        budget: Option<usize>,
+        p_acc: f64,
+        min_prob: f64,
+        cache: &mut HashMap<(BddRef, Option<usize>, u64), ZbddRef>,
+    ) -> ZbddRef {
+        if f.is_false() {
+            return ZBDD_EMPTY;
+        }
+        if f.is_true() {
+            return if p_acc >= min_prob { ZBDD_BASE } else { ZBDD_EMPTY };
+        }
+        let key = (f, budget, p_acc.to_bits());
+        if let Some(&r) = cache.get(&key) {
+            return r;
+        }
+        let var = bdd.var_of(f);
+        let node = bdd.node(f);
+        let (cofactor_hi, cofactor_lo) = if f.is_complement() {
+            (node.high.complement(), node.low.complement())
+        } else {
+            (node.high, node.low)
+        };
+        let p_var = self.var_probs[var];
+        let hi_z = if budget == Some(0) {
+            ZBDD_EMPTY
+        } else {
+            let new_budget = budget.map(|b| b - 1);
+            self.convert_bdd_limited(bdd, cofactor_hi, new_budget, p_acc * p_var, min_prob, cache)
+        };
+        let lo_z = self.convert_bdd_limited(bdd, cofactor_lo, budget, p_acc, min_prob, cache);
+        let with_var = self.multiply(var, hi_z);
+        let result = self.union(with_var, lo_z);
+        cache.insert(key, result);
+        result
+    }
+
+    pub fn stats_by_order(&self, root: ZbddRef) -> HashMap<usize, (u64, f64, f64)> {
+        let mut stats: HashMap<usize, (u64, f64, f64)> = HashMap::new();
+        self.stats_rec(root, 0, 1.0, &mut stats);
+        stats
+    }
+
+    fn stats_rec(
+        &self,
+        f: ZbddRef,
+        order: usize,
+        p_acc: f64,
+        stats: &mut HashMap<usize, (u64, f64, f64)>,
+    ) {
+        if f.is_empty() {
+            return;
+        }
+        if f.is_base() {
+            let e = stats.entry(order).or_insert((0, f64::INFINITY, f64::NEG_INFINITY));
+            e.0 += 1;
+            if p_acc < e.1 {
+                e.1 = p_acc;
+            }
+            if p_acc > e.2 {
+                e.2 = p_acc;
+            }
+            return;
+        }
+        let node = self.node(f);
+        let p_var = self.var_probs[node.var];
+        self.stats_rec(node.high, order + 1, p_acc * p_var, stats);
+        self.stats_rec(node.low, order, p_acc, stats);
+    }
+
     pub fn rare_event_probability(&self, root: ZbddRef) -> f64 {
         let mut cache = HashMap::new();
         self.re_inner(root, &mut cache)

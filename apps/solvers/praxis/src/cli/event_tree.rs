@@ -1,4 +1,7 @@
 use crate::cli::args::{Algorithm, Approximation, Args, Backend};
+use crate::cli::metadata::{
+    display_zbdd_metadata, prompt_for_limits, ZbddSequenceMetadata,
+};
 use praxis::algorithms::mocus::CutSet;
 use praxis::algorithms::zbdd_engine::ZbddEngine;
 use crate::cli::optimize::{
@@ -6,6 +9,8 @@ use crate::cli::optimize::{
 };
 use crate::cli::output::{writer_stdout, writer_vec};
 use praxis::algorithms::bdd_engine::Bdd as BddEngine;
+use praxis::algorithms::bdd_pdag::BddPdag;
+use praxis::algorithms::zbdd_engine::ZbddRef;
 use praxis::analysis::sequence_formula::SequenceFormulaBuilder;
 use praxis::core::event_tree::InitiatingEvent;
 use praxis::core::fault_tree::FaultTree;
@@ -50,6 +55,530 @@ fn parse_model_with_libs_from_parsed(
 
     Ok((model, initiating_events, event_trees, event_tree_library))
 }
+
+// ---------------------------------------------------------------------------
+// Shared helpers for analytic ZBDD
+// ---------------------------------------------------------------------------
+
+fn event_names_from_pdag(pdag: &BddPdag) -> Vec<Option<String>> {
+    pdag.variable_order()
+        .iter()
+        .map(|&idx| pdag.node(idx).and_then(|n| n.id().map(|s| s.to_string())))
+        .collect()
+}
+
+fn enumerate_cut_sets_et(
+    zbdd: &ZbddEngine,
+    root: ZbddRef,
+    event_names: &[Option<String>],
+) -> Vec<CutSet> {
+    zbdd.enumerate(root)
+        .iter()
+        .map(|set| {
+            let events: Vec<String> = set
+                .iter()
+                .filter_map(|&pos| event_names.get(pos).and_then(|n| n.clone()))
+                .collect();
+            CutSet::new(events)
+        })
+        .collect()
+}
+
+fn apply_zbdd_filters_et(
+    zbdd: &mut ZbddEngine,
+    root: ZbddRef,
+    limit_order: Option<usize>,
+    cut_off: Option<f64>,
+) -> ZbddRef {
+    let mut r = root;
+    if let Some(n) = limit_order {
+        r = zbdd.limit_order(r, n);
+    }
+    if let Some(p) = cut_off {
+        r = zbdd.prune_below_probability(r, p);
+    }
+    r
+}
+
+fn compute_approx_et(zbdd: &ZbddEngine, root: ZbddRef, approximation: Option<Approximation>) -> f64 {
+    match approximation {
+        Some(Approximation::RareEvent) => zbdd.rare_event_probability(root),
+        Some(Approximation::Mcub) => zbdd.min_cut_upper_bound_graph(root),
+        None => f64::NAN,
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Intermediate state for a single sequence (used in WF1 & WF2 only)
+// ---------------------------------------------------------------------------
+
+struct SequenceIntermediate {
+    seq_id: String,
+    event_names: Vec<Option<String>>,
+    zbdd: ZbddEngine,
+    zbdd_root: ZbddRef,
+    probability: f64,
+    ie_frequency: f64,
+    is_unconditional: bool,
+}
+
+// ---------------------------------------------------------------------------
+// Analytic ZBDD — 4 independent workflows
+// ---------------------------------------------------------------------------
+
+fn analytic_zbdd_wf1_no_approx_no_limits(
+    _cli: &Args,
+    model: &praxis::core::model::Model,
+    event_tree: &praxis::core::event_tree::EventTree,
+    event_tree_library: &HashMap<String, praxis::core::event_tree::EventTree>,
+    _ie: &InitiatingEvent,
+    ie_frequency: f64,
+    _verbose: bool,
+) -> Result<Vec<EventTreeAnalyticSequence>, Box<dyn std::error::Error>> {
+    let praxis::analysis::sequence_formula::SequenceFormulas {
+        mut pdag,
+        sequence_roots,
+        unconditional,
+        ie_frequency: _,
+    } = SequenceFormulaBuilder::new(model)
+        .with_event_tree_library(event_tree_library)
+        .build(event_tree, ie_frequency)
+        .map_err(|e| format!("Sequence formula construction failed for '{}': {}", event_tree.id, e))?;
+
+    let mut all_seq_ids: Vec<String> = sequence_roots.keys().cloned().collect();
+    for id in &unconditional {
+        if !sequence_roots.contains_key(id.as_str()) {
+            all_seq_ids.push(id.clone());
+        }
+    }
+    all_seq_ids.sort();
+
+    // First pass: build all ZBDDs and collect metadata
+    let mut intermediates: Vec<SequenceIntermediate> = Vec::new();
+
+    for seq_id in &all_seq_ids {
+        if unconditional.contains(seq_id) {
+            intermediates.push(SequenceIntermediate {
+                seq_id: seq_id.clone(),
+                event_names: Vec::new(),
+                zbdd: ZbddEngine::new(),
+                zbdd_root: praxis::algorithms::zbdd_engine::ZBDD_BASE,
+                probability: 1.0,
+                ie_frequency,
+                is_unconditional: true,
+            });
+            continue;
+        }
+        let Some(&root_idx) = sequence_roots.get(seq_id.as_str()) else {
+            intermediates.push(SequenceIntermediate {
+                seq_id: seq_id.clone(),
+                event_names: Vec::new(),
+                zbdd: ZbddEngine::new(),
+                zbdd_root: praxis::algorithms::zbdd_engine::ZBDD_EMPTY,
+                probability: 0.0,
+                ie_frequency,
+                is_unconditional: false,
+            });
+            continue;
+        };
+
+        pdag.set_root(root_idx)
+            .map_err(|e| format!("BDD root error for '{}': {}", seq_id, e))?;
+        pdag.compute_ordering_and_modules()
+            .map_err(|e| format!("BDD ordering failed for '{}': {}", seq_id, e))?;
+        let (mut bdd, bdd_root) = BddEngine::build_from_pdag(&pdag)
+            .map_err(|e| format!("BDD build failed for '{}': {}", seq_id, e))?;
+
+        let exact_prob = bdd.probability(bdd_root);
+        bdd.freeze();
+
+        let event_names = event_names_from_pdag(&pdag);
+        let (zbdd, zbdd_root) = ZbddEngine::build_from_bdd(&bdd, bdd_root, false);
+
+        intermediates.push(SequenceIntermediate {
+            seq_id: seq_id.clone(),
+            event_names,
+            zbdd,
+            zbdd_root,
+            probability: exact_prob,
+            ie_frequency,
+            is_unconditional: false,
+        });
+    }
+
+    // Show combined metadata
+    let mut meta_entries: Vec<ZbddSequenceMetadata> = Vec::new();
+    for im in &intermediates {
+        if im.is_unconditional {
+            meta_entries.push(ZbddSequenceMetadata::from_stats(
+                im.seq_id.clone(),
+                im.probability * im.ie_frequency,
+                HashMap::new(),
+                im.ie_frequency,
+            ));
+        } else {
+            let raw_stats = im.zbdd.stats_by_order(im.zbdd_root);
+            meta_entries.push(ZbddSequenceMetadata::from_stats(
+                im.seq_id.clone(),
+                im.probability * im.ie_frequency,
+                raw_stats,
+                im.ie_frequency,
+            ));
+        }
+    }
+    display_zbdd_metadata(&meta_entries);
+
+    // Prompt once for limits
+    let (limit_order, cut_off) = prompt_for_limits();
+
+    // Second pass: apply filters and materialize (last step)
+    let mut sequences: Vec<EventTreeAnalyticSequence> = Vec::new();
+    for mut im in intermediates {
+        let (filtered_root, cut_sets) = if im.is_unconditional {
+            (im.zbdd_root, Vec::new())
+        } else {
+            let fr = apply_zbdd_filters_et(&mut im.zbdd, im.zbdd_root, limit_order, cut_off);
+            let cs = enumerate_cut_sets_et(&im.zbdd, fr, &im.event_names);
+            (fr, cs)
+        };
+
+        let order_dist = if im.is_unconditional {
+            let mut m = HashMap::new();
+            m.insert(0usize, 1u64);
+            m
+        } else {
+            im.zbdd.count_by_order(filtered_root)
+        };
+
+        sequences.push(EventTreeAnalyticSequence {
+            sequence_id: im.seq_id,
+            path: vec![],
+            probability: im.probability,
+            frequency: im.probability * im.ie_frequency,
+            cut_sets,
+            order_dist,
+        });
+    }
+
+    Ok(sequences)
+}
+
+fn analytic_zbdd_wf2_approx_no_limits(
+    cli: &Args,
+    model: &praxis::core::model::Model,
+    event_tree: &praxis::core::event_tree::EventTree,
+    event_tree_library: &HashMap<String, praxis::core::event_tree::EventTree>,
+    _ie: &InitiatingEvent,
+    ie_frequency: f64,
+    _verbose: bool,
+) -> Result<Vec<EventTreeAnalyticSequence>, Box<dyn std::error::Error>> {
+    let praxis::analysis::sequence_formula::SequenceFormulas {
+        mut pdag,
+        sequence_roots,
+        unconditional,
+        ie_frequency: _,
+    } = SequenceFormulaBuilder::new(model)
+        .with_event_tree_library(event_tree_library)
+        .build(event_tree, ie_frequency)
+        .map_err(|e| format!("Sequence formula construction failed for '{}': {}", event_tree.id, e))?;
+
+    let mut all_seq_ids: Vec<String> = sequence_roots.keys().cloned().collect();
+    for id in &unconditional {
+        if !sequence_roots.contains_key(id.as_str()) {
+            all_seq_ids.push(id.clone());
+        }
+    }
+    all_seq_ids.sort();
+
+    let mut intermediates: Vec<SequenceIntermediate> = Vec::new();
+
+    for seq_id in &all_seq_ids {
+        if unconditional.contains(seq_id) {
+            intermediates.push(SequenceIntermediate {
+                seq_id: seq_id.clone(),
+                event_names: Vec::new(),
+                zbdd: ZbddEngine::new(),
+                zbdd_root: praxis::algorithms::zbdd_engine::ZBDD_BASE,
+                probability: 1.0,
+                ie_frequency,
+                is_unconditional: true,
+            });
+            continue;
+        }
+        let Some(&root_idx) = sequence_roots.get(seq_id.as_str()) else {
+            intermediates.push(SequenceIntermediate {
+                seq_id: seq_id.clone(),
+                event_names: Vec::new(),
+                zbdd: ZbddEngine::new(),
+                zbdd_root: praxis::algorithms::zbdd_engine::ZBDD_EMPTY,
+                probability: 0.0,
+                ie_frequency,
+                is_unconditional: false,
+            });
+            continue;
+        };
+
+        pdag.set_root(root_idx)
+            .map_err(|e| format!("BDD root error for '{}': {}", seq_id, e))?;
+        pdag.compute_ordering_and_modules()
+            .map_err(|e| format!("BDD ordering failed for '{}': {}", seq_id, e))?;
+        let (mut bdd, bdd_root) = BddEngine::build_from_pdag(&pdag)
+            .map_err(|e| format!("BDD build failed for '{}': {}", seq_id, e))?;
+        bdd.freeze();
+
+        let event_names = event_names_from_pdag(&pdag);
+        let (zbdd, zbdd_root) = ZbddEngine::build_from_bdd(&bdd, bdd_root, false);
+        let approx_prob = compute_approx_et(&zbdd, zbdd_root, cli.approximation);
+
+        intermediates.push(SequenceIntermediate {
+            seq_id: seq_id.clone(),
+            event_names,
+            zbdd,
+            zbdd_root,
+            probability: approx_prob,
+            ie_frequency,
+            is_unconditional: false,
+        });
+    }
+
+    // Show combined metadata
+    let mut meta_entries: Vec<ZbddSequenceMetadata> = Vec::new();
+    for im in &intermediates {
+        if im.is_unconditional {
+            meta_entries.push(ZbddSequenceMetadata::from_stats(
+                im.seq_id.clone(),
+                im.probability * im.ie_frequency,
+                HashMap::new(),
+                im.ie_frequency,
+            ));
+        } else {
+            let raw_stats = im.zbdd.stats_by_order(im.zbdd_root);
+            meta_entries.push(ZbddSequenceMetadata::from_stats(
+                im.seq_id.clone(),
+                im.probability * im.ie_frequency,
+                raw_stats,
+                im.ie_frequency,
+            ));
+        }
+    }
+    display_zbdd_metadata(&meta_entries);
+
+    let (limit_order, cut_off) = prompt_for_limits();
+
+    let mut sequences: Vec<EventTreeAnalyticSequence> = Vec::new();
+    for mut im in intermediates {
+        let (final_prob, filtered_root, cut_sets) = if im.is_unconditional {
+            (1.0, im.zbdd_root, Vec::new())
+        } else {
+            let fr = apply_zbdd_filters_et(&mut im.zbdd, im.zbdd_root, limit_order, cut_off);
+            let final_p = if limit_order.is_some() || cut_off.is_some() {
+                compute_approx_et(&im.zbdd, fr, cli.approximation)
+            } else {
+                im.probability
+            };
+            let cs = enumerate_cut_sets_et(&im.zbdd, fr, &im.event_names);
+            (final_p, fr, cs)
+        };
+
+        let order_dist = if im.is_unconditional {
+            let mut m = HashMap::new();
+            m.insert(0usize, 1u64);
+            m
+        } else {
+            im.zbdd.count_by_order(filtered_root)
+        };
+
+        sequences.push(EventTreeAnalyticSequence {
+            sequence_id: im.seq_id,
+            path: vec![],
+            probability: final_prob,
+            frequency: final_prob * im.ie_frequency,
+            cut_sets,
+            order_dist,
+        });
+    }
+
+    Ok(sequences)
+}
+
+fn analytic_zbdd_wf3_no_approx_limits(
+    cli: &Args,
+    model: &praxis::core::model::Model,
+    event_tree: &praxis::core::event_tree::EventTree,
+    event_tree_library: &HashMap<String, praxis::core::event_tree::EventTree>,
+    _ie: &InitiatingEvent,
+    ie_frequency: f64,
+    _verbose: bool,
+) -> Result<Vec<EventTreeAnalyticSequence>, Box<dyn std::error::Error>> {
+    let limit_order = cli.limit_order.map(|n| n as usize);
+    let cut_off = cli.cut_off;
+
+    let praxis::analysis::sequence_formula::SequenceFormulas {
+        mut pdag,
+        sequence_roots,
+        unconditional,
+        ie_frequency: _,
+    } = SequenceFormulaBuilder::new(model)
+        .with_event_tree_library(event_tree_library)
+        .build(event_tree, ie_frequency)
+        .map_err(|e| format!("Sequence formula construction failed for '{}': {}", event_tree.id, e))?;
+
+    let mut all_seq_ids: Vec<String> = sequence_roots.keys().cloned().collect();
+    for id in &unconditional {
+        if !sequence_roots.contains_key(id.as_str()) {
+            all_seq_ids.push(id.clone());
+        }
+    }
+    all_seq_ids.sort();
+
+    let mut sequences: Vec<EventTreeAnalyticSequence> = Vec::new();
+
+    for seq_id in &all_seq_ids {
+        if unconditional.contains(seq_id) {
+            let mut m = HashMap::new();
+            m.insert(0usize, 1u64);
+            sequences.push(EventTreeAnalyticSequence {
+                sequence_id: seq_id.clone(),
+                path: vec![],
+                probability: 1.0,
+                frequency: ie_frequency,
+                cut_sets: Vec::new(),
+                order_dist: m,
+            });
+            continue;
+        }
+        let Some(&root_idx) = sequence_roots.get(seq_id.as_str()) else {
+            sequences.push(EventTreeAnalyticSequence {
+                sequence_id: seq_id.clone(),
+                path: vec![],
+                probability: 0.0,
+                frequency: 0.0,
+                cut_sets: Vec::new(),
+                order_dist: HashMap::new(),
+            });
+            continue;
+        };
+
+        pdag.set_root(root_idx)
+            .map_err(|e| format!("BDD root error for '{}': {}", seq_id, e))?;
+        pdag.compute_ordering_and_modules()
+            .map_err(|e| format!("BDD ordering failed for '{}': {}", seq_id, e))?;
+        let (mut bdd, bdd_root) = BddEngine::build_from_pdag(&pdag)
+            .map_err(|e| format!("BDD build failed for '{}': {}", seq_id, e))?;
+
+        let exact_prob = bdd.probability(bdd_root);
+        bdd.freeze();
+
+        let event_names = event_names_from_pdag(&pdag);
+        let (zbdd, zbdd_root) =
+            ZbddEngine::build_from_bdd_with_limits(&bdd, bdd_root, false, limit_order, cut_off);
+
+        let order_dist = zbdd.count_by_order(zbdd_root);
+        let cut_sets = enumerate_cut_sets_et(&zbdd, zbdd_root, &event_names);
+
+        sequences.push(EventTreeAnalyticSequence {
+            sequence_id: seq_id.clone(),
+            path: vec![],
+            probability: exact_prob,
+            frequency: exact_prob * ie_frequency,
+            cut_sets,
+            order_dist,
+        });
+    }
+
+    Ok(sequences)
+}
+
+fn analytic_zbdd_wf4_approx_limits(
+    cli: &Args,
+    model: &praxis::core::model::Model,
+    event_tree: &praxis::core::event_tree::EventTree,
+    event_tree_library: &HashMap<String, praxis::core::event_tree::EventTree>,
+    _ie: &InitiatingEvent,
+    ie_frequency: f64,
+    _verbose: bool,
+) -> Result<Vec<EventTreeAnalyticSequence>, Box<dyn std::error::Error>> {
+    let limit_order = cli.limit_order.map(|n| n as usize);
+    let cut_off = cli.cut_off;
+
+    let praxis::analysis::sequence_formula::SequenceFormulas {
+        mut pdag,
+        sequence_roots,
+        unconditional,
+        ie_frequency: _,
+    } = SequenceFormulaBuilder::new(model)
+        .with_event_tree_library(event_tree_library)
+        .build(event_tree, ie_frequency)
+        .map_err(|e| format!("Sequence formula construction failed for '{}': {}", event_tree.id, e))?;
+
+    let mut all_seq_ids: Vec<String> = sequence_roots.keys().cloned().collect();
+    for id in &unconditional {
+        if !sequence_roots.contains_key(id.as_str()) {
+            all_seq_ids.push(id.clone());
+        }
+    }
+    all_seq_ids.sort();
+
+    let mut sequences: Vec<EventTreeAnalyticSequence> = Vec::new();
+
+    for seq_id in &all_seq_ids {
+        if unconditional.contains(seq_id) {
+            let mut m = HashMap::new();
+            m.insert(0usize, 1u64);
+            sequences.push(EventTreeAnalyticSequence {
+                sequence_id: seq_id.clone(),
+                path: vec![],
+                probability: 1.0,
+                frequency: ie_frequency,
+                cut_sets: Vec::new(),
+                order_dist: m,
+            });
+            continue;
+        }
+        let Some(&root_idx) = sequence_roots.get(seq_id.as_str()) else {
+            sequences.push(EventTreeAnalyticSequence {
+                sequence_id: seq_id.clone(),
+                path: vec![],
+                probability: 0.0,
+                frequency: 0.0,
+                cut_sets: Vec::new(),
+                order_dist: HashMap::new(),
+            });
+            continue;
+        };
+
+        pdag.set_root(root_idx)
+            .map_err(|e| format!("BDD root error for '{}': {}", seq_id, e))?;
+        pdag.compute_ordering_and_modules()
+            .map_err(|e| format!("BDD ordering failed for '{}': {}", seq_id, e))?;
+        let (mut bdd, bdd_root) = BddEngine::build_from_pdag(&pdag)
+            .map_err(|e| format!("BDD build failed for '{}': {}", seq_id, e))?;
+        bdd.freeze();
+
+        let (zbdd, zbdd_root) =
+            ZbddEngine::build_from_bdd_with_limits(&bdd, bdd_root, false, limit_order, cut_off);
+
+        let event_names = event_names_from_pdag(&pdag);
+        let approx_prob = compute_approx_et(&zbdd, zbdd_root, cli.approximation);
+        let order_dist = zbdd.count_by_order(zbdd_root);
+        let cut_sets = enumerate_cut_sets_et(&zbdd, zbdd_root, &event_names);
+
+        sequences.push(EventTreeAnalyticSequence {
+            sequence_id: seq_id.clone(),
+            path: vec![],
+            probability: approx_prob,
+            frequency: approx_prob * ie_frequency,
+            cut_sets,
+            order_dist,
+        });
+    }
+
+    Ok(sequences)
+}
+
+// ---------------------------------------------------------------------------
+// Monte Carlo event tree
+// ---------------------------------------------------------------------------
 
 fn run_monte_carlo_impl(
     cli: &Args,
@@ -399,6 +928,10 @@ pub fn run_monte_carlo_from_parsed(
     )
 }
 
+// ---------------------------------------------------------------------------
+// Analytic dispatcher (BDD and ZBDD)
+// ---------------------------------------------------------------------------
+
 fn run_analytic_impl(
     cli: &Args,
     model: praxis::core::model::Model,
@@ -448,109 +981,96 @@ fn run_analytic_impl(
             );
         }
 
-        let start = if verbose {
-            Some(std::time::Instant::now())
-        } else {
-            None
-        };
-
         let ie_frequency = ie.frequency.unwrap_or(1.0);
 
-        let praxis::analysis::sequence_formula::SequenceFormulas {
-            mut pdag,
-            sequence_roots,
-            unconditional,
-            ie_frequency: _,
-        } = SequenceFormulaBuilder::new(&model)
-            .with_event_tree_library(&event_tree_library)
-            .build(&event_tree, ie_frequency)
-            .map_err(|e| format!("Sequence formula construction failed for '{}': {}", event_tree.id, e))?;
+        let sequences: Vec<EventTreeAnalyticSequence> = if algorithm == Algorithm::Zbdd {
+            let has_limits = cli.limit_order.is_some() || cli.cut_off.is_some();
+            let has_approx = cli.approximation.is_some();
 
-        if let Some(t) = start {
-            eprintln!("Analytic execution time: {:.3}s", t.elapsed().as_secs_f64());
-        }
-
-        let mut all_seq_ids: Vec<String> = sequence_roots.keys().cloned().collect();
-        for id in &unconditional {
-            if !sequence_roots.contains_key(id.as_str()) {
-                all_seq_ids.push(id.clone());
+            match (has_approx, has_limits) {
+                (false, false) => analytic_zbdd_wf1_no_approx_no_limits(
+                    cli,
+                    &model,
+                    &event_tree,
+                    &event_tree_library,
+                    &ie,
+                    ie_frequency,
+                    verbose,
+                )?,
+                (true, false) => analytic_zbdd_wf2_approx_no_limits(
+                    cli,
+                    &model,
+                    &event_tree,
+                    &event_tree_library,
+                    &ie,
+                    ie_frequency,
+                    verbose,
+                )?,
+                (false, true) => analytic_zbdd_wf3_no_approx_limits(
+                    cli,
+                    &model,
+                    &event_tree,
+                    &event_tree_library,
+                    &ie,
+                    ie_frequency,
+                    verbose,
+                )?,
+                (true, true) => analytic_zbdd_wf4_approx_limits(
+                    cli,
+                    &model,
+                    &event_tree,
+                    &event_tree_library,
+                    &ie,
+                    ie_frequency,
+                    verbose,
+                )?,
             }
-        }
-        all_seq_ids.sort();
+        } else {
+            // BDD exact path
+            let praxis::analysis::sequence_formula::SequenceFormulas {
+                mut pdag,
+                sequence_roots,
+                unconditional,
+                ie_frequency: _,
+            } = SequenceFormulaBuilder::new(&model)
+                .with_event_tree_library(&event_tree_library)
+                .build(&event_tree, ie_frequency)
+                .map_err(|e| format!("Sequence formula construction failed for '{}': {}", event_tree.id, e))?;
 
-        let needs_zbdd = algorithm == Algorithm::Zbdd && cli.approximation.is_some();
-        let mut sequences: Vec<EventTreeAnalyticSequence> = Vec::new();
-
-        for seq_id in &all_seq_ids {
-            let mut current_cut_sets: Vec<CutSet> = Vec::new();
-            let mut order_dist: HashMap<usize, u64> = HashMap::new();
-            let probability = if unconditional.contains(seq_id) {
-                order_dist.insert(0, 1);
-                1.0
-            } else if let Some(&root_idx) = sequence_roots.get(seq_id.as_str()) {
-                pdag.set_root(root_idx)
-                    .map_err(|e| format!("BDD root error for '{}': {}", seq_id, e))?;
-                pdag.compute_ordering_and_modules()
-                    .map_err(|e| format!("BDD ordering failed for '{}': {}", seq_id, e))?;
-                let (mut bdd_engine, bdd_root) = BddEngine::build_from_pdag(&pdag)
-                    .map_err(|e| format!("BDD build failed for '{}': {}", seq_id, e))?;
-
-                if needs_zbdd {
-                    bdd_engine.freeze();
-                    let (mut zbdd, mut zbdd_root) =
-                        ZbddEngine::build_from_bdd(&bdd_engine, bdd_root, false);
-
-                    if let Some(max_order) = cli.limit_order {
-                        zbdd_root = zbdd.limit_order(zbdd_root, max_order as usize);
-                    }
-                    if let Some(cutoff) = cli.cut_off {
-                        zbdd_root = zbdd.prune_below_probability(zbdd_root, cutoff);
-                    }
-
-                    order_dist = zbdd.count_by_order(zbdd_root);
-
-                    let prob = match cli.approximation {
-                        Some(Approximation::RareEvent) => zbdd.rare_event_probability(zbdd_root),
-                        Some(Approximation::Mcub) => zbdd.min_cut_upper_bound_graph(zbdd_root),
-                        None => bdd_engine.probability(bdd_root),
-                    };
-
-                    if cli.output_file.is_some() {
-                        let var_order = pdag.variable_order().to_vec();
-                        current_cut_sets = zbdd
-                            .enumerate(zbdd_root)
-                            .iter()
-                            .map(|set| {
-                                CutSet::new(
-                                    set.iter()
-                                        .filter_map(|&pos| {
-                                            var_order
-                                                .get(pos)
-                                                .and_then(|&idx| pdag.node(idx))
-                                                .and_then(|n| n.id().map(|s| s.to_string()))
-                                        })
-                                        .collect(),
-                                )
-                            })
-                            .collect();
-                    }
-
-                    prob
-                } else {
-                    bdd_engine.probability(bdd_root)
+            let mut all_seq_ids: Vec<String> = sequence_roots.keys().cloned().collect();
+            for id in &unconditional {
+                if !sequence_roots.contains_key(id.as_str()) {
+                    all_seq_ids.push(id.clone());
                 }
-            } else {
-                0.0
-            };
-            sequences.push(EventTreeAnalyticSequence {
-                sequence_id: seq_id.clone(),
-                path: vec![],
-                probability,
-                frequency: probability * ie_frequency,
-                cut_sets: current_cut_sets,
-                order_dist,
-            });
-        }
+            }
+            all_seq_ids.sort();
+
+            let mut seqs: Vec<EventTreeAnalyticSequence> = Vec::new();
+            for seq_id in &all_seq_ids {
+                let probability = if unconditional.contains(seq_id) {
+                    1.0
+                } else if let Some(&root_idx) = sequence_roots.get(seq_id.as_str()) {
+                    pdag.set_root(root_idx)
+                        .map_err(|e| format!("BDD root error for '{}': {}", seq_id, e))?;
+                    pdag.compute_ordering_and_modules()
+                        .map_err(|e| format!("BDD ordering failed for '{}': {}", seq_id, e))?;
+                    let (bdd, bdd_root) = BddEngine::build_from_pdag(&pdag)
+                        .map_err(|e| format!("BDD build failed for '{}': {}", seq_id, e))?;
+                    bdd.probability(bdd_root)
+                } else {
+                    0.0
+                };
+                seqs.push(EventTreeAnalyticSequence {
+                    sequence_id: seq_id.clone(),
+                    path: vec![],
+                    probability,
+                    frequency: probability * ie_frequency,
+                    cut_sets: Vec::new(),
+                    order_dist: HashMap::new(),
+                });
+            }
+            seqs
+        };
 
         if cli.print || verbose {
             println!("\n=== Event Tree Analytic Results ===");

@@ -227,10 +227,12 @@ impl Bdd {
         BddRef(idx)
     }
 
+    #[cfg(test)]
     pub(crate) fn prob_cache_get(&self, f: BddRef) -> Option<f64> {
         self.prob_cache.get(&f.regular()).copied()
     }
 
+    #[cfg(test)]
     pub(crate) fn prob_cache_insert(&mut self, f: BddRef, p: f64) {
         self.prob_cache.insert(f.regular(), p);
     }
@@ -399,6 +401,52 @@ impl Bdd {
         let is_neg = f.is_complement();
         let p_hi = self.prob_inner(if is_neg { node.high.complement() } else { node.high }, cache);
         let p_lo = self.prob_inner(if is_neg { node.low.complement() } else { node.low }, cache);
+        let p = p_var * p_hi + (1.0 - p_var) * p_lo;
+        cache.insert(key, p);
+        p
+    }
+
+    pub fn probability_with_limits(
+        &self,
+        root: BddRef,
+        limit_order: Option<usize>,
+        cut_off: Option<f64>,
+    ) -> f64 {
+        let mut cache = HashMap::new();
+        self.prob_inner_limits(root, 0, 1.0, limit_order, cut_off, &mut cache)
+    }
+
+    fn prob_inner_limits(
+        &self,
+        f: BddRef,
+        depth: usize,
+        p_acc: f64,
+        limit_order: Option<usize>,
+        cut_off: Option<f64>,
+        cache: &mut HashMap<(i32, usize, u64), f64>,
+    ) -> f64 {
+        if f.is_true() { return 1.0; }
+        if f.is_false() { return 0.0; }
+        let depth_key = if limit_order.is_some() { depth } else { 0 };
+        let p_key    = if cut_off.is_some() { p_acc.to_bits() } else { 0 };
+        let key = (f.raw(), depth_key, p_key);
+        if let Some(&p) = cache.get(&key) { return p; }
+        let node = self.node(f.regular());
+        let p_var = self.var_probs[node.var];
+        let is_neg = f.is_complement();
+        let (hi_child, lo_child) = if is_neg {
+            (node.high.complement(), node.low.complement())
+        } else {
+            (node.high, node.low)
+        };
+        let pruned_by_order  = limit_order.is_some_and(|n| depth >= n);
+        let pruned_by_cutoff = cut_off.is_some_and(|c| p_acc * p_var < c);
+        let p_hi = if pruned_by_order || pruned_by_cutoff {
+            0.0
+        } else {
+            self.prob_inner_limits(hi_child, depth + 1, p_acc * p_var, limit_order, cut_off, cache)
+        };
+        let p_lo = self.prob_inner_limits(lo_child, depth, p_acc, limit_order, cut_off, cache);
         let p = p_var * p_hi + (1.0 - p_var) * p_lo;
         cache.insert(key, p);
         p
