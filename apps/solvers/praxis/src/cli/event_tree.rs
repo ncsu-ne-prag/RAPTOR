@@ -616,6 +616,28 @@ fn run_monte_carlo_impl(
     };
 
     let pairs = select_event_trees_to_run(&initiating_events, &event_trees)?;
+
+    if cli.visualize {
+        let graphviz_ok = praxis::analysis::visualize::graphviz_available();
+        if !graphviz_ok {
+            eprintln!("Warning: Graphviz 'dot' not found in PATH. SVG output skipped.");
+        }
+        for (ie, event_tree) in &pairs {
+            let et_dot = praxis::analysis::visualize::generate_event_tree_dot(event_tree, &ie.id);
+            if cli.visualize_stdout {
+                println!("{}", et_dot);
+            }
+            if graphviz_ok {
+                let tree_path = cli.visualize_out_dir.join(format!("{}_tree.svg", event_tree.id));
+                if let Err(e) = praxis::analysis::visualize::save_svg(&et_dot, &tree_path) {
+                    eprintln!("Warning: Failed to save event tree diagram: {}", e);
+                } else if verbose {
+                    eprintln!("Saved event tree diagram to {}", tree_path.display());
+                }
+            }
+        }
+    }
+
     for (ie, event_tree) in pairs {
         let backend = cli.backend.unwrap_or(Backend::Cpu);
         let explicit_params: Option<RunParams> = if cli.optimize || auto_cuda_num_trials {
@@ -982,6 +1004,23 @@ fn run_analytic_impl(
         }
 
         let ie_frequency = ie.frequency.unwrap_or(1.0);
+
+        if cli.visualize {
+            let et_dot = praxis::analysis::visualize::generate_event_tree_dot(&event_tree, &ie.id);
+            if cli.visualize_stdout {
+                println!("{}", et_dot);
+            }
+            if praxis::analysis::visualize::graphviz_available() {
+                let tree_path = cli.visualize_out_dir.join(format!("{}_tree.svg", event_tree.id));
+                if let Err(e) = praxis::analysis::visualize::save_svg(&et_dot, &tree_path) {
+                    eprintln!("Warning: Failed to save event tree diagram: {}", e);
+                } else if verbose {
+                    eprintln!("Saved event tree diagram to {}", tree_path.display());
+                }
+            } else {
+                eprintln!("Warning: Graphviz 'dot' not found in PATH. SVG output skipped.");
+            }
+        }
 
         let sequences: Vec<EventTreeAnalyticSequence> = if algorithm == Algorithm::Zbdd {
             let has_limits = cli.limit_order.is_some() || cli.cut_off.is_some();

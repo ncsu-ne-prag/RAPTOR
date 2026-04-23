@@ -7,3 +7,4 @@ pub mod prime_implicants;
 pub mod settings;
 pub mod sil;
 pub mod uncertainty;
+pub mod visualize;

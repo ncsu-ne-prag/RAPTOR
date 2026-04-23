@@ -37,6 +37,7 @@ openpra/
 ├── apps/        # Source code for all applications
 ├── deploy/      # Deployment scripts and infrastructure configuration
 ├── docs/        # Documentation for all applications
+├── fixtures/    # Test files that have known outputs
 ├── .ci/         # CI/CD pipeline configuration
 └── <configs>    # Project-wide configuration files (linting, formatting, build, etc.)
 ```
