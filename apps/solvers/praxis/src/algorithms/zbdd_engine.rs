@@ -420,36 +420,48 @@ impl ZbddEngine {
     }
 
     pub fn stats_by_order(&self, root: ZbddRef) -> HashMap<usize, (u64, f64, f64)> {
-        let mut stats: HashMap<usize, (u64, f64, f64)> = HashMap::new();
-        self.stats_rec(root, 0, 1.0, &mut stats);
-        stats
+        let mut cache: HashMap<ZbddRef, HashMap<usize, (u64, f64, f64)>> = HashMap::new();
+        self.stats_by_order_rec(root, &mut cache)
     }
 
-    fn stats_rec(
+    fn stats_by_order_rec(
         &self,
         f: ZbddRef,
-        order: usize,
-        p_acc: f64,
-        stats: &mut HashMap<usize, (u64, f64, f64)>,
-    ) {
-        if f.is_empty() {
-            return;
+        cache: &mut HashMap<ZbddRef, HashMap<usize, (u64, f64, f64)>>,
+    ) -> HashMap<usize, (u64, f64, f64)> {
+        if let Some(cached) = cache.get(&f) {
+            return cached.clone();
         }
-        if f.is_base() {
-            let e = stats.entry(order).or_insert((0, f64::INFINITY, f64::NEG_INFINITY));
-            e.0 += 1;
-            if p_acc < e.1 {
-                e.1 = p_acc;
+        let result = if f.is_empty() {
+            HashMap::new()
+        } else if f.is_base() {
+            let mut m = HashMap::new();
+            m.insert(0usize, (1u64, 1.0f64, 1.0f64));
+            m
+        } else {
+            let node = self.node(f);
+            let p_var = self.var_probs[node.var];
+            let high_stats = self.stats_by_order_rec(node.high, cache);
+            let low_stats = self.stats_by_order_rec(node.low, cache);
+            let mut merged = low_stats;
+            for (order, (count, min_p, max_p)) in high_stats {
+                let e = merged
+                    .entry(order + 1)
+                    .or_insert((0, f64::INFINITY, f64::NEG_INFINITY));
+                e.0 += count;
+                let scaled_min = min_p * p_var;
+                let scaled_max = max_p * p_var;
+                if scaled_min < e.1 {
+                    e.1 = scaled_min;
+                }
+                if scaled_max > e.2 {
+                    e.2 = scaled_max;
+                }
             }
-            if p_acc > e.2 {
-                e.2 = p_acc;
-            }
-            return;
-        }
-        let node = self.node(f);
-        let p_var = self.var_probs[node.var];
-        self.stats_rec(node.high, order + 1, p_acc * p_var, stats);
-        self.stats_rec(node.low, order, p_acc, stats);
+            merged
+        };
+        cache.insert(f, result.clone());
+        result
     }
 
     pub fn rare_event_probability(&self, root: ZbddRef) -> f64 {
