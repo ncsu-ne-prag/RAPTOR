@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE xfta>
+<xfta>
+<load>
+<model input="/home/bench/ft-bench/models/models3/xfta/ft-openpsa-81Gates.xml" />
+</load>
+<build>
+<minimal-cutsets top-event="g1" handle="MCS" minimum-probability="1.0e-20" />
+</build>
+<compute>
+<probability top-event="g1" handle="MCS" output="/dev/fd/1" />
+<importance-factors top-event="g1" handle="MCS" output="/dev/fd/1" />
+</compute>
+</xfta>

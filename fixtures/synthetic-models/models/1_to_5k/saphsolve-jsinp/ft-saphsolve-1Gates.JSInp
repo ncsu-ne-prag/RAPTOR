@@ -1,0 +1,163 @@
+{
+    "version": "1.0",
+    "saphiresolveinput": {
+        "header": {
+            "projectpath": " ",
+            "eventtree": {
+                "name": " ",
+                "number": 0,
+                "initevent": 0,
+                "seqphase": 1
+            },
+            "flagnum": 0,
+            "ftcount": 1,
+            "fthigh": 11,
+            "sqcount": 0,
+            "sqhigh": 0,
+            "becount": 6,
+            "behigh": 100000,
+            "mthigh": 1,
+            "phhigh": 1,
+            "truncparam": {
+                "ettruncopt": "NormalProbCutOff",
+                "fttruncopt": "GlobalProbCutOff",
+                "sizeopt": "ENoTrunc",
+                "ettruncval": 1e-20,
+                "fttruncval": 1e-20,
+                "sizeval": 99,
+                "transrepl": false,
+                "transzones": false,
+                "translevel": 0,
+                "usedual": false,
+                "dualcutoff": 0.0
+            },
+            "workspacepair": {
+                "ph": 1,
+                "mt": 1
+            },
+            "iworkspacepair": {
+                "ph": 1,
+                "mt": 1
+            }
+        },
+        "sysgatelist": [
+            {
+                "name": "FT-Top-Event",
+                "id": 11,
+                "gateid": 1,
+                "gateorig": 1,
+                "gatepos": 0,
+                "eventid": 99,
+                "gatecomp": 1,
+                "comppos": 0,
+                "compflag": " ",
+                "gateflag": " ",
+                "gatet": " ",
+                "bddsuccess": false,
+                "done": false
+            }
+        ],
+        "faulttreelist": [
+            {
+                "ftheader": {
+                    "ftid": 11,
+                    "gtid": 1,
+                    "evid": 99,
+                    "defflag": 0,
+                    "numgates": 1
+                },
+                "gatelist": [
+                    {
+                        "gateid": 1,
+                        "gatetype": "and",
+                        "numinputs": 2,
+                        "eventinput": [
+                            100,
+                            100000
+                        ]
+                    }
+                ]
+            }
+        ],
+        "eventlist": [
+            {
+                "id": "1",
+                "corrgate": "0",
+                "name": "<TRUE>",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 1.0,
+                "initf": " ",
+                "processf": " ",
+                "calctype": "1"
+            },
+            {
+                "id": "2",
+                "corrgate": "0",
+                "name": "<FALSE>",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.0,
+                "initf": " ",
+                "processf": " ",
+                "calctype": "1"
+            },
+            {
+                "id": "3",
+                "corrgate": "0",
+                "name": "<PASS>",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 1.0,
+                "initf": " ",
+                "processf": " ",
+                "calctype": "1"
+            },
+            {
+                "id": 99,
+                "corrgate": 1,
+                "name": "FT-Top-Event",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 1,
+                "initf": " ",
+                "processf": " ",
+                "calctype": "1"
+            },
+            {
+                "id": 100,
+                "corrgate": 0,
+                "name": "100",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 100000,
+                "corrgate": 0,
+                "name": "100000",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            }
+        ]
+    }
+}

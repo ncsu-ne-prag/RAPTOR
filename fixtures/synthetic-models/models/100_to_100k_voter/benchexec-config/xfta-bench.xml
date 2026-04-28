@@ -1,0 +1,14 @@
+<!DOCTYPE benchmark PUBLIC "+//IDN sosy-lab.org//DTD BenchExec benchmark 2.3//EN" "https://www.sosy-lab.org/benchexec/benchmark-2.2.3dtd">
+<benchmark tool="xfta"
+           timelimit="15min"
+           memlimit="63 GB"
+           cpuCores="1"
+           threads="1"
+>
+  <rundefinition name="xfta">
+  </rundefinition>
+
+  <tasks name="combined-and-or">
+    <includesfile>/home/bench/ft-bench/trees/ft-generated/config-xfta.txt</includesfile>
+  </tasks>
+</benchmark>

@@ -75,3 +75,5 @@ fixtures/results/
 
 # FTREX sensitive files
 apps/solvers/ftrex
+apps/solvers/zebra
+apps/solvers/saphsolve

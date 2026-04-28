@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='ASCII'?>
+<opsa-mef>
+  <define-fault-tree name="default">
+    <define-gate name="E18867">
+      <label>GSIG172-LPI2</label>
+      <or>
+        <event name="E3853"/>
+        <event name="E3854"/>
+        <event name="E3855"/>
+        <event name="E3856"/>
+        <event name="E3857"/>
+        <event name="E3859"/>
+        <event name="E3866"/>
+        <event name="E3867"/>
+        <event name="E3868"/>
+      </or>
+    </define-gate>
+  </define-fault-tree>
+  <model-data>
+    <define-basic-event name="E3853">
+      <label>AXV07C-3HQI0</label>
+      <float value="7.199997e-07"/>
+    </define-basic-event>
+    <define-basic-event name="E3854">
+      <label>AYS-6529HEI0</label>
+      <float value="7.439972e-06"/>
+    </define-basic-event>
+    <define-basic-event name="E3855">
+      <label>APV-6529DWI0</label>
+      <float value="0.002"/>
+    </define-basic-event>
+    <define-basic-event name="E3856">
+      <label>AXV11150HQI0</label>
+      <float value="7.199997e-07"/>
+    </define-basic-event>
+    <define-basic-event name="E3857">
+      <label>ATK0T116HFI0</label>
+      <float value="4.367999e-07"/>
+    </define-basic-event>
+    <define-basic-event name="E3859">
+      <label>AXV23339HQI2</label>
+      <float value="7.199997e-07"/>
+    </define-basic-event>
+    <define-basic-event name="E3866">
+      <label>AXV1153AHQI0</label>
+      <float value="7.199997e-07"/>
+    </define-basic-event>
+    <define-basic-event name="E3867">
+      <label>APV7651ADWI0</label>
+      <float value="0.002"/>
+    </define-basic-event>
+    <define-basic-event name="E3868">
+      <label>AXV1154AHQI0</label>
+      <float value="7.199997e-07"/>
+    </define-basic-event>
+  </model-data>
+</opsa-mef>

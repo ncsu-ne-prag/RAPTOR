@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='ASCII'?>
+<opsa-mef>
+  <define-fault-tree name="default">
+    <define-gate name="E61906">
+      <label>GDAM141C-TR</label>
+      <atleast min="2">
+        <event name="E2649"/>
+        <event name="E2647"/>
+        <event name="E61907"/>
+        <event name="E2642"/>
+      </atleast>
+    </define-gate>
+  </define-fault-tree>
+  <model-data>
+    <define-basic-event name="E61907">
+      <label>EDC3AFACTOR</label>
+      <float value="0.25"/>
+    </define-basic-event>
+    <define-basic-event name="E2647">
+      <label>EDC2BFACTOR</label>
+      <float value="0.25"/>
+    </define-basic-event>
+    <define-basic-event name="E2642">
+      <label>EDC3BFACTOR</label>
+      <float value="0.25"/>
+    </define-basic-event>
+    <define-basic-event name="E2649">
+      <label>EDC2AFACTOR</label>
+      <float value="0.25"/>
+    </define-basic-event>
+  </model-data>
+</opsa-mef>

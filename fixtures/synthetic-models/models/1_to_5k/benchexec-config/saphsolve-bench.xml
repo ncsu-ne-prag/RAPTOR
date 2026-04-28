@@ -1,0 +1,13 @@
+<!DOCTYPE benchmark PUBLIC "+//IDN sosy-lab.org//DTD BenchExec benchmark 2.3//EN" "https://www.sosy-lab.org/benchexec/benchmark-2.2.3dtd">
+<benchmark tool="saphsolve"
+           timelimit="15min"
+           memlimit="63 GB"
+           cpuCores="1"
+           threads="1">
+  <rundefinition name="saphsolve">
+  </rundefinition>
+
+  <tasks name="combined-and-or">
+    <includesfile>/home/bench/ft-bench/models/models3/saphsolve/saphsolve.txt</includesfile>
+  </tasks>
+</benchmark>

@@ -1,0 +1,3529 @@
+<?xml version="1.0"?>
+<!--
+This is a description of the auto-generated fault tree
+with the following parameters:
+
+The fault tree name: BE_600_1
+The root gate name: root
+
+The seed of the random number generator: 123
+The number of basic events: 600
+The number of house events: 0
+The number of CCF groups: 2
+The average number of gate arguments: 10.0
+The weights of gate types [AND, OR, K/N, NOT, XOR]: [1.0, 1.0, 1.0, 0.0, 0.0]
+Percentage of common basic events per gate: 0.5
+Percentage of common gates per gate: 0.3
+The avg. number of parents for common basic events: 5
+The avg. number of parents for common gates: 5
+Maximum probability for basic events: 0.05
+Minimum probability for basic events: 0.01
+-->
+<!--
+The generated fault tree has the following metrics:
+
+The number of basic events: 600
+The number of house events: 0
+The number of CCF groups: 2
+The number of gates: 117
+    AND gates: 35
+    OR gates: 37
+    K/N gates: 45
+    NOT gates: 0
+    XOR gates: 0
+Basic events to gates ratio: 5.128205128205129
+The average number of gate arguments: 10.333333333333334
+The number of common basic events: 99
+The number of common gates: 8
+Percentage of common basic events per gate: 0.5140661451558888
+Percentage of common gates per gate: 0.36363636363636365
+Percentage of arguments that are basic events per gate: 0.8592554699643686
+The avg. number of parents for common basic events: 5.494949494949495
+The avg. number of parents for common gates: 7.0
+-->
+
+<opsa-mef>
+<define-fault-tree name="BE_600_1">
+<define-gate name="root">
+<and>
+<basic-event name="B16"/>
+<basic-event name="B70"/>
+<basic-event name="B68"/>
+<basic-event name="B100"/>
+<basic-event name="B40"/>
+<basic-event name="B101"/>
+<basic-event name="B17"/>
+<basic-event name="B102"/>
+<gate name="G6"/>
+</and>
+</define-gate>
+<define-gate name="G6">
+<atleast min="5">
+<basic-event name="B37"/>
+<basic-event name="B107"/>
+<basic-event name="B95"/>
+<basic-event name="B108"/>
+<basic-event name="B106"/>
+<basic-event name="B103"/>
+<basic-event name="B73"/>
+<basic-event name="B46"/>
+<basic-event name="B72"/>
+<basic-event name="B109"/>
+<basic-event name="B105"/>
+<basic-event name="B104"/>
+<gate name="G11"/>
+<gate name="G7"/>
+</atleast>
+</define-gate>
+<define-gate name="G11">
+<or>
+<basic-event name="B114"/>
+<basic-event name="B79"/>
+<basic-event name="B112"/>
+<basic-event name="B89"/>
+<basic-event name="B7"/>
+<basic-event name="B61"/>
+<basic-event name="B6"/>
+<basic-event name="B113"/>
+<basic-event name="B111"/>
+<gate name="G12"/>
+<gate name="G40"/>
+</or>
+</define-gate>
+<define-gate name="G40">
+<atleast min="3">
+<basic-event name="B75"/>
+<basic-event name="B273"/>
+<basic-event name="B26"/>
+<basic-event name="B274"/>
+<basic-event name="B272"/>
+<basic-event name="B41"/>
+<basic-event name="B51"/>
+<basic-event name="B271"/>
+<basic-event name="B24"/>
+<basic-event name="B83"/>
+<basic-event name="B82"/>
+<basic-event name="B270"/>
+<basic-event name="B275"/>
+<basic-event name="B81"/>
+<basic-event name="B269"/>
+<basic-event name="B70"/>
+<gate name="G41"/>
+<gate name="G42"/>
+</atleast>
+</define-gate>
+<define-gate name="G42">
+<and>
+<basic-event name="B96"/>
+<basic-event name="B281"/>
+<basic-event name="B37"/>
+<basic-event name="B21"/>
+<basic-event name="B280"/>
+<basic-event name="B7"/>
+<basic-event name="B279"/>
+<basic-event name="B40"/>
+<basic-event name="B13"/>
+<basic-event name="B278"/>
+<basic-event name="B45"/>
+<basic-event name="B8"/>
+<gate name="G47"/>
+<gate name="G5"/>
+<gate name="G10"/>
+<gate name="G3"/>
+</and>
+</define-gate>
+<define-gate name="G47">
+<atleast min="10">
+<basic-event name="B307"/>
+<basic-event name="B69"/>
+<basic-event name="B53"/>
+<basic-event name="B42"/>
+<basic-event name="B58"/>
+<basic-event name="B79"/>
+<basic-event name="B306"/>
+<basic-event name="B84"/>
+<basic-event name="B95"/>
+<basic-event name="B305"/>
+<basic-event name="B304"/>
+<basic-event name="B61"/>
+<basic-event name="B77"/>
+<basic-event name="B98"/>
+<basic-event name="B303"/>
+<basic-event name="B308"/>
+<basic-event name="B33"/>
+<basic-event name="B302"/>
+</atleast>
+</define-gate>
+<define-gate name="G41">
+<atleast min="12">
+<basic-event name="B27"/>
+<basic-event name="B5"/>
+<basic-event name="B277"/>
+<basic-event name="B276"/>
+<basic-event name="B9"/>
+<basic-event name="B14"/>
+<basic-event name="B78"/>
+<basic-event name="B72"/>
+<basic-event name="B17"/>
+<gate name="G43"/>
+<gate name="G46"/>
+<gate name="G44"/>
+<gate name="G45"/>
+</atleast>
+</define-gate>
+<define-gate name="G45">
+<atleast min="12">
+<basic-event name="B291"/>
+<basic-event name="B290"/>
+<basic-event name="B15"/>
+<basic-event name="B31"/>
+<basic-event name="B295"/>
+<basic-event name="B73"/>
+<basic-event name="B289"/>
+<basic-event name="B294"/>
+<basic-event name="B67"/>
+<basic-event name="B293"/>
+<basic-event name="B3"/>
+<basic-event name="B292"/>
+<basic-event name="B17"/>
+<gate name="G49"/>
+<gate name="G60"/>
+</atleast>
+</define-gate>
+<define-gate name="G60">
+<and>
+<basic-event name="B370"/>
+<basic-event name="B369"/>
+<basic-event name="B78"/>
+<basic-event name="B373"/>
+<basic-event name="B372"/>
+<basic-event name="B87"/>
+<basic-event name="B28"/>
+<basic-event name="B371"/>
+<gate name="G7"/>
+<gate name="G5"/>
+<gate name="G61"/>
+</and>
+</define-gate>
+<define-gate name="G61">
+<or>
+<basic-event name="B380"/>
+<basic-event name="B375"/>
+<basic-event name="B80"/>
+<basic-event name="B16"/>
+<basic-event name="B379"/>
+<basic-event name="B52"/>
+<basic-event name="B374"/>
+<basic-event name="B378"/>
+<basic-event name="B46"/>
+<basic-event name="B382"/>
+<basic-event name="B377"/>
+<basic-event name="B39"/>
+<basic-event name="B81"/>
+<basic-event name="B381"/>
+<basic-event name="B376"/>
+<gate name="G63"/>
+<gate name="G62"/>
+</or>
+</define-gate>
+<define-gate name="G62">
+<atleast min="2">
+<basic-event name="B53"/>
+<basic-event name="B58"/>
+<basic-event name="B26"/>
+<basic-event name="B383"/>
+<basic-event name="B88"/>
+</atleast>
+</define-gate>
+<define-gate name="G63">
+<and>
+<basic-event name="B59"/>
+<basic-event name="B385"/>
+<basic-event name="B90"/>
+<basic-event name="B384"/>
+<basic-event name="B51"/>
+<basic-event name="B387"/>
+<basic-event name="B386"/>
+<basic-event name="B12"/>
+<gate name="G65"/>
+<gate name="G64"/>
+</and>
+</define-gate>
+<define-gate name="G64">
+<or>
+<basic-event name="B5"/>
+<basic-event name="B92"/>
+<basic-event name="B389"/>
+<basic-event name="B72"/>
+<basic-event name="B29"/>
+<basic-event name="B388"/>
+<basic-event name="B66"/>
+<basic-event name="B39"/>
+<basic-event name="B28"/>
+</or>
+</define-gate>
+<define-gate name="G65">
+<and>
+<basic-event name="B16"/>
+<basic-event name="B50"/>
+</and>
+</define-gate>
+<define-gate name="G49">
+<or>
+<basic-event name="B312"/>
+<basic-event name="B316"/>
+<basic-event name="B15"/>
+<basic-event name="B315"/>
+<basic-event name="B314"/>
+<basic-event name="B60"/>
+<basic-event name="B93"/>
+<basic-event name="B313"/>
+<gate name="G53"/>
+<gate name="G51"/>
+<gate name="G52"/>
+</or>
+</define-gate>
+<define-gate name="G52">
+<and>
+<basic-event name="B326"/>
+<basic-event name="B330"/>
+<basic-event name="B334"/>
+<basic-event name="B329"/>
+<basic-event name="B30"/>
+<basic-event name="B1"/>
+<basic-event name="B328"/>
+<basic-event name="B333"/>
+<basic-event name="B45"/>
+<basic-event name="B332"/>
+<basic-event name="B327"/>
+<basic-event name="B33"/>
+<basic-event name="B331"/>
+<gate name="G55"/>
+<gate name="G54"/>
+</and>
+</define-gate>
+<define-gate name="G54">
+<or>
+<basic-event name="B43"/>
+<basic-event name="B346"/>
+<basic-event name="B345"/>
+<basic-event name="B95"/>
+<basic-event name="B36"/>
+<basic-event name="B349"/>
+<basic-event name="B344"/>
+<basic-event name="B6"/>
+<basic-event name="B348"/>
+<basic-event name="B81"/>
+<basic-event name="B347"/>
+<gate name="G56"/>
+</or>
+</define-gate>
+<define-gate name="G56">
+<atleast min="11">
+<basic-event name="B356"/>
+<basic-event name="B37"/>
+<basic-event name="B361"/>
+<basic-event name="B74"/>
+<basic-event name="B355"/>
+<basic-event name="B52"/>
+<basic-event name="B360"/>
+<basic-event name="B57"/>
+<basic-event name="B30"/>
+<basic-event name="B359"/>
+<basic-event name="B358"/>
+<basic-event name="B65"/>
+<basic-event name="B357"/>
+<gate name="G58"/>
+<gate name="G4"/>
+</atleast>
+</define-gate>
+<define-gate name="G58">
+<and>
+<basic-event name="B366"/>
+<basic-event name="B367"/>
+<gate name="G7"/>
+</and>
+</define-gate>
+<define-gate name="G55">
+<atleast min="9">
+<basic-event name="B91"/>
+<basic-event name="B351"/>
+<basic-event name="B350"/>
+<basic-event name="B354"/>
+<basic-event name="B93"/>
+<basic-event name="B353"/>
+<basic-event name="B66"/>
+<basic-event name="B352"/>
+<basic-event name="B22"/>
+<gate name="G57"/>
+</atleast>
+</define-gate>
+<define-gate name="G57">
+<and>
+<basic-event name="B365"/>
+<basic-event name="B364"/>
+<basic-event name="B363"/>
+<basic-event name="B23"/>
+<basic-event name="B86"/>
+<basic-event name="B362"/>
+<gate name="G7"/>
+</and>
+</define-gate>
+<define-gate name="G51">
+<and>
+<basic-event name="B32"/>
+<basic-event name="B16"/>
+<basic-event name="B325"/>
+<basic-event name="B36"/>
+<basic-event name="B30"/>
+<basic-event name="B324"/>
+<basic-event name="B323"/>
+<basic-event name="B50"/>
+<basic-event name="B66"/>
+<basic-event name="B322"/>
+</and>
+</define-gate>
+<define-gate name="G53">
+<and>
+<basic-event name="B91"/>
+<basic-event name="B336"/>
+<basic-event name="B341"/>
+<basic-event name="B335"/>
+<basic-event name="B21"/>
+<basic-event name="B79"/>
+<basic-event name="B340"/>
+<basic-event name="B2"/>
+<basic-event name="B339"/>
+<basic-event name="B338"/>
+<basic-event name="B82"/>
+<basic-event name="B343"/>
+<basic-event name="B76"/>
+<basic-event name="B337"/>
+<basic-event name="B342"/>
+<gate name="G7"/>
+</and>
+</define-gate>
+<define-gate name="G44">
+<atleast min="6">
+<basic-event name="B16"/>
+<basic-event name="B48"/>
+<basic-event name="B80"/>
+<basic-event name="B285"/>
+<basic-event name="B286"/>
+<basic-event name="B68"/>
+<basic-event name="B25"/>
+<basic-event name="B284"/>
+<basic-event name="B88"/>
+<basic-event name="B18"/>
+<basic-event name="B288"/>
+<basic-event name="B44"/>
+<basic-event name="B287"/>
+<basic-event name="B86"/>
+<gate name="G4"/>
+</atleast>
+</define-gate>
+<define-gate name="G46">
+<or>
+<basic-event name="B91"/>
+<basic-event name="B48"/>
+<basic-event name="B296"/>
+<basic-event name="B301"/>
+<basic-event name="B47"/>
+<basic-event name="B79"/>
+<basic-event name="B300"/>
+<basic-event name="B299"/>
+<basic-event name="B98"/>
+<basic-event name="B298"/>
+<basic-event name="B297"/>
+<gate name="G9"/>
+</or>
+</define-gate>
+<define-gate name="G43">
+<or>
+<basic-event name="B15"/>
+<basic-event name="B36"/>
+<basic-event name="B73"/>
+<basic-event name="B14"/>
+<basic-event name="B51"/>
+<basic-event name="B24"/>
+<basic-event name="B1"/>
+<basic-event name="B283"/>
+<basic-event name="B34"/>
+<basic-event name="B28"/>
+<basic-event name="B282"/>
+<gate name="G48"/>
+</or>
+</define-gate>
+<define-gate name="G48">
+<and>
+<basic-event name="B311"/>
+<basic-event name="B52"/>
+<basic-event name="B68"/>
+<basic-event name="B25"/>
+<basic-event name="B310"/>
+<basic-event name="B62"/>
+<basic-event name="B51"/>
+<basic-event name="B309"/>
+<basic-event name="B92"/>
+<gate name="G2"/>
+<gate name="G50"/>
+</and>
+</define-gate>
+<define-gate name="G50">
+<or>
+<basic-event name="B321"/>
+<basic-event name="B96"/>
+<basic-event name="B64"/>
+<basic-event name="B320"/>
+<basic-event name="B15"/>
+<basic-event name="B20"/>
+<basic-event name="B319"/>
+<basic-event name="B51"/>
+<basic-event name="B318"/>
+<basic-event name="B77"/>
+<basic-event name="B317"/>
+</or>
+</define-gate>
+<define-gate name="G12">
+<atleast min="5">
+<basic-event name="B119"/>
+<basic-event name="B31"/>
+<basic-event name="B41"/>
+<basic-event name="B57"/>
+<basic-event name="B120"/>
+<basic-event name="B34"/>
+<basic-event name="B118"/>
+<basic-event name="B23"/>
+<basic-event name="B121"/>
+<gate name="G14"/>
+<gate name="G13"/>
+</atleast>
+</define-gate>
+<define-gate name="G13">
+<or>
+<basic-event name="B126"/>
+<basic-event name="B125"/>
+<basic-event name="B24"/>
+<basic-event name="B124"/>
+<basic-event name="B3"/>
+<basic-event name="B65"/>
+<basic-event name="B38"/>
+<gate name="G5"/>
+</or>
+</define-gate>
+<define-gate name="G5">
+<or>
+<basic-event name="B80"/>
+<basic-event name="B96"/>
+<basic-event name="B90"/>
+<basic-event name="B2"/>
+<basic-event name="B92"/>
+<basic-event name="B14"/>
+<basic-event name="B131"/>
+<basic-event name="B130"/>
+<basic-event name="B129"/>
+<basic-event name="B49"/>
+<basic-event name="B132"/>
+<gate name="G15"/>
+<gate name="G17"/>
+<gate name="G8"/>
+<gate name="G16"/>
+</or>
+</define-gate>
+<define-gate name="G16">
+<atleast min="4">
+<basic-event name="B155"/>
+<basic-event name="B150"/>
+<basic-event name="B154"/>
+<basic-event name="B153"/>
+<basic-event name="B25"/>
+<basic-event name="B19"/>
+<basic-event name="B152"/>
+<basic-event name="B66"/>
+<basic-event name="B151"/>
+<basic-event name="B156"/>
+<basic-event name="B97"/>
+<gate name="G24"/>
+</atleast>
+</define-gate>
+<define-gate name="G24">
+<and>
+<basic-event name="B195"/>
+<basic-event name="B58"/>
+<basic-event name="B31"/>
+<basic-event name="B47"/>
+<basic-event name="B194"/>
+<basic-event name="B193"/>
+<basic-event name="B192"/>
+<basic-event name="B196"/>
+<gate name="G29"/>
+<gate name="G28"/>
+</and>
+</define-gate>
+<define-gate name="G28">
+<and>
+<basic-event name="B214"/>
+<basic-event name="B74"/>
+<basic-event name="B213"/>
+<basic-event name="B93"/>
+<basic-event name="B18"/>
+<basic-event name="B216"/>
+<basic-event name="B215"/>
+</and>
+</define-gate>
+<define-gate name="G29">
+<atleast min="13">
+<basic-event name="B4"/>
+<basic-event name="B64"/>
+<basic-event name="B219"/>
+<basic-event name="B10"/>
+<basic-event name="B218"/>
+<basic-event name="B57"/>
+<basic-event name="B217"/>
+<basic-event name="B19"/>
+<basic-event name="B35"/>
+<basic-event name="B29"/>
+<basic-event name="B98"/>
+<basic-event name="B60"/>
+<basic-event name="B220"/>
+<basic-event name="B38"/>
+<gate name="G34"/>
+<gate name="G4"/>
+</atleast>
+</define-gate>
+<define-gate name="G34">
+<atleast min="10">
+<basic-event name="B59"/>
+<basic-event name="B86"/>
+<basic-event name="B248"/>
+<basic-event name="B87"/>
+<basic-event name="B53"/>
+<basic-event name="B54"/>
+<basic-event name="B247"/>
+<basic-event name="B252"/>
+<basic-event name="B30"/>
+<basic-event name="B99"/>
+<basic-event name="B251"/>
+<basic-event name="B249"/>
+<basic-event name="B250"/>
+<basic-event name="B39"/>
+<basic-event name="B76"/>
+<basic-event name="B22"/>
+<gate name="G10"/>
+</atleast>
+</define-gate>
+<define-gate name="G17">
+<atleast min="12">
+<basic-event name="B165"/>
+<basic-event name="B159"/>
+<basic-event name="B164"/>
+<basic-event name="B63"/>
+<basic-event name="B47"/>
+<basic-event name="B163"/>
+<basic-event name="B158"/>
+<basic-event name="B94"/>
+<basic-event name="B162"/>
+<basic-event name="B157"/>
+<basic-event name="B13"/>
+<basic-event name="B55"/>
+<basic-event name="B161"/>
+<basic-event name="B160"/>
+<basic-event name="B86"/>
+<gate name="G25"/>
+<gate name="G10"/>
+</atleast>
+</define-gate>
+<define-gate name="G10">
+<atleast min="4">
+<basic-event name="B91"/>
+<basic-event name="B204"/>
+<basic-event name="B85"/>
+<basic-event name="B203"/>
+<basic-event name="B202"/>
+<basic-event name="B66"/>
+<basic-event name="B201"/>
+<gate name="G2"/>
+<gate name="G32"/>
+<gate name="G31"/>
+</atleast>
+</define-gate>
+<define-gate name="G31">
+<and>
+<basic-event name="B43"/>
+<basic-event name="B224"/>
+<basic-event name="B11"/>
+<basic-event name="B229"/>
+<basic-event name="B80"/>
+<basic-event name="B42"/>
+<basic-event name="B223"/>
+<basic-event name="B63"/>
+<basic-event name="B228"/>
+<basic-event name="B84"/>
+<basic-event name="B227"/>
+<basic-event name="B226"/>
+<basic-event name="B231"/>
+<basic-event name="B28"/>
+<basic-event name="B225"/>
+<basic-event name="B230"/>
+<gate name="G3"/>
+</and>
+</define-gate>
+<define-gate name="G32">
+<or>
+<basic-event name="B234"/>
+<basic-event name="B68"/>
+<basic-event name="B233"/>
+<basic-event name="B232"/>
+<basic-event name="B88"/>
+<basic-event name="B236"/>
+<basic-event name="B235"/>
+<gate name="G69"/>
+<gate name="G36"/>
+</or>
+</define-gate>
+<define-gate name="G36">
+<atleast min="11">
+<basic-event name="B259"/>
+<basic-event name="B258"/>
+<basic-event name="B257"/>
+<basic-event name="B62"/>
+<basic-event name="B23"/>
+<basic-event name="B262"/>
+<basic-event name="B77"/>
+<basic-event name="B256"/>
+<basic-event name="B34"/>
+<basic-event name="B261"/>
+<basic-event name="B55"/>
+<basic-event name="B12"/>
+<basic-event name="B260"/>
+<gate name="G39"/>
+<gate name="G4"/>
+</atleast>
+</define-gate>
+<define-gate name="G39">
+<or>
+<basic-event name="B268"/>
+<basic-event name="B2"/>
+<basic-event name="B267"/>
+<basic-event name="B56"/>
+<basic-event name="B1"/>
+<gate name="G2"/>
+<gate name="G9"/>
+</or>
+</define-gate>
+<define-gate name="G69">
+<atleast min="5">
+<basic-event name="B405"/>
+<basic-event name="B5"/>
+<basic-event name="B409"/>
+<basic-event name="B404"/>
+<basic-event name="B408"/>
+<basic-event name="B403"/>
+<basic-event name="B407"/>
+<basic-event name="B402"/>
+<basic-event name="B406"/>
+<basic-event name="B97"/>
+<basic-event name="B410"/>
+<gate name="G71"/>
+<gate name="G70"/>
+</atleast>
+</define-gate>
+<define-gate name="G70">
+<atleast min="6">
+<basic-event name="B75"/>
+<basic-event name="B26"/>
+<basic-event name="B411"/>
+<basic-event name="B413"/>
+<basic-event name="B414"/>
+<basic-event name="B412"/>
+<basic-event name="B14"/>
+<basic-event name="B415"/>
+<basic-event name="B416"/>
+<basic-event name="B87"/>
+<basic-event name="B12"/>
+<basic-event name="B418"/>
+<basic-event name="B417"/>
+<gate name="G72"/>
+<gate name="G73"/>
+<gate name="G74"/>
+</atleast>
+</define-gate>
+<define-gate name="G74">
+<atleast min="2">
+<basic-event name="B428"/>
+<basic-event name="B5"/>
+<basic-event name="B10"/>
+<basic-event name="B63"/>
+<basic-event name="B427"/>
+<basic-event name="B432"/>
+<basic-event name="B431"/>
+<basic-event name="B426"/>
+<basic-event name="B1"/>
+<basic-event name="B93"/>
+<basic-event name="B429"/>
+<basic-event name="B430"/>
+<basic-event name="B71"/>
+<basic-event name="B28"/>
+<gate name="G79"/>
+<gate name="G80"/>
+<gate name="G7"/>
+</atleast>
+</define-gate>
+<define-gate name="G80">
+<and>
+<basic-event name="B21"/>
+<basic-event name="B446"/>
+<basic-event name="B445"/>
+<basic-event name="B38"/>
+<basic-event name="B444"/>
+<basic-event name="B13"/>
+<basic-event name="B34"/>
+<basic-event name="B443"/>
+<basic-event name="B82"/>
+<basic-event name="B60"/>
+<basic-event name="B54"/>
+<basic-event name="B447"/>
+</and>
+</define-gate>
+<define-gate name="G79">
+<or>
+<basic-event name="B441"/>
+<basic-event name="B83"/>
+<basic-event name="B13"/>
+<basic-event name="B71"/>
+<basic-event name="B442"/>
+<gate name="G84"/>
+<gate name="G83"/>
+</or>
+</define-gate>
+<define-gate name="G83">
+<or>
+<basic-event name="B460"/>
+<basic-event name="B459"/>
+<basic-event name="B52"/>
+<basic-event name="B464"/>
+<basic-event name="B458"/>
+<basic-event name="B463"/>
+<basic-event name="B457"/>
+<basic-event name="B462"/>
+<basic-event name="B39"/>
+<basic-event name="B461"/>
+</or>
+</define-gate>
+<define-gate name="G84">
+<or>
+<basic-event name="B53"/>
+<basic-event name="B468"/>
+<basic-event name="B467"/>
+<basic-event name="B12"/>
+<basic-event name="B466"/>
+<basic-event name="B465"/>
+<gate name="G7"/>
+<gate name="G90"/>
+</or>
+</define-gate>
+<define-gate name="G90">
+<or>
+<basic-event name="B489"/>
+<basic-event name="B42"/>
+<basic-event name="B488"/>
+<basic-event name="B30"/>
+<basic-event name="B490"/>
+<basic-event name="B487"/>
+<basic-event name="B82"/>
+<basic-event name="B491"/>
+<basic-event name="B3"/>
+<basic-event name="B97"/>
+<gate name="G95"/>
+</or>
+</define-gate>
+<define-gate name="G95">
+<atleast min="3">
+<basic-event name="B517"/>
+<basic-event name="B516"/>
+<basic-event name="B515"/>
+<basic-event name="B514"/>
+<basic-event name="B65"/>
+<gate name="G103"/>
+<gate name="G4"/>
+</atleast>
+</define-gate>
+<define-gate name="G103">
+<atleast min="10">
+<basic-event name="B542"/>
+<basic-event name="B536"/>
+<basic-event name="B541"/>
+<basic-event name="B535"/>
+<basic-event name="B540"/>
+<basic-event name="B14"/>
+<basic-event name="B46"/>
+<basic-event name="B539"/>
+<basic-event name="B538"/>
+<basic-event name="B543"/>
+<basic-event name="B537"/>
+</atleast>
+</define-gate>
+<define-gate name="G73">
+<or>
+<basic-event name="B425"/>
+<gate name="G78"/>
+</or>
+</define-gate>
+<define-gate name="G78">
+<or>
+<basic-event name="B437"/>
+<basic-event name="B70"/>
+<basic-event name="B436"/>
+<basic-event name="B440"/>
+<basic-event name="B435"/>
+<basic-event name="B434"/>
+<basic-event name="B13"/>
+<basic-event name="B439"/>
+<basic-event name="B97"/>
+<basic-event name="B438"/>
+<gate name="G82"/>
+<gate name="G8"/>
+<gate name="G4"/>
+</or>
+</define-gate>
+<define-gate name="G82">
+<atleast min="7">
+<basic-event name="B455"/>
+<basic-event name="B10"/>
+<basic-event name="B57"/>
+<basic-event name="B62"/>
+<basic-event name="B45"/>
+<basic-event name="B61"/>
+<basic-event name="B71"/>
+<basic-event name="B456"/>
+<basic-event name="B49"/>
+<gate name="G89"/>
+<gate name="G88"/>
+<gate name="G4"/>
+</atleast>
+</define-gate>
+<define-gate name="G88">
+<atleast min="14">
+<basic-event name="B480"/>
+<basic-event name="B16"/>
+<basic-event name="B484"/>
+<basic-event name="B479"/>
+<basic-event name="B68"/>
+<basic-event name="B84"/>
+<basic-event name="B483"/>
+<basic-event name="B478"/>
+<basic-event name="B482"/>
+<basic-event name="B45"/>
+<basic-event name="B82"/>
+<basic-event name="B481"/>
+<basic-event name="B3"/>
+<basic-event name="B65"/>
+<gate name="G94"/>
+<gate name="G93"/>
+</atleast>
+</define-gate>
+<define-gate name="G93">
+<atleast min="8">
+<basic-event name="B508"/>
+<basic-event name="B507"/>
+<basic-event name="B506"/>
+<basic-event name="B35"/>
+<basic-event name="B77"/>
+<basic-event name="B6"/>
+<basic-event name="B509"/>
+<basic-event name="B510"/>
+<basic-event name="B60"/>
+<gate name="G2"/>
+<gate name="G100"/>
+</atleast>
+</define-gate>
+<define-gate name="G100">
+<and>
+<basic-event name="B526"/>
+<basic-event name="B5"/>
+<basic-event name="B15"/>
+<basic-event name="B36"/>
+<basic-event name="B529"/>
+<basic-event name="B528"/>
+<basic-event name="B527"/>
+<gate name="G2"/>
+</and>
+</define-gate>
+<define-gate name="G94">
+<or>
+<basic-event name="B27"/>
+<basic-event name="B513"/>
+<basic-event name="B74"/>
+<basic-event name="B31"/>
+<basic-event name="B512"/>
+<basic-event name="B511"/>
+<basic-event name="B40"/>
+<basic-event name="B24"/>
+<gate name="G9"/>
+<gate name="G8"/>
+<gate name="G102"/>
+<gate name="G101"/>
+</or>
+</define-gate>
+<define-gate name="G101">
+<or>
+<basic-event name="B17"/>
+<basic-event name="B530"/>
+<basic-event name="B95"/>
+<basic-event name="B52"/>
+<basic-event name="B9"/>
+<basic-event name="B33"/>
+</or>
+</define-gate>
+<define-gate name="G102">
+<or>
+<basic-event name="B531"/>
+<basic-event name="B37"/>
+<basic-event name="B51"/>
+<basic-event name="B534"/>
+<basic-event name="B533"/>
+<basic-event name="B532"/>
+</or>
+</define-gate>
+<define-gate name="G89">
+<atleast min="2">
+<basic-event name="B48"/>
+<basic-event name="B485"/>
+<basic-event name="B66"/>
+<basic-event name="B486"/>
+</atleast>
+</define-gate>
+<define-gate name="G72">
+<or>
+<basic-event name="B424"/>
+<basic-event name="B5"/>
+<basic-event name="B423"/>
+<basic-event name="B63"/>
+<basic-event name="B9"/>
+<basic-event name="B422"/>
+<basic-event name="B77"/>
+<gate name="G77"/>
+</or>
+</define-gate>
+<define-gate name="G77">
+<or>
+<basic-event name="B433"/>
+<basic-event name="B22"/>
+</or>
+</define-gate>
+<define-gate name="G71">
+<and>
+<basic-event name="B53"/>
+<basic-event name="B70"/>
+<basic-event name="B36"/>
+<basic-event name="B20"/>
+<basic-event name="B421"/>
+<basic-event name="B29"/>
+<basic-event name="B420"/>
+<basic-event name="B38"/>
+<basic-event name="B419"/>
+<gate name="G75"/>
+<gate name="G76"/>
+</and>
+</define-gate>
+<define-gate name="G76">
+<or>
+<basic-event name="B71"/>
+<basic-event name="B44"/>
+<basic-event name="B73"/>
+<basic-event name="B48"/>
+</or>
+</define-gate>
+<define-gate name="G75">
+<or>
+<basic-event name="B53"/>
+<gate name="G81"/>
+</or>
+</define-gate>
+<define-gate name="G81">
+<and>
+<basic-event name="B451"/>
+<basic-event name="B20"/>
+<basic-event name="B41"/>
+<basic-event name="B450"/>
+<basic-event name="B454"/>
+<basic-event name="B46"/>
+<basic-event name="B453"/>
+<basic-event name="B449"/>
+<basic-event name="B77"/>
+<basic-event name="B448"/>
+<basic-event name="B44"/>
+<basic-event name="B452"/>
+<gate name="G2"/>
+<gate name="G85"/>
+<gate name="G87"/>
+<gate name="G86"/>
+</and>
+</define-gate>
+<define-gate name="G86">
+<atleast min="5">
+<basic-event name="B27"/>
+<basic-event name="B475"/>
+<basic-event name="B72"/>
+<basic-event name="B477"/>
+<basic-event name="B55"/>
+<basic-event name="B476"/>
+</atleast>
+</define-gate>
+<define-gate name="G87">
+<or>
+<basic-event name="B24"/>
+<gate name="G92"/>
+</or>
+</define-gate>
+<define-gate name="G92">
+<atleast min="9">
+<basic-event name="B499"/>
+<basic-event name="B504"/>
+<basic-event name="B498"/>
+<basic-event name="B503"/>
+<basic-event name="B502"/>
+<basic-event name="B501"/>
+<basic-event name="B505"/>
+<basic-event name="B500"/>
+<basic-event name="B70"/>
+<gate name="G97"/>
+<gate name="G98"/>
+<gate name="G99"/>
+</atleast>
+</define-gate>
+<define-gate name="G99">
+<atleast min="6">
+<basic-event name="B64"/>
+<basic-event name="B53"/>
+<basic-event name="B37"/>
+<basic-event name="B525"/>
+<basic-event name="B14"/>
+<basic-event name="B19"/>
+<basic-event name="B524"/>
+<basic-event name="B28"/>
+<basic-event name="B523"/>
+<gate name="G106"/>
+<gate name="G108"/>
+<gate name="G107"/>
+<gate name="G3"/>
+</atleast>
+</define-gate>
+<define-gate name="G107">
+<atleast min="5">
+<basic-event name="B59"/>
+<basic-event name="B566"/>
+<basic-event name="B53"/>
+<basic-event name="B567"/>
+<basic-event name="B565"/>
+<basic-event name="B63"/>
+<basic-event name="B15"/>
+<basic-event name="B564"/>
+<basic-event name="B94"/>
+<basic-event name="B563"/>
+<basic-event name="B562"/>
+<basic-event name="B49"/>
+</atleast>
+</define-gate>
+<define-gate name="G108">
+<or>
+<basic-event name="B70"/>
+<basic-event name="B571"/>
+<basic-event name="B570"/>
+<basic-event name="B1"/>
+<basic-event name="B77"/>
+<basic-event name="B569"/>
+<basic-event name="B568"/>
+<gate name="G114"/>
+</or>
+</define-gate>
+<define-gate name="G114">
+<or>
+<basic-event name="B91"/>
+<basic-event name="B74"/>
+<basic-event name="B26"/>
+<basic-event name="B84"/>
+<basic-event name="B36"/>
+<basic-event name="B52"/>
+<basic-event name="B78"/>
+<basic-event name="B88"/>
+<basic-event name="B24"/>
+<basic-event name="B45"/>
+<basic-event name="B61"/>
+<basic-event name="B13"/>
+<basic-event name="B66"/>
+<basic-event name="B22"/>
+<gate name="G7"/>
+<gate name="G4"/>
+</or>
+</define-gate>
+<define-gate name="G106">
+<atleast min="8">
+<basic-event name="B557"/>
+<basic-event name="B5"/>
+<basic-event name="B560"/>
+<basic-event name="B94"/>
+<basic-event name="B559"/>
+<basic-event name="B558"/>
+<basic-event name="B8"/>
+<basic-event name="B561"/>
+<gate name="G113"/>
+<gate name="G112"/>
+<gate name="G111"/>
+</atleast>
+</define-gate>
+<define-gate name="G111">
+<atleast min="2">
+<basic-event name="B592"/>
+<basic-event name="B591"/>
+<basic-event name="B595"/>
+<basic-event name="B594"/>
+<basic-event name="B593"/>
+<gate name="G116"/>
+<gate name="G8"/>
+</atleast>
+</define-gate>
+<define-gate name="G116">
+<and>
+<basic-event name="B43"/>
+<basic-event name="B91"/>
+<basic-event name="B96"/>
+<basic-event name="B64"/>
+<basic-event name="B21"/>
+<basic-event name="B85"/>
+<basic-event name="B63"/>
+<basic-event name="B84"/>
+<basic-event name="B46"/>
+<basic-event name="B77"/>
+<basic-event name="B6"/>
+<basic-event name="B66"/>
+<basic-event name="B71"/>
+<basic-event name="B3"/>
+<basic-event name="B44"/>
+<basic-event name="B49"/>
+<gate name="G2"/>
+</and>
+</define-gate>
+<define-gate name="G112">
+<and>
+<basic-event name="B597"/>
+<basic-event name="B15"/>
+<basic-event name="B596"/>
+<basic-event name="B599"/>
+<basic-event name="B598"/>
+<basic-event name="B97"/>
+<gate name="G9"/>
+<gate name="G117"/>
+</and>
+</define-gate>
+<define-gate name="G117">
+<or>
+<basic-event name="B80"/>
+<basic-event name="B96"/>
+<basic-event name="B48"/>
+<basic-event name="B5"/>
+<basic-event name="B84"/>
+<basic-event name="B40"/>
+<basic-event name="B66"/>
+<basic-event name="B39"/>
+<gate name="G9"/>
+<gate name="G7"/>
+</or>
+</define-gate>
+<define-gate name="G113">
+<and>
+<basic-event name="B80"/>
+<basic-event name="B21"/>
+<basic-event name="B42"/>
+<basic-event name="B95"/>
+<basic-event name="B31"/>
+<basic-event name="B20"/>
+<basic-event name="B600"/>
+<basic-event name="B38"/>
+<basic-event name="B46"/>
+<basic-event name="B62"/>
+<basic-event name="B22"/>
+<basic-event name="B77"/>
+<basic-event name="B87"/>
+<basic-event name="B44"/>
+<basic-event name="B17"/>
+<basic-event name="B8"/>
+</and>
+</define-gate>
+<define-gate name="G98">
+<and>
+<basic-event name="B51"/>
+<basic-event name="B522"/>
+<basic-event name="B521"/>
+<basic-event name="B12"/>
+<gate name="G2"/>
+<gate name="G8"/>
+<gate name="G105"/>
+</and>
+</define-gate>
+<define-gate name="G105">
+<and>
+<basic-event name="B74"/>
+<basic-event name="B10"/>
+<basic-event name="B556"/>
+<basic-event name="B73"/>
+<basic-event name="B555"/>
+<basic-event name="B72"/>
+<basic-event name="B554"/>
+<basic-event name="B88"/>
+<basic-event name="B50"/>
+<basic-event name="B553"/>
+<basic-event name="B12"/>
+<basic-event name="B552"/>
+</and>
+</define-gate>
+<define-gate name="G97">
+<atleast min="2">
+<basic-event name="B79"/>
+<basic-event name="B520"/>
+<gate name="G104"/>
+</atleast>
+</define-gate>
+<define-gate name="G104">
+<atleast min="9">
+<basic-event name="B551"/>
+<basic-event name="B546"/>
+<basic-event name="B550"/>
+<basic-event name="B57"/>
+<basic-event name="B545"/>
+<basic-event name="B94"/>
+<basic-event name="B549"/>
+<basic-event name="B88"/>
+<basic-event name="B544"/>
+<basic-event name="B548"/>
+<basic-event name="B28"/>
+<basic-event name="B547"/>
+<gate name="G109"/>
+<gate name="G110"/>
+</atleast>
+</define-gate>
+<define-gate name="G110">
+<and>
+<basic-event name="B588"/>
+<basic-event name="B96"/>
+<basic-event name="B587"/>
+<basic-event name="B95"/>
+<basic-event name="B589"/>
+<basic-event name="B586"/>
+<basic-event name="B585"/>
+<basic-event name="B1"/>
+<basic-event name="B61"/>
+<basic-event name="B590"/>
+<basic-event name="B584"/>
+<basic-event name="B28"/>
+</and>
+</define-gate>
+<define-gate name="G109">
+<or>
+<basic-event name="B572"/>
+<basic-event name="B582"/>
+<basic-event name="B577"/>
+<basic-event name="B79"/>
+<basic-event name="B581"/>
+<basic-event name="B576"/>
+<basic-event name="B583"/>
+<basic-event name="B580"/>
+<basic-event name="B575"/>
+<basic-event name="B579"/>
+<basic-event name="B574"/>
+<basic-event name="B87"/>
+<basic-event name="B573"/>
+<basic-event name="B70"/>
+<basic-event name="B578"/>
+<gate name="G115"/>
+</or>
+</define-gate>
+<define-gate name="G115">
+<and>
+<basic-event name="B96"/>
+<basic-event name="B21"/>
+<basic-event name="B9"/>
+<basic-event name="B92"/>
+<basic-event name="B25"/>
+<basic-event name="B35"/>
+<basic-event name="B40"/>
+<basic-event name="B88"/>
+<basic-event name="B72"/>
+<basic-event name="B66"/>
+<basic-event name="B98"/>
+<basic-event name="B76"/>
+<basic-event name="B17"/>
+<gate name="G2"/>
+<gate name="G8"/>
+</and>
+</define-gate>
+<define-gate name="G85">
+<and>
+<basic-event name="B470"/>
+<basic-event name="B21"/>
+<basic-event name="B474"/>
+<basic-event name="B469"/>
+<basic-event name="B46"/>
+<basic-event name="B473"/>
+<basic-event name="B472"/>
+<basic-event name="B29"/>
+<basic-event name="B98"/>
+<basic-event name="B471"/>
+<gate name="G91"/>
+</and>
+</define-gate>
+<define-gate name="G91">
+<atleast min="7">
+<basic-event name="B494"/>
+<basic-event name="B86"/>
+<basic-event name="B95"/>
+<basic-event name="B493"/>
+<basic-event name="B7"/>
+<basic-event name="B492"/>
+<basic-event name="B497"/>
+<basic-event name="B496"/>
+<basic-event name="B71"/>
+<basic-event name="B495"/>
+<basic-event name="B17"/>
+<basic-event name="B8"/>
+<gate name="G8"/>
+<gate name="G96"/>
+</atleast>
+</define-gate>
+<define-gate name="G96">
+<and>
+<basic-event name="B96"/>
+<basic-event name="B63"/>
+<basic-event name="B23"/>
+<basic-event name="B519"/>
+<basic-event name="B518"/>
+</and>
+</define-gate>
+<define-gate name="G25">
+<and>
+<basic-event name="B32"/>
+<basic-event name="B200"/>
+<basic-event name="B90"/>
+<basic-event name="B79"/>
+<basic-event name="B199"/>
+<basic-event name="B198"/>
+<basic-event name="B61"/>
+<basic-event name="B197"/>
+<basic-event name="B92"/>
+<gate name="G30"/>
+</and>
+</define-gate>
+<define-gate name="G30">
+<atleast min="2">
+<basic-event name="B44"/>
+<basic-event name="B222"/>
+<basic-event name="B221"/>
+<gate name="G35"/>
+</atleast>
+</define-gate>
+<define-gate name="G35">
+<or>
+<basic-event name="B254"/>
+<basic-event name="B253"/>
+<basic-event name="B52"/>
+<basic-event name="B94"/>
+<basic-event name="B255"/>
+<basic-event name="B65"/>
+</or>
+</define-gate>
+<define-gate name="G15">
+<and>
+<basic-event name="B11"/>
+<basic-event name="B144"/>
+<basic-event name="B149"/>
+<basic-event name="B143"/>
+<basic-event name="B148"/>
+<basic-event name="B142"/>
+<basic-event name="B35"/>
+<basic-event name="B147"/>
+<basic-event name="B1"/>
+<basic-event name="B141"/>
+<basic-event name="B146"/>
+<basic-event name="B12"/>
+<basic-event name="B145"/>
+<gate name="G2"/>
+</and>
+</define-gate>
+<define-gate name="G2">
+<atleast min="2">
+<basic-event name="B189"/>
+<basic-event name="B190"/>
+<basic-event name="B191"/>
+</atleast>
+</define-gate>
+<define-gate name="G14">
+<and>
+<basic-event name="B48"/>
+<basic-event name="B127"/>
+<basic-event name="B88"/>
+<basic-event name="B18"/>
+<basic-event name="B128"/>
+<gate name="G3"/>
+</and>
+</define-gate>
+<define-gate name="G3">
+<or>
+<basic-event name="B69"/>
+<basic-event name="B136"/>
+<basic-event name="B10"/>
+<basic-event name="B135"/>
+<basic-event name="B30"/>
+<basic-event name="B134"/>
+<basic-event name="B29"/>
+<basic-event name="B138"/>
+<basic-event name="B133"/>
+<basic-event name="B81"/>
+<basic-event name="B137"/>
+<gate name="G19"/>
+<gate name="G18"/>
+</or>
+</define-gate>
+<define-gate name="G18">
+<atleast min="10">
+<basic-event name="B64"/>
+<basic-event name="B170"/>
+<basic-event name="B21"/>
+<basic-event name="B169"/>
+<basic-event name="B20"/>
+<basic-event name="B168"/>
+<basic-event name="B51"/>
+<basic-event name="B67"/>
+<basic-event name="B167"/>
+<basic-event name="B76"/>
+<basic-event name="B166"/>
+<basic-event name="B22"/>
+<gate name="G8"/>
+<gate name="G26"/>
+</atleast>
+</define-gate>
+<define-gate name="G26">
+<or>
+<basic-event name="B209"/>
+<basic-event name="B69"/>
+<basic-event name="B95"/>
+<basic-event name="B208"/>
+<basic-event name="B89"/>
+<basic-event name="B73"/>
+<basic-event name="B25"/>
+<basic-event name="B207"/>
+<basic-event name="B205"/>
+<basic-event name="B211"/>
+<basic-event name="B206"/>
+<basic-event name="B33"/>
+<basic-event name="B210"/>
+<gate name="G33"/>
+<gate name="G9"/>
+</or>
+</define-gate>
+<define-gate name="G33">
+<atleast min="10">
+<basic-event name="B243"/>
+<basic-event name="B238"/>
+<basic-event name="B20"/>
+<basic-event name="B242"/>
+<basic-event name="B46"/>
+<basic-event name="B237"/>
+<basic-event name="B241"/>
+<basic-event name="B246"/>
+<basic-event name="B6"/>
+<basic-event name="B50"/>
+<basic-event name="B240"/>
+<basic-event name="B71"/>
+<basic-event name="B245"/>
+<basic-event name="B239"/>
+<basic-event name="B244"/>
+<gate name="G37"/>
+<gate name="G38"/>
+</atleast>
+</define-gate>
+<define-gate name="G38">
+<atleast min="2">
+<basic-event name="B16"/>
+<basic-event name="B265"/>
+<basic-event name="B266"/>
+</atleast>
+</define-gate>
+<define-gate name="G37">
+<and>
+<basic-event name="B264"/>
+<basic-event name="B48"/>
+<basic-event name="B263"/>
+<basic-event name="B36"/>
+<basic-event name="B67"/>
+<basic-event name="B3"/>
+<basic-event name="B97"/>
+<gate name="G66"/>
+</and>
+</define-gate>
+<define-gate name="G66">
+<or>
+<basic-event name="B391"/>
+<basic-event name="B59"/>
+<basic-event name="B390"/>
+<basic-event name="B20"/>
+<basic-event name="B392"/>
+<basic-event name="B12"/>
+<gate name="G67"/>
+</or>
+</define-gate>
+<define-gate name="G67">
+<atleast min="5">
+<basic-event name="B59"/>
+<basic-event name="B395"/>
+<basic-event name="B394"/>
+<basic-event name="B399"/>
+<basic-event name="B19"/>
+<basic-event name="B393"/>
+<basic-event name="B83"/>
+<basic-event name="B398"/>
+<basic-event name="B50"/>
+<basic-event name="B397"/>
+<basic-event name="B396"/>
+<gate name="G7"/>
+<gate name="G4"/>
+</atleast>
+</define-gate>
+<define-gate name="G8">
+<or>
+<basic-event name="B75"/>
+<basic-event name="B4"/>
+<basic-event name="B32"/>
+<basic-event name="B5"/>
+<basic-event name="B26"/>
+<basic-event name="B140"/>
+<basic-event name="B52"/>
+<basic-event name="B36"/>
+<basic-event name="B62"/>
+<basic-event name="B139"/>
+<basic-event name="B87"/>
+<basic-event name="B54"/>
+<gate name="G21"/>
+<gate name="G23"/>
+<gate name="G20"/>
+<gate name="G22"/>
+</or>
+</define-gate>
+<define-gate name="G22">
+<atleast min="3">
+<basic-event name="B9"/>
+<basic-event name="B99"/>
+<basic-event name="B98"/>
+<basic-event name="B60"/>
+<basic-event name="B186"/>
+<gate name="G7"/>
+</atleast>
+</define-gate>
+<define-gate name="G7">
+<atleast min="4">
+<basic-event name="B27"/>
+<basic-event name="B71"/>
+<basic-event name="B84"/>
+<basic-event name="B45"/>
+<basic-event name="B39"/>
+<basic-event name="B110"/>
+<basic-event name="B8"/>
+<gate name="G9"/>
+</atleast>
+</define-gate>
+<define-gate name="G9">
+<atleast min="3">
+<basic-event name="B116"/>
+<basic-event name="B117"/>
+<basic-event name="B77"/>
+<basic-event name="B115"/>
+<gate name="G4"/>
+</atleast>
+</define-gate>
+<define-gate name="G4">
+<or>
+<basic-event name="B122"/>
+<basic-event name="B123"/>
+</or>
+</define-gate>
+<define-gate name="G20">
+<and>
+<basic-event name="B43"/>
+<basic-event name="B180"/>
+<basic-event name="B59"/>
+<basic-event name="B179"/>
+<basic-event name="B184"/>
+<basic-event name="B183"/>
+<basic-event name="B182"/>
+<basic-event name="B82"/>
+<basic-event name="B44"/>
+<basic-event name="B50"/>
+<basic-event name="B28"/>
+<basic-event name="B181"/>
+</and>
+</define-gate>
+<define-gate name="G23">
+<atleast min="4">
+<basic-event name="B85"/>
+<basic-event name="B74"/>
+<basic-event name="B15"/>
+<basic-event name="B188"/>
+<basic-event name="B187"/>
+<gate name="G59"/>
+</atleast>
+</define-gate>
+<define-gate name="G59">
+<atleast min="2">
+<basic-event name="B40"/>
+<basic-event name="B368"/>
+<basic-event name="B8"/>
+</atleast>
+</define-gate>
+<define-gate name="G21">
+<and>
+<basic-event name="B56"/>
+<basic-event name="B185"/>
+<basic-event name="B42"/>
+</and>
+</define-gate>
+<define-gate name="G19">
+<or>
+<basic-event name="B91"/>
+<basic-event name="B53"/>
+<basic-event name="B174"/>
+<basic-event name="B58"/>
+<basic-event name="B173"/>
+<basic-event name="B178"/>
+<basic-event name="B78"/>
+<basic-event name="B83"/>
+<basic-event name="B177"/>
+<basic-event name="B172"/>
+<basic-event name="B93"/>
+<basic-event name="B176"/>
+<basic-event name="B171"/>
+<basic-event name="B33"/>
+<basic-event name="B175"/>
+<gate name="G27"/>
+</or>
+</define-gate>
+<define-gate name="G27">
+<and>
+<basic-event name="B49"/>
+<basic-event name="B212"/>
+<gate name="G68"/>
+</and>
+</define-gate>
+<define-gate name="G68">
+<and>
+<basic-event name="B400"/>
+<basic-event name="B25"/>
+<basic-event name="B23"/>
+<basic-event name="B12"/>
+<basic-event name="B401"/>
+</and>
+</define-gate>
+<define-CCF-group name="CCF1" model="MGL">
+<members>
+<basic-event name="B462"/>
+<basic-event name="B501"/>
+<basic-event name="B277"/>
+<basic-event name="B190"/>
+<basic-event name="B150"/>
+<basic-event name="B165"/>
+<basic-event name="B537"/>
+<basic-event name="B208"/>
+</members>
+<distribution>
+<float value="0.019434260055861567"/>
+</distribution>
+<factors>
+<factor level="2">
+<float value="0.5313679326684436"/>
+</factor>
+<factor level="3">
+<float value="0.2906404677650283"/>
+</factor>
+<factor level="4">
+<float value="0.17864608315965852"/>
+</factor>
+<factor level="5">
+<float value="0.8638694589405204"/>
+</factor>
+<factor level="6">
+<float value="0.48427480745149565"/>
+</factor>
+</factors>
+</define-CCF-group>
+<define-CCF-group name="CCF2" model="MGL">
+<members>
+<basic-event name="B598"/>
+<basic-event name="B297"/>
+<basic-event name="B580"/>
+<basic-event name="B232"/>
+<basic-event name="B160"/>
+<basic-event name="B224"/>
+<basic-event name="B116"/>
+<basic-event name="B309"/>
+<basic-event name="B527"/>
+</members>
+<distribution>
+<float value="0.04369935562719691"/>
+</distribution>
+<factors>
+<factor level="2">
+<float value="0.1058876840004443"/>
+</factor>
+</factors>
+</define-CCF-group>
+</define-fault-tree>
+<model-data>
+<define-basic-event name="B401">
+<float value="0.014310693978201158"/>
+</define-basic-event>
+<define-basic-event name="B386">
+<float value="0.016470085726535424"/>
+</define-basic-event>
+<define-basic-event name="B227">
+<float value="0.013154506615430375"/>
+</define-basic-event>
+<define-basic-event name="B74">
+<float value="0.029352459305725866"/>
+</define-basic-event>
+<define-basic-event name="B556">
+<float value="0.04813167753213"/>
+</define-basic-event>
+<define-basic-event name="B210">
+<float value="0.03595451778137933"/>
+</define-basic-event>
+<define-basic-event name="B592">
+<float value="0.0309503274958864"/>
+</define-basic-event>
+<define-basic-event name="B431">
+<float value="0.028361402157798865"/>
+</define-basic-event>
+<define-basic-event name="B545">
+<float value="0.025054126630042146"/>
+</define-basic-event>
+<define-basic-event name="B519">
+<float value="0.020740258228479882"/>
+</define-basic-event>
+<define-basic-event name="B286">
+<float value="0.03172893519479004"/>
+</define-basic-event>
+<define-basic-event name="B478">
+<float value="0.03200642958417585"/>
+</define-basic-event>
+<define-basic-event name="B23">
+<float value="0.04160287377435207"/>
+</define-basic-event>
+<define-basic-event name="B511">
+<float value="0.02165896470834043"/>
+</define-basic-event>
+<define-basic-event name="B233">
+<float value="0.03268208299990014"/>
+</define-basic-event>
+<define-basic-event name="B443">
+<float value="0.04149056308400936"/>
+</define-basic-event>
+<define-basic-event name="B252">
+<float value="0.043213336731447186"/>
+</define-basic-event>
+<define-basic-event name="B113">
+<float value="0.03390761907814116"/>
+</define-basic-event>
+<define-basic-event name="B434">
+<float value="0.027889941139137064"/>
+</define-basic-event>
+<define-basic-event name="B203">
+<float value="0.04174870793078024"/>
+</define-basic-event>
+<define-basic-event name="B40">
+<float value="0.03739348874644024"/>
+</define-basic-event>
+<define-basic-event name="B200">
+<float value="0.04071544211968763"/>
+</define-basic-event>
+<define-basic-event name="B422">
+<float value="0.0168852351134171"/>
+</define-basic-event>
+<define-basic-event name="B447">
+<float value="0.03254238637744396"/>
+</define-basic-event>
+<define-basic-event name="B437">
+<float value="0.031574935160216186"/>
+</define-basic-event>
+<define-basic-event name="B215">
+<float value="0.03334057441395198"/>
+</define-basic-event>
+<define-basic-event name="B300">
+<float value="0.03942970633010797"/>
+</define-basic-event>
+<define-basic-event name="B337">
+<float value="0.0356328192876257"/>
+</define-basic-event>
+<define-basic-event name="B361">
+<float value="0.03956674224332886"/>
+</define-basic-event>
+<define-basic-event name="B196">
+<float value="0.044027918667317444"/>
+</define-basic-event>
+<define-basic-event name="B474">
+<float value="0.02692324334787176"/>
+</define-basic-event>
+<define-basic-event name="B490">
+<float value="0.04070296606260331"/>
+</define-basic-event>
+<define-basic-event name="B445">
+<float value="0.036435364395914556"/>
+</define-basic-event>
+<define-basic-event name="B18">
+<float value="0.022618358949434533"/>
+</define-basic-event>
+<define-basic-event name="B4">
+<float value="0.046047955118067786"/>
+</define-basic-event>
+<define-basic-event name="B84">
+<float value="0.020877194093070064"/>
+</define-basic-event>
+<define-basic-event name="B10">
+<float value="0.02348866628437102"/>
+</define-basic-event>
+<define-basic-event name="B587">
+<float value="0.027190177760161728"/>
+</define-basic-event>
+<define-basic-event name="B513">
+<float value="0.03747648363216732"/>
+</define-basic-event>
+<define-basic-event name="B591">
+<float value="0.015193332503938546"/>
+</define-basic-event>
+<define-basic-event name="B450">
+<float value="0.022658571330222088"/>
+</define-basic-event>
+<define-basic-event name="B348">
+<float value="0.020375254521463097"/>
+</define-basic-event>
+<define-basic-event name="B45">
+<float value="0.036738808876125885"/>
+</define-basic-event>
+<define-basic-event name="B216">
+<float value="0.01632821901359007"/>
+</define-basic-event>
+<define-basic-event name="B204">
+<float value="0.046341729869376715"/>
+</define-basic-event>
+<define-basic-event name="B154">
+<float value="0.048830000561065866"/>
+</define-basic-event>
+<define-basic-event name="B115">
+<float value="0.02430502725391879"/>
+</define-basic-event>
+<define-basic-event name="B229">
+<float value="0.018373834954412454"/>
+</define-basic-event>
+<define-basic-event name="B339">
+<float value="0.015565645209374233"/>
+</define-basic-event>
+<define-basic-event name="B570">
+<float value="0.04311609100186797"/>
+</define-basic-event>
+<define-basic-event name="B341">
+<float value="0.015227921921860088"/>
+</define-basic-event>
+<define-basic-event name="B234">
+<float value="0.03784398773390339"/>
+</define-basic-event>
+<define-basic-event name="B170">
+<float value="0.023839722933121553"/>
+</define-basic-event>
+<define-basic-event name="B78">
+<float value="0.0400660063211012"/>
+</define-basic-event>
+<define-basic-event name="B354">
+<float value="0.011248588109619253"/>
+</define-basic-event>
+<define-basic-event name="B435">
+<float value="0.029688905124371417"/>
+</define-basic-event>
+<define-basic-event name="B597">
+<float value="0.046982224220502786"/>
+</define-basic-event>
+<define-basic-event name="B572">
+<float value="0.022280163138586474"/>
+</define-basic-event>
+<define-basic-event name="B304">
+<float value="0.031117307431491117"/>
+</define-basic-event>
+<define-basic-event name="B65">
+<float value="0.01916519057921137"/>
+</define-basic-event>
+<define-basic-event name="B596">
+<float value="0.049636504612957474"/>
+</define-basic-event>
+<define-basic-event name="B313">
+<float value="0.02044096083552626"/>
+</define-basic-event>
+<define-basic-event name="B524">
+<float value="0.042755543071431604"/>
+</define-basic-event>
+<define-basic-event name="B213">
+<float value="0.048698027390068135"/>
+</define-basic-event>
+<define-basic-event name="B38">
+<float value="0.040771163596556956"/>
+</define-basic-event>
+<define-basic-event name="B100">
+<float value="0.03510088624273515"/>
+</define-basic-event>
+<define-basic-event name="B175">
+<float value="0.034625356337698754"/>
+</define-basic-event>
+<define-basic-event name="B173">
+<float value="0.011318790264496021"/>
+</define-basic-event>
+<define-basic-event name="B143">
+<float value="0.041886889556420635"/>
+</define-basic-event>
+<define-basic-event name="B343">
+<float value="0.04299200860432507"/>
+</define-basic-event>
+<define-basic-event name="B294">
+<float value="0.02112841146077933"/>
+</define-basic-event>
+<define-basic-event name="B111">
+<float value="0.023762134983662753"/>
+</define-basic-event>
+<define-basic-event name="B298">
+<float value="0.022968317432737445"/>
+</define-basic-event>
+<define-basic-event name="B457">
+<float value="0.04213925749447935"/>
+</define-basic-event>
+<define-basic-event name="B80">
+<float value="0.015389104025465342"/>
+</define-basic-event>
+<define-basic-event name="B531">
+<float value="0.04035737801495732"/>
+</define-basic-event>
+<define-basic-event name="B267">
+<float value="0.03196467370970279"/>
+</define-basic-event>
+<define-basic-event name="B390">
+<float value="0.03477698714363216"/>
+</define-basic-event>
+<define-basic-event name="B397">
+<float value="0.04446124482825653"/>
+</define-basic-event>
+<define-basic-event name="B399">
+<float value="0.011088088448756604"/>
+</define-basic-event>
+<define-basic-event name="B496">
+<float value="0.03506128755562074"/>
+</define-basic-event>
+<define-basic-event name="B90">
+<float value="0.013551556194694489"/>
+</define-basic-event>
+<define-basic-event name="B581">
+<float value="0.02179207546903965"/>
+</define-basic-event>
+<define-basic-event name="B283">
+<float value="0.025156826629356525"/>
+</define-basic-event>
+<define-basic-event name="B62">
+<float value="0.03513270090923171"/>
+</define-basic-event>
+<define-basic-event name="B512">
+<float value="0.010398708897063442"/>
+</define-basic-event>
+<define-basic-event name="B454">
+<float value="0.01401024267790053"/>
+</define-basic-event>
+<define-basic-event name="B318">
+<float value="0.04960278628021357"/>
+</define-basic-event>
+<define-basic-event name="B98">
+<float value="0.020501600788762"/>
+</define-basic-event>
+<define-basic-event name="B373">
+<float value="0.02614762571787909"/>
+</define-basic-event>
+<define-basic-event name="B217">
+<float value="0.019874840394773045"/>
+</define-basic-event>
+<define-basic-event name="B336">
+<float value="0.012431698374520411"/>
+</define-basic-event>
+<define-basic-event name="B278">
+<float value="0.04450540537032772"/>
+</define-basic-event>
+<define-basic-event name="B532">
+<float value="0.04987871534925551"/>
+</define-basic-event>
+<define-basic-event name="B375">
+<float value="0.02273074977246592"/>
+</define-basic-event>
+<define-basic-event name="B405">
+<float value="0.04652851620872113"/>
+</define-basic-event>
+<define-basic-event name="B223">
+<float value="0.019514624212671753"/>
+</define-basic-event>
+<define-basic-event name="B536">
+<float value="0.03159299580703083"/>
+</define-basic-event>
+<define-basic-event name="B275">
+<float value="0.035117289233578215"/>
+</define-basic-event>
+<define-basic-event name="B209">
+<float value="0.01766863445171419"/>
+</define-basic-event>
+<define-basic-event name="B441">
+<float value="0.03243266198699548"/>
+</define-basic-event>
+<define-basic-event name="B529">
+<float value="0.017416195424169695"/>
+</define-basic-event>
+<define-basic-event name="B75">
+<float value="0.0171035892229562"/>
+</define-basic-event>
+<define-basic-event name="B258">
+<float value="0.028871464044415693"/>
+</define-basic-event>
+<define-basic-event name="B77">
+<float value="0.027779996805962964"/>
+</define-basic-event>
+<define-basic-event name="B31">
+<float value="0.04205986365168132"/>
+</define-basic-event>
+<define-basic-event name="B593">
+<float value="0.0227814831862237"/>
+</define-basic-event>
+<define-basic-event name="B427">
+<float value="0.021352347495943877"/>
+</define-basic-event>
+<define-basic-event name="B44">
+<float value="0.029445458805742557"/>
+</define-basic-event>
+<define-basic-event name="B344">
+<float value="0.011747389265668118"/>
+</define-basic-event>
+<define-basic-event name="B237">
+<float value="0.03132898263349599"/>
+</define-basic-event>
+<define-basic-event name="B17">
+<float value="0.012795078458367297"/>
+</define-basic-event>
+<define-basic-event name="B554">
+<float value="0.038661460558570504"/>
+</define-basic-event>
+<define-basic-event name="B128">
+<float value="0.04267628915284325"/>
+</define-basic-event>
+<define-basic-event name="B149">
+<float value="0.04380665739203031"/>
+</define-basic-event>
+<define-basic-event name="B332">
+<float value="0.03433307670471161"/>
+</define-basic-event>
+<define-basic-event name="B413">
+<float value="0.02557664913191997"/>
+</define-basic-event>
+<define-basic-event name="B291">
+<float value="0.034501091896801464"/>
+</define-basic-event>
+<define-basic-event name="B334">
+<float value="0.03533283657361607"/>
+</define-basic-event>
+<define-basic-event name="B16">
+<float value="0.03390397857951962"/>
+</define-basic-event>
+<define-basic-event name="B421">
+<float value="0.014730738915499546"/>
+</define-basic-event>
+<define-basic-event name="B245">
+<float value="0.02126197646196719"/>
+</define-basic-event>
+<define-basic-event name="B430">
+<float value="0.01716981008021483"/>
+</define-basic-event>
+<define-basic-event name="B463">
+<float value="0.018779827878325932"/>
+</define-basic-event>
+<define-basic-event name="B456">
+<float value="0.03134524978364288"/>
+</define-basic-event>
+<define-basic-event name="B351">
+<float value="0.012023381303204288"/>
+</define-basic-event>
+<define-basic-event name="B21">
+<float value="0.013710582455139803"/>
+</define-basic-event>
+<define-basic-event name="B68">
+<float value="0.04636613102547118"/>
+</define-basic-event>
+<define-basic-event name="B69">
+<float value="0.035552033569724056"/>
+</define-basic-event>
+<define-basic-event name="B130">
+<float value="0.044383910261932065"/>
+</define-basic-event>
+<define-basic-event name="B26">
+<float value="0.03293632342723709"/>
+</define-basic-event>
+<define-basic-event name="B442">
+<float value="0.04573956844127759"/>
+</define-basic-event>
+<define-basic-event name="B586">
+<float value="0.04151310470803002"/>
+</define-basic-event>
+<define-basic-event name="B24">
+<float value="0.01084943899267957"/>
+</define-basic-event>
+<define-basic-event name="B207">
+<float value="0.02493853776955581"/>
+</define-basic-event>
+<define-basic-event name="B515">
+<float value="0.022156228360807176"/>
+</define-basic-event>
+<define-basic-event name="B57">
+<float value="0.028270682808058147"/>
+</define-basic-event>
+<define-basic-event name="B516">
+<float value="0.04090909366593944"/>
+</define-basic-event>
+<define-basic-event name="B419">
+<float value="0.03731156545266141"/>
+</define-basic-event>
+<define-basic-event name="B349">
+<float value="0.04669355696587689"/>
+</define-basic-event>
+<define-basic-event name="B418">
+<float value="0.03233157640704567"/>
+</define-basic-event>
+<define-basic-event name="B506">
+<float value="0.027320021335837594"/>
+</define-basic-event>
+<define-basic-event name="B530">
+<float value="0.040112761336740105"/>
+</define-basic-event>
+<define-basic-event name="B230">
+<float value="0.014033186405965167"/>
+</define-basic-event>
+<define-basic-event name="B101">
+<float value="0.04663292774295654"/>
+</define-basic-event>
+<define-basic-event name="B87">
+<float value="0.014344833379264066"/>
+</define-basic-event>
+<define-basic-event name="B271">
+<float value="0.03935238768510935"/>
+</define-basic-event>
+<define-basic-event name="B211">
+<float value="0.025643565750344932"/>
+</define-basic-event>
+<define-basic-event name="B171">
+<float value="0.025703153722412518"/>
+</define-basic-event>
+<define-basic-event name="B448">
+<float value="0.024562521263708934"/>
+</define-basic-event>
+<define-basic-event name="B274">
+<float value="0.012746095142972817"/>
+</define-basic-event>
+<define-basic-event name="B388">
+<float value="0.014623304345095237"/>
+</define-basic-event>
+<define-basic-event name="B3">
+<float value="0.014308009397537562"/>
+</define-basic-event>
+<define-basic-event name="B569">
+<float value="0.03670039016420301"/>
+</define-basic-event>
+<define-basic-event name="B573">
+<float value="0.035318743247837"/>
+</define-basic-event>
+<define-basic-event name="B146">
+<float value="0.0357586414027031"/>
+</define-basic-event>
+<define-basic-event name="B240">
+<float value="0.03820295093910271"/>
+</define-basic-event>
+<define-basic-event name="B330">
+<float value="0.02109887476241741"/>
+</define-basic-event>
+<define-basic-event name="B550">
+<float value="0.041069426226060524"/>
+</define-basic-event>
+<define-basic-event name="B600">
+<float value="0.04086132676960509"/>
+</define-basic-event>
+<define-basic-event name="B374">
+<float value="0.037010200945422914"/>
+</define-basic-event>
+<define-basic-event name="B467">
+<float value="0.03603476755208063"/>
+</define-basic-event>
+<define-basic-event name="B335">
+<float value="0.04309996545600437"/>
+</define-basic-event>
+<define-basic-event name="B558">
+<float value="0.029479373093834325"/>
+</define-basic-event>
+<define-basic-event name="B93">
+<float value="0.03143204074426258"/>
+</define-basic-event>
+<define-basic-event name="B180">
+<float value="0.037083185496781496"/>
+</define-basic-event>
+<define-basic-event name="B577">
+<float value="0.02085334143087902"/>
+</define-basic-event>
+<define-basic-event name="B256">
+<float value="0.03305372834770154"/>
+</define-basic-event>
+<define-basic-event name="B305">
+<float value="0.04122292101903741"/>
+</define-basic-event>
+<define-basic-event name="B566">
+<float value="0.03345537044758238"/>
+</define-basic-event>
+<define-basic-event name="B470">
+<float value="0.04498275464070091"/>
+</define-basic-event>
+<define-basic-event name="B350">
+<float value="0.018172743387803003"/>
+</define-basic-event>
+<define-basic-event name="B510">
+<float value="0.036951872721652526"/>
+</define-basic-event>
+<define-basic-event name="B495">
+<float value="0.021539784274127338"/>
+</define-basic-event>
+<define-basic-event name="B280">
+<float value="0.03928026898224158"/>
+</define-basic-event>
+<define-basic-event name="B533">
+<float value="0.035179864108911885"/>
+</define-basic-event>
+<define-basic-event name="B262">
+<float value="0.04820472969946031"/>
+</define-basic-event>
+<define-basic-event name="B465">
+<float value="0.033411199045837565"/>
+</define-basic-event>
+<define-basic-event name="B333">
+<float value="0.010504096434297843"/>
+</define-basic-event>
+<define-basic-event name="B428">
+<float value="0.037141680919528984"/>
+</define-basic-event>
+<define-basic-event name="B486">
+<float value="0.03852242196803858"/>
+</define-basic-event>
+<define-basic-event name="B35">
+<float value="0.042373540985752196"/>
+</define-basic-event>
+<define-basic-event name="B99">
+<float value="0.028900429616281732"/>
+</define-basic-event>
+<define-basic-event name="B384">
+<float value="0.012973151469942934"/>
+</define-basic-event>
+<define-basic-event name="B538">
+<float value="0.015586778192456907"/>
+</define-basic-event>
+<define-basic-event name="B241">
+<float value="0.03365815089613237"/>
+</define-basic-event>
+<define-basic-event name="B499">
+<float value="0.033969696147776986"/>
+</define-basic-event>
+<define-basic-event name="B559">
+<float value="0.040412137035560715"/>
+</define-basic-event>
+<define-basic-event name="B49">
+<float value="0.017258596636601634"/>
+</define-basic-event>
+<define-basic-event name="B161">
+<float value="0.04523075677425407"/>
+</define-basic-event>
+<define-basic-event name="B383">
+<float value="0.045167395598630415"/>
+</define-basic-event>
+<define-basic-event name="B15">
+<float value="0.013504539990016915"/>
+</define-basic-event>
+<define-basic-event name="B328">
+<float value="0.03872464130176515"/>
+</define-basic-event>
+<define-basic-event name="B594">
+<float value="0.010424709113806397"/>
+</define-basic-event>
+<define-basic-event name="B117">
+<float value="0.014129119349334363"/>
+</define-basic-event>
+<define-basic-event name="B312">
+<float value="0.014395572344520075"/>
+</define-basic-event>
+<define-basic-event name="B541">
+<float value="0.02661772849972005"/>
+</define-basic-event>
+<define-basic-event name="B290">
+<float value="0.031431727077805824"/>
+</define-basic-event>
+<define-basic-event name="B236">
+<float value="0.02354436788643064"/>
+</define-basic-event>
+<define-basic-event name="B270">
+<float value="0.017129660816729182"/>
+</define-basic-event>
+<define-basic-event name="B199">
+<float value="0.02713239174243863"/>
+</define-basic-event>
+<define-basic-event name="B376">
+<float value="0.016709196423307794"/>
+</define-basic-event>
+<define-basic-event name="B108">
+<float value="0.04881405249073339"/>
+</define-basic-event>
+<define-basic-event name="B249">
+<float value="0.010311502006636806"/>
+</define-basic-event>
+<define-basic-event name="B363">
+<float value="0.03617069882404912"/>
+</define-basic-event>
+<define-basic-event name="B33">
+<float value="0.034356101047622135"/>
+</define-basic-event>
+<define-basic-event name="B446">
+<float value="0.025279138012762013"/>
+</define-basic-event>
+<define-basic-event name="B303">
+<float value="0.039618256359056796"/>
+</define-basic-event>
+<define-basic-event name="B138">
+<float value="0.040482379491005346"/>
+</define-basic-event>
+<define-basic-event name="B273">
+<float value="0.029545327679526494"/>
+</define-basic-event>
+<define-basic-event name="B578">
+<float value="0.030437602433794377"/>
+</define-basic-event>
+<define-basic-event name="B338">
+<float value="0.012400657630500765"/>
+</define-basic-event>
+<define-basic-event name="B214">
+<float value="0.01983831716859539"/>
+</define-basic-event>
+<define-basic-event name="B186">
+<float value="0.048283317691846545"/>
+</define-basic-event>
+<define-basic-event name="B326">
+<float value="0.028014173424105483"/>
+</define-basic-event>
+<define-basic-event name="B487">
+<float value="0.021555543100086783"/>
+</define-basic-event>
+<define-basic-event name="B521">
+<float value="0.012006285307974717"/>
+</define-basic-event>
+<define-basic-event name="B477">
+<float value="0.03860782839158844"/>
+</define-basic-event>
+<define-basic-event name="B202">
+<float value="0.012166266810129268"/>
+</define-basic-event>
+<define-basic-event name="B526">
+<float value="0.045356910973817034"/>
+</define-basic-event>
+<define-basic-event name="B152">
+<float value="0.024938987686601407"/>
+</define-basic-event>
+<define-basic-event name="B359">
+<float value="0.01523828196241276"/>
+</define-basic-event>
+<define-basic-event name="B242">
+<float value="0.014301333558337822"/>
+</define-basic-event>
+<define-basic-event name="B231">
+<float value="0.010419582104005736"/>
+</define-basic-event>
+<define-basic-event name="B293">
+<float value="0.024665388565078064"/>
+</define-basic-event>
+<define-basic-event name="B599">
+<float value="0.04767562307477573"/>
+</define-basic-event>
+<define-basic-event name="B311">
+<float value="0.030770842580767302"/>
+</define-basic-event>
+<define-basic-event name="B157">
+<float value="0.02665033840698671"/>
+</define-basic-event>
+<define-basic-event name="B169">
+<float value="0.023927558942454977"/>
+</define-basic-event>
+<define-basic-event name="B198">
+<float value="0.01827948204312528"/>
+</define-basic-event>
+<define-basic-event name="B563">
+<float value="0.02210535776007596"/>
+</define-basic-event>
+<define-basic-event name="B37">
+<float value="0.02592952605871597"/>
+</define-basic-event>
+<define-basic-event name="B55">
+<float value="0.02564773228285211"/>
+</define-basic-event>
+<define-basic-event name="B315">
+<float value="0.03839367532116526"/>
+</define-basic-event>
+<define-basic-event name="B246">
+<float value="0.027480928687947194"/>
+</define-basic-event>
+<define-basic-event name="B63">
+<float value="0.010513164370104536"/>
+</define-basic-event>
+<define-basic-event name="B159">
+<float value="0.0247605952421708"/>
+</define-basic-event>
+<define-basic-event name="B409">
+<float value="0.01601692960982047"/>
+</define-basic-event>
+<define-basic-event name="B408">
+<float value="0.03839303998528431"/>
+</define-basic-event>
+<define-basic-event name="B387">
+<float value="0.010861174099109352"/>
+</define-basic-event>
+<define-basic-event name="B121">
+<float value="0.04516524787333508"/>
+</define-basic-event>
+<define-basic-event name="B492">
+<float value="0.014889652752839759"/>
+</define-basic-event>
+<define-basic-event name="B588">
+<float value="0.017610912871895416"/>
+</define-basic-event>
+<define-basic-event name="B166">
+<float value="0.029044188478437205"/>
+</define-basic-event>
+<define-basic-event name="B491">
+<float value="0.023570214901535554"/>
+</define-basic-event>
+<define-basic-event name="B296">
+<float value="0.02264180253849144"/>
+</define-basic-event>
+<define-basic-event name="B145">
+<float value="0.04897043300528373"/>
+</define-basic-event>
+<define-basic-event name="B178">
+<float value="0.04625879134879853"/>
+</define-basic-event>
+<define-basic-event name="B460">
+<float value="0.04491886557898817"/>
+</define-basic-event>
+<define-basic-event name="B412">
+<float value="0.015524139640578239"/>
+</define-basic-event>
+<define-basic-event name="B476">
+<float value="0.019468572992779484"/>
+</define-basic-event>
+<define-basic-event name="B539">
+<float value="0.04364286640675738"/>
+</define-basic-event>
+<define-basic-event name="B553">
+<float value="0.010126312895430303"/>
+</define-basic-event>
+<define-basic-event name="B19">
+<float value="0.027932868332277747"/>
+</define-basic-event>
+<define-basic-event name="B323">
+<float value="0.0400593938354663"/>
+</define-basic-event>
+<define-basic-event name="B317">
+<float value="0.014304237131818352"/>
+</define-basic-event>
+<define-basic-event name="B585">
+<float value="0.013534376340375413"/>
+</define-basic-event>
+<define-basic-event name="B272">
+<float value="0.0328657925798747"/>
+</define-basic-event>
+<define-basic-event name="B368">
+<float value="0.04761519805933637"/>
+</define-basic-event>
+<define-basic-event name="B316">
+<float value="0.027630767794860206"/>
+</define-basic-event>
+<define-basic-event name="B97">
+<float value="0.0494139269955331"/>
+</define-basic-event>
+<define-basic-event name="B28">
+<float value="0.043513505767805376"/>
+</define-basic-event>
+<define-basic-event name="B404">
+<float value="0.049437324849675085"/>
+</define-basic-event>
+<define-basic-event name="B193">
+<float value="0.01284015482232367"/>
+</define-basic-event>
+<define-basic-event name="B518">
+<float value="0.046035549597197974"/>
+</define-basic-event>
+<define-basic-event name="B424">
+<float value="0.010110561114911584"/>
+</define-basic-event>
+<define-basic-event name="B221">
+<float value="0.027694405324165422"/>
+</define-basic-event>
+<define-basic-event name="B449">
+<float value="0.031244597077748425"/>
+</define-basic-event>
+<define-basic-event name="B92">
+<float value="0.010342448590914773"/>
+</define-basic-event>
+<define-basic-event name="B414">
+<float value="0.021683331175300028"/>
+</define-basic-event>
+<define-basic-event name="B95">
+<float value="0.0377682365879694"/>
+</define-basic-event>
+<define-basic-event name="B458">
+<float value="0.03745863196867402"/>
+</define-basic-event>
+<define-basic-event name="B482">
+<float value="0.04273228334237644"/>
+</define-basic-event>
+<define-basic-event name="B189">
+<float value="0.036738524855721655"/>
+</define-basic-event>
+<define-basic-event name="B47">
+<float value="0.011273652269644075"/>
+</define-basic-event>
+<define-basic-event name="B261">
+<float value="0.042847202690088466"/>
+</define-basic-event>
+<define-basic-event name="B103">
+<float value="0.04236077723963746"/>
+</define-basic-event>
+<define-basic-event name="B507">
+<float value="0.03560182917682936"/>
+</define-basic-event>
+<define-basic-event name="B498">
+<float value="0.014765369460224064"/>
+</define-basic-event>
+<define-basic-event name="B429">
+<float value="0.03898932287305563"/>
+</define-basic-event>
+<define-basic-event name="B493">
+<float value="0.047373362408143285"/>
+</define-basic-event>
+<define-basic-event name="B82">
+<float value="0.0202544938918617"/>
+</define-basic-event>
+<define-basic-event name="B346">
+<float value="0.017286406989333133"/>
+</define-basic-event>
+<define-basic-event name="B195">
+<float value="0.03548437268269059"/>
+</define-basic-event>
+<define-basic-event name="B43">
+<float value="0.0456039428214761"/>
+</define-basic-event>
+<define-basic-event name="B528">
+<float value="0.024849409555695208"/>
+</define-basic-event>
+<define-basic-event name="B172">
+<float value="0.024711218580357665"/>
+</define-basic-event>
+<define-basic-event name="B53">
+<float value="0.01680507550683633"/>
+</define-basic-event>
+<define-basic-event name="B453">
+<float value="0.017200802856211957"/>
+</define-basic-event>
+<define-basic-event name="B218">
+<float value="0.04358714091065309"/>
+</define-basic-event>
+<define-basic-event name="B139">
+<float value="0.045391886500984385"/>
+</define-basic-event>
+<define-basic-event name="B134">
+<float value="0.0412039909340964"/>
+</define-basic-event>
+<define-basic-event name="B127">
+<float value="0.03645222526927762"/>
+</define-basic-event>
+<define-basic-event name="B197">
+<float value="0.014139878156540435"/>
+</define-basic-event>
+<define-basic-event name="B109">
+<float value="0.037650785759817174"/>
+</define-basic-event>
+<define-basic-event name="B247">
+<float value="0.018612770276369255"/>
+</define-basic-event>
+<define-basic-event name="B393">
+<float value="0.04409049515050126"/>
+</define-basic-event>
+<define-basic-event name="B220">
+<float value="0.03861467960770088"/>
+</define-basic-event>
+<define-basic-event name="B114">
+<float value="0.03822995501163745"/>
+</define-basic-event>
+<define-basic-event name="B12">
+<float value="0.019806534100704445"/>
+</define-basic-event>
+<define-basic-event name="B110">
+<float value="0.022987805379233436"/>
+</define-basic-event>
+<define-basic-event name="B8">
+<float value="0.04408346475717475"/>
+</define-basic-event>
+<define-basic-event name="B362">
+<float value="0.02893206928124699"/>
+</define-basic-event>
+<define-basic-event name="B452">
+<float value="0.04145608139400482"/>
+</define-basic-event>
+<define-basic-event name="B484">
+<float value="0.011316772048378833"/>
+</define-basic-event>
+<define-basic-event name="B307">
+<float value="0.021661976157218273"/>
+</define-basic-event>
+<define-basic-event name="B347">
+<float value="0.035498822413347814"/>
+</define-basic-event>
+<define-basic-event name="B509">
+<float value="0.043592602290056036"/>
+</define-basic-event>
+<define-basic-event name="B58">
+<float value="0.032926740580421256"/>
+</define-basic-event>
+<define-basic-event name="B469">
+<float value="0.015486420027136903"/>
+</define-basic-event>
+<define-basic-event name="B29">
+<float value="0.040751789899199344"/>
+</define-basic-event>
+<define-basic-event name="B420">
+<float value="0.0307786931714537"/>
+</define-basic-event>
+<define-basic-event name="B14">
+<float value="0.027451031736608733"/>
+</define-basic-event>
+<define-basic-event name="B576">
+<float value="0.02280557659344248"/>
+</define-basic-event>
+<define-basic-event name="B168">
+<float value="0.04345861538317681"/>
+</define-basic-event>
+<define-basic-event name="B392">
+<float value="0.010610341855394029"/>
+</define-basic-event>
+<define-basic-event name="B571">
+<float value="0.047031147186780364"/>
+</define-basic-event>
+<define-basic-event name="B88">
+<float value="0.012504350993132674"/>
+</define-basic-event>
+<define-basic-event name="B523">
+<float value="0.011508547511767189"/>
+</define-basic-event>
+<define-basic-event name="B378">
+<float value="0.010171542645605776"/>
+</define-basic-event>
+<define-basic-event name="B282">
+<float value="0.047046007875153395"/>
+</define-basic-event>
+<define-basic-event name="B514">
+<float value="0.017064048571501532"/>
+</define-basic-event>
+<define-basic-event name="B357">
+<float value="0.04984640029118116"/>
+</define-basic-event>
+<define-basic-event name="B552">
+<float value="0.0308745504245675"/>
+</define-basic-event>
+<define-basic-event name="B107">
+<float value="0.010238425403317285"/>
+</define-basic-event>
+<define-basic-event name="B379">
+<float value="0.032409341275727754"/>
+</define-basic-event>
+<define-basic-event name="B174">
+<float value="0.02442794657540051"/>
+</define-basic-event>
+<define-basic-event name="B394">
+<float value="0.038612761176583466"/>
+</define-basic-event>
+<define-basic-event name="B225">
+<float value="0.019239167219690614"/>
+</define-basic-event>
+<define-basic-event name="B42">
+<float value="0.03666630524292724"/>
+</define-basic-event>
+<define-basic-event name="B155">
+<float value="0.046171126396870946"/>
+</define-basic-event>
+<define-basic-event name="B584">
+<float value="0.03268684783659009"/>
+</define-basic-event>
+<define-basic-event name="B148">
+<float value="0.021346887472562318"/>
+</define-basic-event>
+<define-basic-event name="B369">
+<float value="0.03189102813128096"/>
+</define-basic-event>
+<define-basic-event name="B382">
+<float value="0.03437693250550108"/>
+</define-basic-event>
+<define-basic-event name="B253">
+<float value="0.044157979353625976"/>
+</define-basic-event>
+<define-basic-event name="B136">
+<float value="0.014775120516488216"/>
+</define-basic-event>
+<define-basic-event name="B264">
+<float value="0.024521266283671787"/>
+</define-basic-event>
+<define-basic-event name="B71">
+<float value="0.048562366892155276"/>
+</define-basic-event>
+<define-basic-event name="B56">
+<float value="0.012931631124947463"/>
+</define-basic-event>
+<define-basic-event name="B50">
+<float value="0.04280760737735324"/>
+</define-basic-event>
+<define-basic-event name="B122">
+<float value="0.028635818727294794"/>
+</define-basic-event>
+<define-basic-event name="B142">
+<float value="0.013944463425333505"/>
+</define-basic-event>
+<define-basic-event name="B461">
+<float value="0.03966397846491705"/>
+</define-basic-event>
+<define-basic-event name="B158">
+<float value="0.04880343445164521"/>
+</define-basic-event>
+<define-basic-event name="B364">
+<float value="0.021878794904654837"/>
+</define-basic-event>
+<define-basic-event name="B451">
+<float value="0.0333011716084537"/>
+</define-basic-event>
+<define-basic-event name="B365">
+<float value="0.017745757932625065"/>
+</define-basic-event>
+<define-basic-event name="B120">
+<float value="0.011673668004474677"/>
+</define-basic-event>
+<define-basic-event name="B91">
+<float value="0.027328012555086448"/>
+</define-basic-event>
+<define-basic-event name="B455">
+<float value="0.012139120189654955"/>
+</define-basic-event>
+<define-basic-event name="B548">
+<float value="0.029654616071163743"/>
+</define-basic-event>
+<define-basic-event name="B385">
+<float value="0.014290916331885867"/>
+</define-basic-event>
+<define-basic-event name="B263">
+<float value="0.04951386355333835"/>
+</define-basic-event>
+<define-basic-event name="B167">
+<float value="0.023646118839255992"/>
+</define-basic-event>
+<define-basic-event name="B322">
+<float value="0.04483817661873141"/>
+</define-basic-event>
+<define-basic-event name="B589">
+<float value="0.02129880826426086"/>
+</define-basic-event>
+<define-basic-event name="B391">
+<float value="0.02983017388570807"/>
+</define-basic-event>
+<define-basic-event name="B459">
+<float value="0.026916118874204323"/>
+</define-basic-event>
+<define-basic-event name="B395">
+<float value="0.04102863050188319"/>
+</define-basic-event>
+<define-basic-event name="B549">
+<float value="0.041537893247932806"/>
+</define-basic-event>
+<define-basic-event name="B131">
+<float value="0.024824437685635276"/>
+</define-basic-event>
+<define-basic-event name="B2">
+<float value="0.026289670546815934"/>
+</define-basic-event>
+<define-basic-event name="B76">
+<float value="0.04967831091176868"/>
+</define-basic-event>
+<define-basic-event name="B479">
+<float value="0.02856941505524719"/>
+</define-basic-event>
+<define-basic-event name="B176">
+<float value="0.04395251879458285"/>
+</define-basic-event>
+<define-basic-event name="B544">
+<float value="0.01926176830785767"/>
+</define-basic-event>
+<define-basic-event name="B243">
+<float value="0.028442988909097397"/>
+</define-basic-event>
+<define-basic-event name="B423">
+<float value="0.014814171904906602"/>
+</define-basic-event>
+<define-basic-event name="B371">
+<float value="0.03323475180200071"/>
+</define-basic-event>
+<define-basic-event name="B377">
+<float value="0.01099321695033514"/>
+</define-basic-event>
+<define-basic-event name="B177">
+<float value="0.02745430908193503"/>
+</define-basic-event>
+<define-basic-event name="B366">
+<float value="0.017650341076030897"/>
+</define-basic-event>
+<define-basic-event name="B81">
+<float value="0.01772707880169415"/>
+</define-basic-event>
+<define-basic-event name="B485">
+<float value="0.025643124119171162"/>
+</define-basic-event>
+<define-basic-event name="B46">
+<float value="0.024980865272899333"/>
+</define-basic-event>
+<define-basic-event name="B251">
+<float value="0.02457113811171758"/>
+</define-basic-event>
+<define-basic-event name="B255">
+<float value="0.040861443828888754"/>
+</define-basic-event>
+<define-basic-event name="B126">
+<float value="0.03371292700303648"/>
+</define-basic-event>
+<define-basic-event name="B320">
+<float value="0.026914671473323104"/>
+</define-basic-event>
+<define-basic-event name="B398">
+<float value="0.037848342141141515"/>
+</define-basic-event>
+<define-basic-event name="B372">
+<float value="0.037070077918840885"/>
+</define-basic-event>
+<define-basic-event name="B542">
+<float value="0.03924235348478596"/>
+</define-basic-event>
+<define-basic-event name="B505">
+<float value="0.038371078581581716"/>
+</define-basic-event>
+<define-basic-event name="B433">
+<float value="0.040826963240227436"/>
+</define-basic-event>
+<define-basic-event name="B329">
+<float value="0.024999086325532736"/>
+</define-basic-event>
+<define-basic-event name="B184">
+<float value="0.01558937548537721"/>
+</define-basic-event>
+<define-basic-event name="B191">
+<float value="0.049805314799348105"/>
+</define-basic-event>
+<define-basic-event name="B94">
+<float value="0.012939359708602098"/>
+</define-basic-event>
+<define-basic-event name="B561">
+<float value="0.016365547948947533"/>
+</define-basic-event>
+<define-basic-event name="B440">
+<float value="0.014203243767696692"/>
+</define-basic-event>
+<define-basic-event name="B7">
+<float value="0.023287907940387195"/>
+</define-basic-event>
+<define-basic-event name="B164">
+<float value="0.030197149407404547"/>
+</define-basic-event>
+<define-basic-event name="B547">
+<float value="0.02870862023178812"/>
+</define-basic-event>
+<define-basic-event name="B546">
+<float value="0.011434652476826184"/>
+</define-basic-event>
+<define-basic-event name="B222">
+<float value="0.039420033977508595"/>
+</define-basic-event>
+<define-basic-event name="B381">
+<float value="0.03215250507016071"/>
+</define-basic-event>
+<define-basic-event name="B85">
+<float value="0.02737074334450615"/>
+</define-basic-event>
+<define-basic-event name="B396">
+<float value="0.02684965771718127"/>
+</define-basic-event>
+<define-basic-event name="B269">
+<float value="0.04478190141867949"/>
+</define-basic-event>
+<define-basic-event name="B473">
+<float value="0.026549112773236835"/>
+</define-basic-event>
+<define-basic-event name="B79">
+<float value="0.011765194240257758"/>
+</define-basic-event>
+<define-basic-event name="B574">
+<float value="0.04836872753758185"/>
+</define-basic-event>
+<define-basic-event name="B192">
+<float value="0.04927361195985556"/>
+</define-basic-event>
+<define-basic-event name="B25">
+<float value="0.04644602192361283"/>
+</define-basic-event>
+<define-basic-event name="B13">
+<float value="0.010066822143168914"/>
+</define-basic-event>
+<define-basic-event name="B417">
+<float value="0.041350631846742446"/>
+</define-basic-event>
+<define-basic-event name="B147">
+<float value="0.022078508247372758"/>
+</define-basic-event>
+<define-basic-event name="B540">
+<float value="0.0250862408034965"/>
+</define-basic-event>
+<define-basic-event name="B70">
+<float value="0.049671723990076626"/>
+</define-basic-event>
+<define-basic-event name="B464">
+<float value="0.01631773506479368"/>
+</define-basic-event>
+<define-basic-event name="B356">
+<float value="0.04143714473108812"/>
+</define-basic-event>
+<define-basic-event name="B104">
+<float value="0.029358361510123887"/>
+</define-basic-event>
+<define-basic-event name="B308">
+<float value="0.014061417988685196"/>
+</define-basic-event>
+<define-basic-event name="B60">
+<float value="0.01756247478312306"/>
+</define-basic-event>
+<define-basic-event name="B289">
+<float value="0.01641305389849821"/>
+</define-basic-event>
+<define-basic-event name="B438">
+<float value="0.01406656057835834"/>
+</define-basic-event>
+<define-basic-event name="B59">
+<float value="0.023444243972393364"/>
+</define-basic-event>
+<define-basic-event name="B551">
+<float value="0.046504583106042524"/>
+</define-basic-event>
+<define-basic-event name="B239">
+<float value="0.022379050946933952"/>
+</define-basic-event>
+<define-basic-event name="B426">
+<float value="0.04856604157070716"/>
+</define-basic-event>
+<define-basic-event name="B468">
+<float value="0.04908925620282017"/>
+</define-basic-event>
+<define-basic-event name="B415">
+<float value="0.04609825863974448"/>
+</define-basic-event>
+<define-basic-event name="B471">
+<float value="0.042477478731999904"/>
+</define-basic-event>
+<define-basic-event name="B163">
+<float value="0.028823888646294628"/>
+</define-basic-event>
+<define-basic-event name="B525">
+<float value="0.03412907664022958"/>
+</define-basic-event>
+<define-basic-event name="B238">
+<float value="0.033009125572722675"/>
+</define-basic-event>
+<define-basic-event name="B144">
+<float value="0.02335035075602176"/>
+</define-basic-event>
+<define-basic-event name="B306">
+<float value="0.04697739638092587"/>
+</define-basic-event>
+<define-basic-event name="B345">
+<float value="0.03882520069038792"/>
+</define-basic-event>
+<define-basic-event name="B489">
+<float value="0.03416738107630311"/>
+</define-basic-event>
+<define-basic-event name="B187">
+<float value="0.0477481266235195"/>
+</define-basic-event>
+<define-basic-event name="B410">
+<float value="0.015658273931487485"/>
+</define-basic-event>
+<define-basic-event name="B324">
+<float value="0.031040286003224345"/>
+</define-basic-event>
+<define-basic-event name="B244">
+<float value="0.020966607672000925"/>
+</define-basic-event>
+<define-basic-event name="B11">
+<float value="0.023351855785158214"/>
+</define-basic-event>
+<define-basic-event name="B579">
+<float value="0.010309763193243561"/>
+</define-basic-event>
+<define-basic-event name="B319">
+<float value="0.021372028909644236"/>
+</define-basic-event>
+<define-basic-event name="B235">
+<float value="0.02097932274666563"/>
+</define-basic-event>
+<define-basic-event name="B314">
+<float value="0.014008832617497202"/>
+</define-basic-event>
+<define-basic-event name="B86">
+<float value="0.026814292669402162"/>
+</define-basic-event>
+<define-basic-event name="B342">
+<float value="0.03460163438510758"/>
+</define-basic-event>
+<define-basic-event name="B301">
+<float value="0.022743303124246925"/>
+</define-basic-event>
+<define-basic-event name="B106">
+<float value="0.02944479833260826"/>
+</define-basic-event>
+<define-basic-event name="B325">
+<float value="0.017214865069138403"/>
+</define-basic-event>
+<define-basic-event name="B257">
+<float value="0.028396072602098428"/>
+</define-basic-event>
+<define-basic-event name="B248">
+<float value="0.01525726864146308"/>
+</define-basic-event>
+<define-basic-event name="B466">
+<float value="0.03396385397908155"/>
+</define-basic-event>
+<define-basic-event name="B205">
+<float value="0.031738422138459496"/>
+</define-basic-event>
+<define-basic-event name="B562">
+<float value="0.046813915506699964"/>
+</define-basic-event>
+<define-basic-event name="B73">
+<float value="0.019334927363446386"/>
+</define-basic-event>
+<define-basic-event name="B502">
+<float value="0.044267626218691895"/>
+</define-basic-event>
+<define-basic-event name="B285">
+<float value="0.010710133844994002"/>
+</define-basic-event>
+<define-basic-event name="B260">
+<float value="0.026344898055653286"/>
+</define-basic-event>
+<define-basic-event name="B288">
+<float value="0.03122603215028167"/>
+</define-basic-event>
+<define-basic-event name="B480">
+<float value="0.0203499175838951"/>
+</define-basic-event>
+<define-basic-event name="B488">
+<float value="0.046056860812482586"/>
+</define-basic-event>
+<define-basic-event name="B287">
+<float value="0.020177572626872316"/>
+</define-basic-event>
+<define-basic-event name="B439">
+<float value="0.02507332749361132"/>
+</define-basic-event>
+<define-basic-event name="B436">
+<float value="0.037034842689588794"/>
+</define-basic-event>
+<define-basic-event name="B411">
+<float value="0.029910180270485483"/>
+</define-basic-event>
+<define-basic-event name="B358">
+<float value="0.033688385697958005"/>
+</define-basic-event>
+<define-basic-event name="B590">
+<float value="0.043023973655443463"/>
+</define-basic-event>
+<define-basic-event name="B517">
+<float value="0.047036429730988025"/>
+</define-basic-event>
+<define-basic-event name="B340">
+<float value="0.04171673423638871"/>
+</define-basic-event>
+<define-basic-event name="B61">
+<float value="0.013526291797043042"/>
+</define-basic-event>
+<define-basic-event name="B543">
+<float value="0.04067841747000097"/>
+</define-basic-event>
+<define-basic-event name="B135">
+<float value="0.024446067848828787"/>
+</define-basic-event>
+<define-basic-event name="B153">
+<float value="0.04054375367244309"/>
+</define-basic-event>
+<define-basic-event name="B194">
+<float value="0.02744254307286101"/>
+</define-basic-event>
+<define-basic-event name="B432">
+<float value="0.04010024143129657"/>
+</define-basic-event>
+<define-basic-event name="B500">
+<float value="0.02874594721261855"/>
+</define-basic-event>
+<define-basic-event name="B520">
+<float value="0.03699581056426073"/>
+</define-basic-event>
+<define-basic-event name="B125">
+<float value="0.014229077848351018"/>
+</define-basic-event>
+<define-basic-event name="B67">
+<float value="0.03894653404476966"/>
+</define-basic-event>
+<define-basic-event name="B568">
+<float value="0.013842599271959606"/>
+</define-basic-event>
+<define-basic-event name="B299">
+<float value="0.040087954271878286"/>
+</define-basic-event>
+<define-basic-event name="B183">
+<float value="0.049539400687287995"/>
+</define-basic-event>
+<define-basic-event name="B407">
+<float value="0.02072190293225664"/>
+</define-basic-event>
+<define-basic-event name="B266">
+<float value="0.020634555688813505"/>
+</define-basic-event>
+<define-basic-event name="B472">
+<float value="0.02552149850979646"/>
+</define-basic-event>
+<define-basic-event name="B327">
+<float value="0.03665616295425358"/>
+</define-basic-event>
+<define-basic-event name="B331">
+<float value="0.0418362961154118"/>
+</define-basic-event>
+<define-basic-event name="B72">
+<float value="0.035199628388969825"/>
+</define-basic-event>
+<define-basic-event name="B497">
+<float value="0.04009637929580783"/>
+</define-basic-event>
+<define-basic-event name="B295">
+<float value="0.020679336200619784"/>
+</define-basic-event>
+<define-basic-event name="B151">
+<float value="0.011178035250801925"/>
+</define-basic-event>
+<define-basic-event name="B483">
+<float value="0.03986246611142299"/>
+</define-basic-event>
+<define-basic-event name="B557">
+<float value="0.04064994020442091"/>
+</define-basic-event>
+<define-basic-event name="B508">
+<float value="0.01865704528045066"/>
+</define-basic-event>
+<define-basic-event name="B360">
+<float value="0.03680680478704265"/>
+</define-basic-event>
+<define-basic-event name="B129">
+<float value="0.023822197254566052"/>
+</define-basic-event>
+<define-basic-event name="B268">
+<float value="0.024298033931594534"/>
+</define-basic-event>
+<define-basic-event name="B182">
+<float value="0.013315871233714303"/>
+</define-basic-event>
+<define-basic-event name="B389">
+<float value="0.021787697972406792"/>
+</define-basic-event>
+<define-basic-event name="B141">
+<float value="0.02736108175252111"/>
+</define-basic-event>
+<define-basic-event name="B219">
+<float value="0.03725374640149113"/>
+</define-basic-event>
+<define-basic-event name="B475">
+<float value="0.018223712502205034"/>
+</define-basic-event>
+<define-basic-event name="B34">
+<float value="0.03108299808645667"/>
+</define-basic-event>
+<define-basic-event name="B259">
+<float value="0.018127777367009622"/>
+</define-basic-event>
+<define-basic-event name="B481">
+<float value="0.023333442606796765"/>
+</define-basic-event>
+<define-basic-event name="B89">
+<float value="0.024202457877115165"/>
+</define-basic-event>
+<define-basic-event name="B564">
+<float value="0.030741098341658855"/>
+</define-basic-event>
+<define-basic-event name="B20">
+<float value="0.04621594609137996"/>
+</define-basic-event>
+<define-basic-event name="B30">
+<float value="0.023738486326238584"/>
+</define-basic-event>
+<define-basic-event name="B582">
+<float value="0.014709631008886323"/>
+</define-basic-event>
+<define-basic-event name="B560">
+<float value="0.03945463181484715"/>
+</define-basic-event>
+<define-basic-event name="B504">
+<float value="0.027901198449179952"/>
+</define-basic-event>
+<define-basic-event name="B123">
+<float value="0.04680220318871832"/>
+</define-basic-event>
+<define-basic-event name="B48">
+<float value="0.040166926874354886"/>
+</define-basic-event>
+<define-basic-event name="B575">
+<float value="0.0327604947331428"/>
+</define-basic-event>
+<define-basic-event name="B27">
+<float value="0.020612868210462532"/>
+</define-basic-event>
+<define-basic-event name="B254">
+<float value="0.010257384794715163"/>
+</define-basic-event>
+<define-basic-event name="B137">
+<float value="0.02319157370534501"/>
+</define-basic-event>
+<define-basic-event name="B83">
+<float value="0.024081901217987048"/>
+</define-basic-event>
+<define-basic-event name="B284">
+<float value="0.03690542311926254"/>
+</define-basic-event>
+<define-basic-event name="B276">
+<float value="0.01240038245649453"/>
+</define-basic-event>
+<define-basic-event name="B52">
+<float value="0.036322966296043174"/>
+</define-basic-event>
+<define-basic-event name="B119">
+<float value="0.027942233118697417"/>
+</define-basic-event>
+<define-basic-event name="B595">
+<float value="0.042231546571118495"/>
+</define-basic-event>
+<define-basic-event name="B265">
+<float value="0.034276262119986474"/>
+</define-basic-event>
+<define-basic-event name="B188">
+<float value="0.019295724480931305"/>
+</define-basic-event>
+<define-basic-event name="B403">
+<float value="0.01767168956958205"/>
+</define-basic-event>
+<define-basic-event name="B162">
+<float value="0.04087843268601794"/>
+</define-basic-event>
+<define-basic-event name="B250">
+<float value="0.0412222874331154"/>
+</define-basic-event>
+<define-basic-event name="B228">
+<float value="0.04171664044750798"/>
+</define-basic-event>
+<define-basic-event name="B567">
+<float value="0.02154096807591189"/>
+</define-basic-event>
+<define-basic-event name="B9">
+<float value="0.016386495868878796"/>
+</define-basic-event>
+<define-basic-event name="B132">
+<float value="0.012824339327716788"/>
+</define-basic-event>
+<define-basic-event name="B96">
+<float value="0.026168290683369892"/>
+</define-basic-event>
+<define-basic-event name="B402">
+<float value="0.0337884406938579"/>
+</define-basic-event>
+<define-basic-event name="B185">
+<float value="0.04206146513261586"/>
+</define-basic-event>
+<define-basic-event name="B105">
+<float value="0.02027406952195264"/>
+</define-basic-event>
+<define-basic-event name="B5">
+<float value="0.011526146644092896"/>
+</define-basic-event>
+<define-basic-event name="B380">
+<float value="0.01353117555792239"/>
+</define-basic-event>
+<define-basic-event name="B201">
+<float value="0.036103639741615325"/>
+</define-basic-event>
+<define-basic-event name="B565">
+<float value="0.030626324431383314"/>
+</define-basic-event>
+<define-basic-event name="B352">
+<float value="0.049677951344085015"/>
+</define-basic-event>
+<define-basic-event name="B212">
+<float value="0.032583233130548755"/>
+</define-basic-event>
+<define-basic-event name="B494">
+<float value="0.01255489494923355"/>
+</define-basic-event>
+<define-basic-event name="B406">
+<float value="0.029224880004388984"/>
+</define-basic-event>
+<define-basic-event name="B425">
+<float value="0.03294520038978892"/>
+</define-basic-event>
+<define-basic-event name="B555">
+<float value="0.017010425802669645"/>
+</define-basic-event>
+<define-basic-event name="B64">
+<float value="0.024076547323928048"/>
+</define-basic-event>
+<define-basic-event name="B292">
+<float value="0.04576982321566209"/>
+</define-basic-event>
+<define-basic-event name="B6">
+<float value="0.03144808160135708"/>
+</define-basic-event>
+<define-basic-event name="B140">
+<float value="0.04281119820606882"/>
+</define-basic-event>
+<define-basic-event name="B503">
+<float value="0.033633672727830397"/>
+</define-basic-event>
+<define-basic-event name="B355">
+<float value="0.011779803112909751"/>
+</define-basic-event>
+<define-basic-event name="B51">
+<float value="0.04654583647456919"/>
+</define-basic-event>
+<define-basic-event name="B367">
+<float value="0.026174094355571553"/>
+</define-basic-event>
+<define-basic-event name="B416">
+<float value="0.03851890040884351"/>
+</define-basic-event>
+<define-basic-event name="B118">
+<float value="0.0354195201216317"/>
+</define-basic-event>
+<define-basic-event name="B444">
+<float value="0.03024716029532902"/>
+</define-basic-event>
+<define-basic-event name="B1">
+<float value="0.013487467100905292"/>
+</define-basic-event>
+<define-basic-event name="B41">
+<float value="0.03553413057221995"/>
+</define-basic-event>
+<define-basic-event name="B535">
+<float value="0.043101305064342656"/>
+</define-basic-event>
+<define-basic-event name="B36">
+<float value="0.022610526088639525"/>
+</define-basic-event>
+<define-basic-event name="B583">
+<float value="0.029012986286119105"/>
+</define-basic-event>
+<define-basic-event name="B181">
+<float value="0.04632165631578049"/>
+</define-basic-event>
+<define-basic-event name="B400">
+<float value="0.01973452371799286"/>
+</define-basic-event>
+<define-basic-event name="B156">
+<float value="0.01926115261728103"/>
+</define-basic-event>
+<define-basic-event name="B133">
+<float value="0.016534227844264913"/>
+</define-basic-event>
+<define-basic-event name="B179">
+<float value="0.03121569398919255"/>
+</define-basic-event>
+<define-basic-event name="B310">
+<float value="0.019880821699101246"/>
+</define-basic-event>
+<define-basic-event name="B370">
+<float value="0.011978963698429155"/>
+</define-basic-event>
+<define-basic-event name="B39">
+<float value="0.0305100853545626"/>
+</define-basic-event>
+<define-basic-event name="B321">
+<float value="0.025452565777940445"/>
+</define-basic-event>
+<define-basic-event name="B281">
+<float value="0.045592810578839967"/>
+</define-basic-event>
+<define-basic-event name="B66">
+<float value="0.03127989962727058"/>
+</define-basic-event>
+<define-basic-event name="B226">
+<float value="0.020630517234496958"/>
+</define-basic-event>
+<define-basic-event name="B279">
+<float value="0.0173697750018375"/>
+</define-basic-event>
+<define-basic-event name="B353">
+<float value="0.026852987849958473"/>
+</define-basic-event>
+<define-basic-event name="B124">
+<float value="0.029877335091960562"/>
+</define-basic-event>
+<define-basic-event name="B206">
+<float value="0.01916273984400514"/>
+</define-basic-event>
+<define-basic-event name="B534">
+<float value="0.012800006480261993"/>
+</define-basic-event>
+<define-basic-event name="B32">
+<float value="0.018274498826644454"/>
+</define-basic-event>
+<define-basic-event name="B54">
+<float value="0.023476646111668248"/>
+</define-basic-event>
+<define-basic-event name="B102">
+<float value="0.025449846515709834"/>
+</define-basic-event>
+<define-basic-event name="B302">
+<float value="0.021942344701959472"/>
+</define-basic-event>
+<define-basic-event name="B522">
+<float value="0.013042697785087959"/>
+</define-basic-event>
+<define-basic-event name="B22">
+<float value="0.015687002577260044"/>
+</define-basic-event>
+<define-basic-event name="B112">
+<float value="0.023033640942116754"/>
+</define-basic-event>
+</model-data>
+</opsa-mef>

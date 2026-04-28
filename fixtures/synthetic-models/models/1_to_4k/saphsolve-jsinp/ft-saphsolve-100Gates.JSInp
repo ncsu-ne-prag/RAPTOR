@@ -1,0 +1,3925 @@
+{
+    "version": "1.0",
+    "saphiresolveinput": {
+        "header": {
+            "projectpath": " ",
+            "eventtree": {
+                "name": " ",
+                "number": 0,
+                "initevent": 0,
+                "seqphase": 1
+            },
+            "flagnum": 0,
+            "ftcount": 1,
+            "fthigh": 11,
+            "sqcount": 0,
+            "sqhigh": 0,
+            "becount": 204,
+            "behigh": 1099,
+            "mthigh": 1,
+            "phhigh": 1,
+            "truncparam": {
+                "ettruncopt": "NormalProbCutOff",
+                "fttruncopt": "GlobalProbCutOff",
+                "sizeopt": "ENoTrunc",
+                "ettruncval": 1e-14,
+                "fttruncval": 1e-14,
+                "sizeval": 99,
+                "transrepl": false,
+                "transzones": false,
+                "translevel": 0,
+                "usedual": false,
+                "dualcutoff": 0.0
+            },
+            "workspacepair": {
+                "ph": 1,
+                "mt": 1
+            },
+            "iworkspacepair": {
+                "ph": 1,
+                "mt": 1
+            }
+        },
+        "sysgatelist": [
+            {
+                "name": "FT-Top-Event",
+                "id": 11,
+                "gateid": 1,
+                "gateorig": 1,
+                "gatepos": 0,
+                "eventid": 99,
+                "gatecomp": 1,
+                "comppos": 0,
+                "compflag": " ",
+                "gateflag": " ",
+                "gatet": " ",
+                "bddsuccess": false,
+                "done": false
+            }
+        ],
+        "faulttreelist": [
+            {
+                "ftheader": {
+                    "ftid": 11,
+                    "gtid": 1,
+                    "evid": 99,
+                    "defflag": 0,
+                    "numgates": 100
+                },
+                "gatelist": [
+                    {
+                        "gateid": 1,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            100,
+                            1000
+                        ],
+                        "gateinput": [
+                            2
+                        ]
+                    },
+                    {
+                        "gateid": 2,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            101,
+                            1001
+                        ],
+                        "gateinput": [
+                            3
+                        ]
+                    },
+                    {
+                        "gateid": 3,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            102,
+                            1002
+                        ],
+                        "gateinput": [
+                            4
+                        ]
+                    },
+                    {
+                        "gateid": 4,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            103,
+                            1003
+                        ],
+                        "gateinput": [
+                            5
+                        ]
+                    },
+                    {
+                        "gateid": 5,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            104,
+                            1004
+                        ],
+                        "gateinput": [
+                            6
+                        ]
+                    },
+                    {
+                        "gateid": 6,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            105,
+                            1005
+                        ],
+                        "gateinput": [
+                            7
+                        ]
+                    },
+                    {
+                        "gateid": 7,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            106,
+                            1006
+                        ],
+                        "gateinput": [
+                            8
+                        ]
+                    },
+                    {
+                        "gateid": 8,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            107,
+                            1007
+                        ],
+                        "gateinput": [
+                            9
+                        ]
+                    },
+                    {
+                        "gateid": 9,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            108,
+                            1008
+                        ],
+                        "gateinput": [
+                            10
+                        ]
+                    },
+                    {
+                        "gateid": 10,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            109,
+                            1009
+                        ],
+                        "gateinput": [
+                            11
+                        ]
+                    },
+                    {
+                        "gateid": 11,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            110,
+                            1010
+                        ],
+                        "gateinput": [
+                            12
+                        ]
+                    },
+                    {
+                        "gateid": 12,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            111,
+                            1011
+                        ],
+                        "gateinput": [
+                            13
+                        ]
+                    },
+                    {
+                        "gateid": 13,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            112,
+                            1012
+                        ],
+                        "gateinput": [
+                            14
+                        ]
+                    },
+                    {
+                        "gateid": 14,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            113,
+                            1013
+                        ],
+                        "gateinput": [
+                            15
+                        ]
+                    },
+                    {
+                        "gateid": 15,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            114,
+                            1014
+                        ],
+                        "gateinput": [
+                            16
+                        ]
+                    },
+                    {
+                        "gateid": 16,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            115,
+                            1015
+                        ],
+                        "gateinput": [
+                            17
+                        ]
+                    },
+                    {
+                        "gateid": 17,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            116,
+                            1016
+                        ],
+                        "gateinput": [
+                            18
+                        ]
+                    },
+                    {
+                        "gateid": 18,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            117,
+                            1017
+                        ],
+                        "gateinput": [
+                            19
+                        ]
+                    },
+                    {
+                        "gateid": 19,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            118,
+                            1018
+                        ],
+                        "gateinput": [
+                            20
+                        ]
+                    },
+                    {
+                        "gateid": 20,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            119,
+                            1019
+                        ],
+                        "gateinput": [
+                            21
+                        ]
+                    },
+                    {
+                        "gateid": 21,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            120,
+                            1020
+                        ],
+                        "gateinput": [
+                            22
+                        ]
+                    },
+                    {
+                        "gateid": 22,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            121,
+                            1021
+                        ],
+                        "gateinput": [
+                            23
+                        ]
+                    },
+                    {
+                        "gateid": 23,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            122,
+                            1022
+                        ],
+                        "gateinput": [
+                            24
+                        ]
+                    },
+                    {
+                        "gateid": 24,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            123,
+                            1023
+                        ],
+                        "gateinput": [
+                            25
+                        ]
+                    },
+                    {
+                        "gateid": 25,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            124,
+                            1024
+                        ],
+                        "gateinput": [
+                            26
+                        ]
+                    },
+                    {
+                        "gateid": 26,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            125,
+                            1025
+                        ],
+                        "gateinput": [
+                            27
+                        ]
+                    },
+                    {
+                        "gateid": 27,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            126,
+                            1026
+                        ],
+                        "gateinput": [
+                            28
+                        ]
+                    },
+                    {
+                        "gateid": 28,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            127,
+                            1027
+                        ],
+                        "gateinput": [
+                            29
+                        ]
+                    },
+                    {
+                        "gateid": 29,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            128,
+                            1028
+                        ],
+                        "gateinput": [
+                            30
+                        ]
+                    },
+                    {
+                        "gateid": 30,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            129,
+                            1029
+                        ],
+                        "gateinput": [
+                            31
+                        ]
+                    },
+                    {
+                        "gateid": 31,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            130,
+                            1030
+                        ],
+                        "gateinput": [
+                            32
+                        ]
+                    },
+                    {
+                        "gateid": 32,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            131,
+                            1031
+                        ],
+                        "gateinput": [
+                            33
+                        ]
+                    },
+                    {
+                        "gateid": 33,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            132,
+                            1032
+                        ],
+                        "gateinput": [
+                            34
+                        ]
+                    },
+                    {
+                        "gateid": 34,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            133,
+                            1033
+                        ],
+                        "gateinput": [
+                            35
+                        ]
+                    },
+                    {
+                        "gateid": 35,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            134,
+                            1034
+                        ],
+                        "gateinput": [
+                            36
+                        ]
+                    },
+                    {
+                        "gateid": 36,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            135,
+                            1035
+                        ],
+                        "gateinput": [
+                            37
+                        ]
+                    },
+                    {
+                        "gateid": 37,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            136,
+                            1036
+                        ],
+                        "gateinput": [
+                            38
+                        ]
+                    },
+                    {
+                        "gateid": 38,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            137,
+                            1037
+                        ],
+                        "gateinput": [
+                            39
+                        ]
+                    },
+                    {
+                        "gateid": 39,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            138,
+                            1038
+                        ],
+                        "gateinput": [
+                            40
+                        ]
+                    },
+                    {
+                        "gateid": 40,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            139,
+                            1039
+                        ],
+                        "gateinput": [
+                            41
+                        ]
+                    },
+                    {
+                        "gateid": 41,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            140,
+                            1040
+                        ],
+                        "gateinput": [
+                            42
+                        ]
+                    },
+                    {
+                        "gateid": 42,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            141,
+                            1041
+                        ],
+                        "gateinput": [
+                            43
+                        ]
+                    },
+                    {
+                        "gateid": 43,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            142,
+                            1042
+                        ],
+                        "gateinput": [
+                            44
+                        ]
+                    },
+                    {
+                        "gateid": 44,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            143,
+                            1043
+                        ],
+                        "gateinput": [
+                            45
+                        ]
+                    },
+                    {
+                        "gateid": 45,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            144,
+                            1044
+                        ],
+                        "gateinput": [
+                            46
+                        ]
+                    },
+                    {
+                        "gateid": 46,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            145,
+                            1045
+                        ],
+                        "gateinput": [
+                            47
+                        ]
+                    },
+                    {
+                        "gateid": 47,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            146,
+                            1046
+                        ],
+                        "gateinput": [
+                            48
+                        ]
+                    },
+                    {
+                        "gateid": 48,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            147,
+                            1047
+                        ],
+                        "gateinput": [
+                            49
+                        ]
+                    },
+                    {
+                        "gateid": 49,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            148,
+                            1048
+                        ],
+                        "gateinput": [
+                            50
+                        ]
+                    },
+                    {
+                        "gateid": 50,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            149,
+                            1049
+                        ],
+                        "gateinput": [
+                            51
+                        ]
+                    },
+                    {
+                        "gateid": 51,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            150,
+                            1050
+                        ],
+                        "gateinput": [
+                            52
+                        ]
+                    },
+                    {
+                        "gateid": 52,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            151,
+                            1051
+                        ],
+                        "gateinput": [
+                            53
+                        ]
+                    },
+                    {
+                        "gateid": 53,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            152,
+                            1052
+                        ],
+                        "gateinput": [
+                            54
+                        ]
+                    },
+                    {
+                        "gateid": 54,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            153,
+                            1053
+                        ],
+                        "gateinput": [
+                            55
+                        ]
+                    },
+                    {
+                        "gateid": 55,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            154,
+                            1054
+                        ],
+                        "gateinput": [
+                            56
+                        ]
+                    },
+                    {
+                        "gateid": 56,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            155,
+                            1055
+                        ],
+                        "gateinput": [
+                            57
+                        ]
+                    },
+                    {
+                        "gateid": 57,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            156,
+                            1056
+                        ],
+                        "gateinput": [
+                            58
+                        ]
+                    },
+                    {
+                        "gateid": 58,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            157,
+                            1057
+                        ],
+                        "gateinput": [
+                            59
+                        ]
+                    },
+                    {
+                        "gateid": 59,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            158,
+                            1058
+                        ],
+                        "gateinput": [
+                            60
+                        ]
+                    },
+                    {
+                        "gateid": 60,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            159,
+                            1059
+                        ],
+                        "gateinput": [
+                            61
+                        ]
+                    },
+                    {
+                        "gateid": 61,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            160,
+                            1060
+                        ],
+                        "gateinput": [
+                            62
+                        ]
+                    },
+                    {
+                        "gateid": 62,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            161,
+                            1061
+                        ],
+                        "gateinput": [
+                            63
+                        ]
+                    },
+                    {
+                        "gateid": 63,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            162,
+                            1062
+                        ],
+                        "gateinput": [
+                            64
+                        ]
+                    },
+                    {
+                        "gateid": 64,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            163,
+                            1063
+                        ],
+                        "gateinput": [
+                            65
+                        ]
+                    },
+                    {
+                        "gateid": 65,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            164,
+                            1064
+                        ],
+                        "gateinput": [
+                            66
+                        ]
+                    },
+                    {
+                        "gateid": 66,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            165,
+                            1065
+                        ],
+                        "gateinput": [
+                            67
+                        ]
+                    },
+                    {
+                        "gateid": 67,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            166,
+                            1066
+                        ],
+                        "gateinput": [
+                            68
+                        ]
+                    },
+                    {
+                        "gateid": 68,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            167,
+                            1067
+                        ],
+                        "gateinput": [
+                            69
+                        ]
+                    },
+                    {
+                        "gateid": 69,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            168,
+                            1068
+                        ],
+                        "gateinput": [
+                            70
+                        ]
+                    },
+                    {
+                        "gateid": 70,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            169,
+                            1069
+                        ],
+                        "gateinput": [
+                            71
+                        ]
+                    },
+                    {
+                        "gateid": 71,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            170,
+                            1070
+                        ],
+                        "gateinput": [
+                            72
+                        ]
+                    },
+                    {
+                        "gateid": 72,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            171,
+                            1071
+                        ],
+                        "gateinput": [
+                            73
+                        ]
+                    },
+                    {
+                        "gateid": 73,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            172,
+                            1072
+                        ],
+                        "gateinput": [
+                            74
+                        ]
+                    },
+                    {
+                        "gateid": 74,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            173,
+                            1073
+                        ],
+                        "gateinput": [
+                            75
+                        ]
+                    },
+                    {
+                        "gateid": 75,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            174,
+                            1074
+                        ],
+                        "gateinput": [
+                            76
+                        ]
+                    },
+                    {
+                        "gateid": 76,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            175,
+                            1075
+                        ],
+                        "gateinput": [
+                            77
+                        ]
+                    },
+                    {
+                        "gateid": 77,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            176,
+                            1076
+                        ],
+                        "gateinput": [
+                            78
+                        ]
+                    },
+                    {
+                        "gateid": 78,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            177,
+                            1077
+                        ],
+                        "gateinput": [
+                            79
+                        ]
+                    },
+                    {
+                        "gateid": 79,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            178,
+                            1078
+                        ],
+                        "gateinput": [
+                            80
+                        ]
+                    },
+                    {
+                        "gateid": 80,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            179,
+                            1079
+                        ],
+                        "gateinput": [
+                            81
+                        ]
+                    },
+                    {
+                        "gateid": 81,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            180,
+                            1080
+                        ],
+                        "gateinput": [
+                            82
+                        ]
+                    },
+                    {
+                        "gateid": 82,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            181,
+                            1081
+                        ],
+                        "gateinput": [
+                            83
+                        ]
+                    },
+                    {
+                        "gateid": 83,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            182,
+                            1082
+                        ],
+                        "gateinput": [
+                            84
+                        ]
+                    },
+                    {
+                        "gateid": 84,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            183,
+                            1083
+                        ],
+                        "gateinput": [
+                            85
+                        ]
+                    },
+                    {
+                        "gateid": 85,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            184,
+                            1084
+                        ],
+                        "gateinput": [
+                            86
+                        ]
+                    },
+                    {
+                        "gateid": 86,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            185,
+                            1085
+                        ],
+                        "gateinput": [
+                            87
+                        ]
+                    },
+                    {
+                        "gateid": 87,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            186,
+                            1086
+                        ],
+                        "gateinput": [
+                            88
+                        ]
+                    },
+                    {
+                        "gateid": 88,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            187,
+                            1087
+                        ],
+                        "gateinput": [
+                            89
+                        ]
+                    },
+                    {
+                        "gateid": 89,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            188,
+                            1088
+                        ],
+                        "gateinput": [
+                            90
+                        ]
+                    },
+                    {
+                        "gateid": 90,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            189,
+                            1089
+                        ],
+                        "gateinput": [
+                            91
+                        ]
+                    },
+                    {
+                        "gateid": 91,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            190,
+                            1090
+                        ],
+                        "gateinput": [
+                            92
+                        ]
+                    },
+                    {
+                        "gateid": 92,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            191,
+                            1091
+                        ],
+                        "gateinput": [
+                            93
+                        ]
+                    },
+                    {
+                        "gateid": 93,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            192,
+                            1092
+                        ],
+                        "gateinput": [
+                            94
+                        ]
+                    },
+                    {
+                        "gateid": 94,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            193,
+                            1093
+                        ],
+                        "gateinput": [
+                            95
+                        ]
+                    },
+                    {
+                        "gateid": 95,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            194,
+                            1094
+                        ],
+                        "gateinput": [
+                            96
+                        ]
+                    },
+                    {
+                        "gateid": 96,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            195,
+                            1095
+                        ],
+                        "gateinput": [
+                            97
+                        ]
+                    },
+                    {
+                        "gateid": 97,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            196,
+                            1096
+                        ],
+                        "gateinput": [
+                            98
+                        ]
+                    },
+                    {
+                        "gateid": 98,
+                        "gatetype": "and",
+                        "numinputs": 3,
+                        "eventinput": [
+                            197,
+                            1097
+                        ],
+                        "gateinput": [
+                            99
+                        ]
+                    },
+                    {
+                        "gateid": 99,
+                        "gatetype": "or",
+                        "numinputs": 3,
+                        "eventinput": [
+                            198,
+                            1098
+                        ],
+                        "gateinput": [
+                            100
+                        ]
+                    },
+                    {
+                        "gateid": 100,
+                        "gatetype": "and",
+                        "numinputs": 2,
+                        "eventinput": [
+                            199,
+                            1099
+                        ]
+                    }
+                ]
+            }
+        ],
+        "eventlist": [
+            {
+                "id": "1",
+                "corrgate": "0",
+                "name": "<TRUE>",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 1.0,
+                "initf": " ",
+                "processf": " ",
+                "calctype": "1"
+            },
+            {
+                "id": "2",
+                "corrgate": "0",
+                "name": "<FALSE>",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.0,
+                "initf": " ",
+                "processf": " ",
+                "calctype": "1"
+            },
+            {
+                "id": "3",
+                "corrgate": "0",
+                "name": "<PASS>",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 1.0,
+                "initf": " ",
+                "processf": " ",
+                "calctype": "1"
+            },
+            {
+                "id": 99,
+                "corrgate": 1,
+                "name": "FT-Top-Event",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 1,
+                "initf": " ",
+                "processf": " ",
+                "calctype": "1"
+            },
+            {
+                "id": 100,
+                "corrgate": 0,
+                "name": "100",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1000,
+                "corrgate": 0,
+                "name": "1000",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 101,
+                "corrgate": 0,
+                "name": "101",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1001,
+                "corrgate": 0,
+                "name": "1001",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 102,
+                "corrgate": 0,
+                "name": "102",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1002,
+                "corrgate": 0,
+                "name": "1002",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 103,
+                "corrgate": 0,
+                "name": "103",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1003,
+                "corrgate": 0,
+                "name": "1003",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 104,
+                "corrgate": 0,
+                "name": "104",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1004,
+                "corrgate": 0,
+                "name": "1004",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 105,
+                "corrgate": 0,
+                "name": "105",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1005,
+                "corrgate": 0,
+                "name": "1005",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 106,
+                "corrgate": 0,
+                "name": "106",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1006,
+                "corrgate": 0,
+                "name": "1006",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 107,
+                "corrgate": 0,
+                "name": "107",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1007,
+                "corrgate": 0,
+                "name": "1007",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 108,
+                "corrgate": 0,
+                "name": "108",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1008,
+                "corrgate": 0,
+                "name": "1008",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 109,
+                "corrgate": 0,
+                "name": "109",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1009,
+                "corrgate": 0,
+                "name": "1009",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 110,
+                "corrgate": 0,
+                "name": "110",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1010,
+                "corrgate": 0,
+                "name": "1010",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 111,
+                "corrgate": 0,
+                "name": "111",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1011,
+                "corrgate": 0,
+                "name": "1011",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 112,
+                "corrgate": 0,
+                "name": "112",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1012,
+                "corrgate": 0,
+                "name": "1012",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 113,
+                "corrgate": 0,
+                "name": "113",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1013,
+                "corrgate": 0,
+                "name": "1013",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 114,
+                "corrgate": 0,
+                "name": "114",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1014,
+                "corrgate": 0,
+                "name": "1014",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 115,
+                "corrgate": 0,
+                "name": "115",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1015,
+                "corrgate": 0,
+                "name": "1015",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 116,
+                "corrgate": 0,
+                "name": "116",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1016,
+                "corrgate": 0,
+                "name": "1016",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 117,
+                "corrgate": 0,
+                "name": "117",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1017,
+                "corrgate": 0,
+                "name": "1017",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 118,
+                "corrgate": 0,
+                "name": "118",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1018,
+                "corrgate": 0,
+                "name": "1018",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 119,
+                "corrgate": 0,
+                "name": "119",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1019,
+                "corrgate": 0,
+                "name": "1019",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 120,
+                "corrgate": 0,
+                "name": "120",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1020,
+                "corrgate": 0,
+                "name": "1020",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 121,
+                "corrgate": 0,
+                "name": "121",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1021,
+                "corrgate": 0,
+                "name": "1021",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 122,
+                "corrgate": 0,
+                "name": "122",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1022,
+                "corrgate": 0,
+                "name": "1022",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 123,
+                "corrgate": 0,
+                "name": "123",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1023,
+                "corrgate": 0,
+                "name": "1023",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 124,
+                "corrgate": 0,
+                "name": "124",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1024,
+                "corrgate": 0,
+                "name": "1024",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 125,
+                "corrgate": 0,
+                "name": "125",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1025,
+                "corrgate": 0,
+                "name": "1025",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 126,
+                "corrgate": 0,
+                "name": "126",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1026,
+                "corrgate": 0,
+                "name": "1026",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 127,
+                "corrgate": 0,
+                "name": "127",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1027,
+                "corrgate": 0,
+                "name": "1027",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 128,
+                "corrgate": 0,
+                "name": "128",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1028,
+                "corrgate": 0,
+                "name": "1028",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 129,
+                "corrgate": 0,
+                "name": "129",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1029,
+                "corrgate": 0,
+                "name": "1029",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 130,
+                "corrgate": 0,
+                "name": "130",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1030,
+                "corrgate": 0,
+                "name": "1030",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 131,
+                "corrgate": 0,
+                "name": "131",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1031,
+                "corrgate": 0,
+                "name": "1031",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 132,
+                "corrgate": 0,
+                "name": "132",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1032,
+                "corrgate": 0,
+                "name": "1032",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 133,
+                "corrgate": 0,
+                "name": "133",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1033,
+                "corrgate": 0,
+                "name": "1033",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 134,
+                "corrgate": 0,
+                "name": "134",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1034,
+                "corrgate": 0,
+                "name": "1034",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 135,
+                "corrgate": 0,
+                "name": "135",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1035,
+                "corrgate": 0,
+                "name": "1035",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 136,
+                "corrgate": 0,
+                "name": "136",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1036,
+                "corrgate": 0,
+                "name": "1036",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 137,
+                "corrgate": 0,
+                "name": "137",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1037,
+                "corrgate": 0,
+                "name": "1037",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 138,
+                "corrgate": 0,
+                "name": "138",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1038,
+                "corrgate": 0,
+                "name": "1038",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 139,
+                "corrgate": 0,
+                "name": "139",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1039,
+                "corrgate": 0,
+                "name": "1039",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 140,
+                "corrgate": 0,
+                "name": "140",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1040,
+                "corrgate": 0,
+                "name": "1040",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 141,
+                "corrgate": 0,
+                "name": "141",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1041,
+                "corrgate": 0,
+                "name": "1041",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 142,
+                "corrgate": 0,
+                "name": "142",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1042,
+                "corrgate": 0,
+                "name": "1042",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 143,
+                "corrgate": 0,
+                "name": "143",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1043,
+                "corrgate": 0,
+                "name": "1043",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 144,
+                "corrgate": 0,
+                "name": "144",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1044,
+                "corrgate": 0,
+                "name": "1044",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 145,
+                "corrgate": 0,
+                "name": "145",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1045,
+                "corrgate": 0,
+                "name": "1045",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 146,
+                "corrgate": 0,
+                "name": "146",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1046,
+                "corrgate": 0,
+                "name": "1046",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 147,
+                "corrgate": 0,
+                "name": "147",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1047,
+                "corrgate": 0,
+                "name": "1047",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 148,
+                "corrgate": 0,
+                "name": "148",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1048,
+                "corrgate": 0,
+                "name": "1048",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 149,
+                "corrgate": 0,
+                "name": "149",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1049,
+                "corrgate": 0,
+                "name": "1049",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 150,
+                "corrgate": 0,
+                "name": "150",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1050,
+                "corrgate": 0,
+                "name": "1050",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 151,
+                "corrgate": 0,
+                "name": "151",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1051,
+                "corrgate": 0,
+                "name": "1051",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 152,
+                "corrgate": 0,
+                "name": "152",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1052,
+                "corrgate": 0,
+                "name": "1052",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 153,
+                "corrgate": 0,
+                "name": "153",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1053,
+                "corrgate": 0,
+                "name": "1053",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 154,
+                "corrgate": 0,
+                "name": "154",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1054,
+                "corrgate": 0,
+                "name": "1054",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 155,
+                "corrgate": 0,
+                "name": "155",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1055,
+                "corrgate": 0,
+                "name": "1055",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 156,
+                "corrgate": 0,
+                "name": "156",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1056,
+                "corrgate": 0,
+                "name": "1056",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 157,
+                "corrgate": 0,
+                "name": "157",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1057,
+                "corrgate": 0,
+                "name": "1057",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 158,
+                "corrgate": 0,
+                "name": "158",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1058,
+                "corrgate": 0,
+                "name": "1058",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 159,
+                "corrgate": 0,
+                "name": "159",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1059,
+                "corrgate": 0,
+                "name": "1059",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 160,
+                "corrgate": 0,
+                "name": "160",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1060,
+                "corrgate": 0,
+                "name": "1060",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 161,
+                "corrgate": 0,
+                "name": "161",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1061,
+                "corrgate": 0,
+                "name": "1061",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 162,
+                "corrgate": 0,
+                "name": "162",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1062,
+                "corrgate": 0,
+                "name": "1062",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 163,
+                "corrgate": 0,
+                "name": "163",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1063,
+                "corrgate": 0,
+                "name": "1063",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 164,
+                "corrgate": 0,
+                "name": "164",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1064,
+                "corrgate": 0,
+                "name": "1064",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 165,
+                "corrgate": 0,
+                "name": "165",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1065,
+                "corrgate": 0,
+                "name": "1065",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 166,
+                "corrgate": 0,
+                "name": "166",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1066,
+                "corrgate": 0,
+                "name": "1066",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 167,
+                "corrgate": 0,
+                "name": "167",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1067,
+                "corrgate": 0,
+                "name": "1067",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 168,
+                "corrgate": 0,
+                "name": "168",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1068,
+                "corrgate": 0,
+                "name": "1068",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 169,
+                "corrgate": 0,
+                "name": "169",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1069,
+                "corrgate": 0,
+                "name": "1069",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 170,
+                "corrgate": 0,
+                "name": "170",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1070,
+                "corrgate": 0,
+                "name": "1070",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 171,
+                "corrgate": 0,
+                "name": "171",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1071,
+                "corrgate": 0,
+                "name": "1071",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 172,
+                "corrgate": 0,
+                "name": "172",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1072,
+                "corrgate": 0,
+                "name": "1072",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 173,
+                "corrgate": 0,
+                "name": "173",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1073,
+                "corrgate": 0,
+                "name": "1073",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 174,
+                "corrgate": 0,
+                "name": "174",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1074,
+                "corrgate": 0,
+                "name": "1074",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 175,
+                "corrgate": 0,
+                "name": "175",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1075,
+                "corrgate": 0,
+                "name": "1075",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 176,
+                "corrgate": 0,
+                "name": "176",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1076,
+                "corrgate": 0,
+                "name": "1076",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 177,
+                "corrgate": 0,
+                "name": "177",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1077,
+                "corrgate": 0,
+                "name": "1077",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 178,
+                "corrgate": 0,
+                "name": "178",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1078,
+                "corrgate": 0,
+                "name": "1078",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 179,
+                "corrgate": 0,
+                "name": "179",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1079,
+                "corrgate": 0,
+                "name": "1079",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 180,
+                "corrgate": 0,
+                "name": "180",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1080,
+                "corrgate": 0,
+                "name": "1080",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 181,
+                "corrgate": 0,
+                "name": "181",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1081,
+                "corrgate": 0,
+                "name": "1081",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 182,
+                "corrgate": 0,
+                "name": "182",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1082,
+                "corrgate": 0,
+                "name": "1082",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 183,
+                "corrgate": 0,
+                "name": "183",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1083,
+                "corrgate": 0,
+                "name": "1083",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 184,
+                "corrgate": 0,
+                "name": "184",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1084,
+                "corrgate": 0,
+                "name": "1084",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 185,
+                "corrgate": 0,
+                "name": "185",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1085,
+                "corrgate": 0,
+                "name": "1085",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 186,
+                "corrgate": 0,
+                "name": "186",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1086,
+                "corrgate": 0,
+                "name": "1086",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 187,
+                "corrgate": 0,
+                "name": "187",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1087,
+                "corrgate": 0,
+                "name": "1087",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 188,
+                "corrgate": 0,
+                "name": "188",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1088,
+                "corrgate": 0,
+                "name": "1088",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 189,
+                "corrgate": 0,
+                "name": "189",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1089,
+                "corrgate": 0,
+                "name": "1089",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 190,
+                "corrgate": 0,
+                "name": "190",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1090,
+                "corrgate": 0,
+                "name": "1090",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 191,
+                "corrgate": 0,
+                "name": "191",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1091,
+                "corrgate": 0,
+                "name": "1091",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 192,
+                "corrgate": 0,
+                "name": "192",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1092,
+                "corrgate": 0,
+                "name": "1092",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 193,
+                "corrgate": 0,
+                "name": "193",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1093,
+                "corrgate": 0,
+                "name": "1093",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 194,
+                "corrgate": 0,
+                "name": "194",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1094,
+                "corrgate": 0,
+                "name": "1094",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 195,
+                "corrgate": 0,
+                "name": "195",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1095,
+                "corrgate": 0,
+                "name": "1095",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 196,
+                "corrgate": 0,
+                "name": "196",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1096,
+                "corrgate": 0,
+                "name": "1096",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 197,
+                "corrgate": 0,
+                "name": "197",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1097,
+                "corrgate": 0,
+                "name": "1097",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 198,
+                "corrgate": 0,
+                "name": "198",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1098,
+                "corrgate": 0,
+                "name": "1098",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 199,
+                "corrgate": 0,
+                "name": "199",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            },
+            {
+                "id": 1099,
+                "corrgate": 0,
+                "name": "1099",
+                "evworkspacepair": {
+                    "ph": 1,
+                    "mt": 1
+                },
+                "value": 0.05,
+                "initf": " ",
+                "processf": " ",
+                "calctype": 1
+            }
+        ]
+    }
+}

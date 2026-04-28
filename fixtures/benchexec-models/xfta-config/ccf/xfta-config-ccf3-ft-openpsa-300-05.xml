@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!DOCTYPE xfta>
+<xfta>
+	<load>
+		<model input="/home/benchexec/ft-bench/models/openpsa/ccf/ccf3-ft-openpsa-300-05.xml" />
+		<script input="/home/benchexec/ft-bench/models/xfta-config/defaults.xml" />
+	</load>
+</xfta>

@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='ASCII'?>
+<opsa-mef>
+  <define-fault-tree name="default">
+    <define-gate name="E86136">
+      <label>S1-026X-NF_F</label>
+      <and>
+        <event name="E3865"/>
+        <event name="E5016"/>
+      </and>
+    </define-gate>
+  </define-fault-tree>
+  <model-data>
+    <define-basic-event name="E3865">
+      <label>%S1</label>
+      <float value="0.0017"/>
+    </define-basic-event>
+    <define-basic-event name="E5016">
+      <label>EPHOSPLOCA0</label>
+      <float value="0.024"/>
+    </define-basic-event>
+  </model-data>
+</opsa-mef>

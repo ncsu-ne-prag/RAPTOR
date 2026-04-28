@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE xfta>
+<xfta>
+	<load>
+		<model input="/home/bench/ft-bench/trees/ft-generated/ft-100-08.xml" />
+	</load>
+	<build>
+		<minimal-cutsets top-event="root" handle="MCS" minimum-probability="1.0e-14" />
+	</build>
+	<set>
+		<option name="print-minimal-cutset-rank" value="on" />
+		<option name="print-minimal-cutset-order" value="on" />
+		<option name="print-minimal-cutset-probability" value="on" />
+		<option name="print-minimal-cutset-contribution" value="on" />
+	</set>
+	<print>
+		<minimal-cutsets top-event="root" handle="MCS" output="/dev/fd/1" />
+	</print>
+	<compute>
+		<probability top-event="root" handle="MCS" mission-time="8760" output="/dev/fd/1" />
+		<importance-factors top-event="root" handle="MCS" output="/dev/fd/1" />
+	</compute>
+</xfta>
