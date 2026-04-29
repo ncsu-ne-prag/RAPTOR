@@ -80,3 +80,7 @@ apps/solvers/saphsolve
 
 # LLM tool related folders
 .claude
+
+# Python bytecode
+__pycache__/
+*.pyc
