@@ -63,6 +63,10 @@ COPY apps/solvers/saphsolve/saphsolve-cli /build/saphsolve-cli
 RUN cd /build/saphsolve-cli && \
     cargo build --release --target x86_64-pc-windows-gnu --bin saphsolve-cli
 
+COPY apps/solvers/ftrex/run_ftrex.sh /opt/ftrex/run_ftrex.sh
+RUN chmod +x /opt/ftrex/run_ftrex.sh && \
+    ln -s /opt/ftrex/run_ftrex.sh /usr/local/bin/run_ftrex
+
 # Copy the XFTA Linux binary and make it executable
 COPY apps/solvers/xfta/xftar /usr/local/bin/xftar
 RUN chmod +x /usr/local/bin/xftar

@@ -72,6 +72,7 @@ fixtures/models/generic-pwr-model
 fixtures/models/synthetic-models
 fixtures/models/benchexec-models
 fixtures/results/
+fixtures/benchmark_aralia
 
 # FTREX sensitive files
 apps/solvers/ftrex

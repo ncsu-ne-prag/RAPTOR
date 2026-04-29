@@ -310,6 +310,18 @@ run_comparison_zebra() {
         --prob-field "$prob_field" || true
 }
 
+run_comparison_ftrex() {
+    local label="$1" scram_dir="$2" ftrex_dir="$3" csv_out="$4" prob_field="$5"
+    echo ""
+    echo "--- Comparison: $label ---"
+    python3 /build/pracciolini/src/scram_ftrex_verifier.py \
+        --scram-dir  "$scram_dir" \
+        --ftrex-dir  "$ftrex_dir" \
+        --output     "$csv_out" \
+        --rel-tol    1e-3 \
+        --prob-field "$prob_field" || true
+}
+
 run_comparison_saphsolve() {
     # run_comparison_saphsolve <label> <scram_dir> <saphsolve_dir> <csv_out>
     local label="$1" scram_dir="$2" saphsolve_dir="$3" csv_out="$4"
@@ -428,7 +440,7 @@ if [ -n "$FTP_FILES" ]; then
         --export-markdown "$RESULTS_DIR/ftrex_bdd_${MODEL}_${CURRENT_DATE}_summary.md" \
         --export-json    "$RESULTS_DIR/ftrex_bdd_${MODEL}_${CURRENT_DATE}_results.json" \
         --parameter-list file "$FTP_FILES" \
-        "timeout 30 ftrex {file} $FTREX_OUT_BDD/\$(basename {file} .ftp).raw 0.0 /BDD=1"
+        "timeout 30 run_ftrex {file} $FTREX_OUT_BDD/\$(basename {file} .ftp).raw 0.0 /BDD=1"
     echo "FTREX BDD complete."
 
     # ── FTREX ZBDD (MCS) ───────────────────────────────────────────────────────
@@ -439,7 +451,7 @@ if [ -n "$FTP_FILES" ]; then
         --export-markdown "$RESULTS_DIR/ftrex_zbdd_${MODEL}_${CURRENT_DATE}_summary.md" \
         --export-json    "$RESULTS_DIR/ftrex_zbdd_${MODEL}_${CURRENT_DATE}_results.json" \
         --parameter-list file "$FTP_FILES" \
-        "timeout 30 ftrex {file} $FTREX_OUT_ZBDD/\$(basename {file} .ftp).raw 1e-12 /BDD=0"
+        "timeout 30 run_ftrex {file} $FTREX_OUT_ZBDD/\$(basename {file} .ftp).raw 1e-12 /BDD=0"
     echo "FTREX ZBDD complete."
 else
     echo "WARNING: No FTAP files found — skipping FTREX benchmarks."
@@ -500,6 +512,10 @@ echo "  ZEBRA BENCHMARKS"
 echo "###################################################################"
 
 if [ -n "$FTP_FILES" ]; then
+    echo ""
+    echo "--- ZEBRA: activating license ---"
+    (cd /opt/zebra && wine /opt/zebra/ZEBRA.exe /SERIAL=F26EC9597630EE17 2>&1 | tail -3) || true
+
     # ── ZEBRA ZTDD BDD probability (/ZTDD=0) ──────────────────────────────────
     echo ""
     echo "--- ZEBRA ZTDD BDD ($N_COMPAT models) ---"
@@ -656,6 +672,27 @@ else
     echo "--- Comparison: Exp 8: SCRAM ZBDD MCUB vs SAPHSOLVE MOCUS+MCUB ---"
     echo "    SKIPPED: No SAPHSOLVE .JSCut outputs found (solve step requires Windows)."
 fi
+
+# ── Experiment 9a: SCRAM BDD vs FTREX BDD (probability only) ─────────────────
+run_comparison_ftrex \
+    "Exp 9a: SCRAM BDD vs FTREX BDD (probability only)" \
+    "$SCRAM_OUT_BDD" "$FTREX_OUT_BDD" \
+    "$RESULTS_DIR/exp9a_bdd_scram_ftrex_${MODEL}_${CURRENT_DATE}.csv" \
+    exact
+
+# ── Experiment 9b: SCRAM ZBDD REA vs FTREX ZBDD P_SUM (prob + MCS) ──────────
+run_comparison_ftrex \
+    "Exp 9b: SCRAM ZBDD REA vs FTREX ZBDD P_SUM (probability + MCS)" \
+    "$SCRAM_OUT_ZBDD_REA" "$FTREX_OUT_ZBDD" \
+    "$RESULTS_DIR/exp9b_zbdd_rea_scram_ftrex_${MODEL}_${CURRENT_DATE}.csv" \
+    psum
+
+# ── Experiment 9c: SCRAM ZBDD MCUB vs FTREX ZBDD P_MCUB (prob + MCS) ────────
+run_comparison_ftrex \
+    "Exp 9c: SCRAM ZBDD MCUB vs FTREX ZBDD P_MCUB (probability + MCS)" \
+    "$SCRAM_OUT_ZBDD_MCUB" "$FTREX_OUT_ZBDD" \
+    "$RESULTS_DIR/exp9c_zbdd_mcub_scram_ftrex_${MODEL}_${CURRENT_DATE}.csv" \
+    pmcub
 
 # =============================================================================
 # PLOTTING
