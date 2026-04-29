@@ -77,3 +77,6 @@ fixtures/results/
 apps/solvers/ftrex
 apps/solvers/zebra
 apps/solvers/saphsolve
+
+# LLM tool related folders
+.claude

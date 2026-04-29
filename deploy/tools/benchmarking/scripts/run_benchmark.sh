@@ -21,10 +21,24 @@ CURRENT_DATE=$(date +"%Y-%m-%d")
 #   2. ZBDD + REA      (--zbdd --rare-event --cut-off 1e-12)
 #   3. ZBDD + MCUB     (--zbdd --mcub      --cut-off 1e-12)
 #
-# Comparisons (3, paired by equivalent algorithm):
+# PRAXIS runs (3 algorithms — runs all models including NOT/XOR):
+#   1. BDD             (exact, --algorithm bdd)
+#   2. ZBDD + REA      (--algorithm zbdd --approximation rare-event --cut-off 1e-12)
+#   3. ZBDD + MCUB     (--algorithm zbdd --approximation mcub      --cut-off 1e-12)
+#
+# SAPHSOLVE runs (1 algorithm, Windows-only DLL — conversion runs in Docker):
+#   XML → JSInp conversion (Python, Linux-safe)
+#   MOCUS + MCUB           (SolverSaphire.dll, Windows-only — skipped in Docker)
+#
+# Comparisons (10, paired by equivalent algorithm):
 #   Exp 1: SCRAM BDD       vs XFTA BDD       — probability only
 #   Exp 2: SCRAM ZBDD REA  vs XFTA ZBDD REA  — probability + MCS count
 #   Exp 3: SCRAM ZBDD MCUB vs XFTA ZBDD MCUB — probability + MCS count
+#   Exp 4: SCRAM BDD       vs PRAXIS BDD      — probability only
+#   Exp 5: SCRAM ZBDD REA  vs PRAXIS ZBDD REA — probability + MCS count
+#   Exp 6: SCRAM ZBDD MCUB vs PRAXIS ZBDD MCUB— probability + MCS count
+#   Exp 7a-c: SCRAM vs ZEBRA ZTDD             — probability (MCS informational)
+#   Exp 8: SCRAM ZBDD MCUB vs SAPHSOLVE MOCUS+MCUB — prob + MCS (Windows-only)
 # =============================================================================
 RESULTS_DIR="/benchmark/results"
 SBE_DIR="/benchmark/sbe"
@@ -56,14 +70,30 @@ XFTA_OUT_ZBDD_PUB="$RESULTS_DIR/xfta_zbdd_pub_output"
 FTREX_OUT_BDD="$RESULTS_DIR/ftrex_bdd_output"
 FTREX_OUT_ZBDD="$RESULTS_DIR/ftrex_zbdd_output"
 
-mkdir -p "$RESULTS_DIR" "$SBE_DIR" "/benchmark/ftp" \
+# PRAXIS output directories (one per algorithm)
+PRAXIS_OUT_BDD="$RESULTS_DIR/praxis_bdd_output"
+PRAXIS_OUT_ZBDD_REA="$RESULTS_DIR/praxis_zbdd_rea_output"
+PRAXIS_OUT_ZBDD_MCUB="$RESULTS_DIR/praxis_zbdd_mcub_output"
+
+# ZEBRA output directories
+ZEBRA_OUT_BDD="$RESULTS_DIR/zebra_ztdd_bdd_output"
+ZEBRA_OUT_MCS="$RESULTS_DIR/zebra_ztdd_mcs_output"
+
+# SAPHSOLVE directories
+SAPHSOLVE_OUT="/benchmark/results/saphsolve_output"
+JSINP_DIR="/benchmark/jsinp"
+
+mkdir -p "$RESULTS_DIR" "$SBE_DIR" "/benchmark/ftp" "$JSINP_DIR" \
     "$XFTA_SCRIPTS_BDD" "$XFTA_SCRIPTS_BDT_REA" "$XFTA_SCRIPTS_BDT_MCUB" "$XFTA_SCRIPTS_BDT_PUB" \
     "$XFTA_SCRIPTS_ZBDD_REA" "$XFTA_SCRIPTS_ZBDD_MCUB" "$XFTA_SCRIPTS_ZBDD_PUB" \
     "$SCRAM_OUT_BDD" "$SCRAM_OUT_ZBDD_REA" "$SCRAM_OUT_ZBDD_MCUB" \
     "$XFTA_OUT_BDD" \
     "$XFTA_OUT_BDT_REA" "$XFTA_OUT_BDT_MCUB" "$XFTA_OUT_BDT_PUB" \
     "$XFTA_OUT_ZBDD_REA" "$XFTA_OUT_ZBDD_MCUB" "$XFTA_OUT_ZBDD_PUB" \
-    "$FTREX_OUT_BDD" "$FTREX_OUT_ZBDD"
+    "$FTREX_OUT_BDD" "$FTREX_OUT_ZBDD" \
+    "$PRAXIS_OUT_BDD" "$PRAXIS_OUT_ZBDD_REA" "$PRAXIS_OUT_ZBDD_MCUB" \
+    "$ZEBRA_OUT_BDD" "$ZEBRA_OUT_MCS" \
+    "$SAPHSOLVE_OUT"
 
 # =============================================================================
 # Step 1: Validate OpenPSA XML files against SCRAM's RELAX NG schema
@@ -111,6 +141,7 @@ for xml_file in $(find /data -name '*.xml' -type f | sort); do
         # ── FTAP Conversion ─────────────────────────────────────────────────
         ftp_file="/benchmark/ftp/$base.ftp"
         python3 /build/pracciolini/src/s2ml_to_ftap_converter.py "$sbe_file" "$ftp_file"
+        echo "$top_event" > "/benchmark/ftp/$base.top"
 
         # ── 1. XFTA BDD (exact probability, no MCS, no cutoff) ───────────────
         cat > "$XFTA_SCRIPTS_BDD/$base.xfta" << XFTA_BDD
@@ -234,7 +265,7 @@ run_xfta() {
         --export-markdown "$md_out" \
         --export-json    "$json_out" \
         --parameter-list script "$scripts" \
-        "timeout 300 xftar {script}"
+        "timeout 30 xftar {script}"
     echo "$label complete."
 }
 
@@ -250,6 +281,45 @@ run_comparison() {
         --output    "$csv_out" \
         --rel-tol   1e-3 \
         "$@" || true
+}
+
+run_comparison_praxis() {
+    # run_comparison_praxis <label> <scram_dir> <praxis_dir> <csv_out> [--check-mcs]
+    local label="$1" scram_dir="$2" praxis_dir="$3" csv_out="$4"
+    shift 4
+    echo ""
+    echo "--- Comparison: $label ---"
+    python3 /build/pracciolini/src/scram_praxis_verifier.py \
+        --scram-dir  "$scram_dir" \
+        --praxis-dir "$praxis_dir" \
+        --output     "$csv_out" \
+        --rel-tol    1e-3 \
+        "$@" || true
+}
+
+run_comparison_zebra() {
+    # run_comparison_zebra <label> <scram_dir> <zebra_dir> <csv_out> <prob_field>
+    local label="$1" scram_dir="$2" zebra_dir="$3" csv_out="$4" prob_field="$5"
+    echo ""
+    echo "--- Comparison: $label ---"
+    python3 /build/pracciolini/src/scram_zebra_verifier.py \
+        --scram-dir  "$scram_dir" \
+        --zebra-dir  "$zebra_dir" \
+        --output     "$csv_out" \
+        --rel-tol    1e-3 \
+        --prob-field "$prob_field" || true
+}
+
+run_comparison_saphsolve() {
+    # run_comparison_saphsolve <label> <scram_dir> <saphsolve_dir> <csv_out>
+    local label="$1" scram_dir="$2" saphsolve_dir="$3" csv_out="$4"
+    echo ""
+    echo "--- Comparison: $label ---"
+    python3 /build/pracciolini/src/scram_saphsolve_verifier.py \
+        --scram-dir      "$scram_dir" \
+        --saphsolve-dir  "$saphsolve_dir" \
+        --output         "$csv_out" \
+        --rel-tol        1e-3 || true
 }
 
 # =============================================================================
@@ -268,7 +338,7 @@ hyperfine \
     --export-markdown "$RESULTS_DIR/scram_bdd_${MODEL}_${CURRENT_DATE}_summary.md" \
     --export-json    "$RESULTS_DIR/scram_bdd_${MODEL}_${CURRENT_DATE}_results.json" \
     --parameter-list file "$XML_FILES" \
-    "timeout 300 scram --bdd {file} \
+    "timeout 30 scram --bdd {file} \
         --output $SCRAM_OUT_BDD/\$(basename {file} .xml).xml"
 echo "SCRAM BDD complete."
 
@@ -280,7 +350,7 @@ hyperfine \
     --export-markdown "$RESULTS_DIR/scram_zbdd_rea_${MODEL}_${CURRENT_DATE}_summary.md" \
     --export-json    "$RESULTS_DIR/scram_zbdd_rea_${MODEL}_${CURRENT_DATE}_results.json" \
     --parameter-list file "$XML_FILES" \
-    "timeout 300 scram --zbdd --rare-event --cut-off 1e-12 {file} \
+    "timeout 30 scram --zbdd --rare-event --cut-off 1e-12 {file} \
         --output $SCRAM_OUT_ZBDD_REA/\$(basename {file} .xml).xml"
 echo "SCRAM ZBDD REA complete."
 
@@ -292,7 +362,7 @@ hyperfine \
     --export-markdown "$RESULTS_DIR/scram_zbdd_mcub_${MODEL}_${CURRENT_DATE}_summary.md" \
     --export-json    "$RESULTS_DIR/scram_zbdd_mcub_${MODEL}_${CURRENT_DATE}_results.json" \
     --parameter-list file "$XML_FILES" \
-    "timeout 300 scram --zbdd --mcub --cut-off 1e-12 {file} \
+    "timeout 30 scram --zbdd --mcub --cut-off 1e-12 {file} \
         --output $SCRAM_OUT_ZBDD_MCUB/\$(basename {file} .xml).xml"
 echo "SCRAM ZBDD MCUB complete."
 
@@ -358,7 +428,7 @@ if [ -n "$FTP_FILES" ]; then
         --export-markdown "$RESULTS_DIR/ftrex_bdd_${MODEL}_${CURRENT_DATE}_summary.md" \
         --export-json    "$RESULTS_DIR/ftrex_bdd_${MODEL}_${CURRENT_DATE}_results.json" \
         --parameter-list file "$FTP_FILES" \
-        "timeout 300 ftrex {file} $FTREX_OUT_BDD/\$(basename {file} .ftp).raw 0.0 /BDD=1"
+        "timeout 30 ftrex {file} $FTREX_OUT_BDD/\$(basename {file} .ftp).raw 0.0 /BDD=1"
     echo "FTREX BDD complete."
 
     # ── FTREX ZBDD (MCS) ───────────────────────────────────────────────────────
@@ -369,14 +439,144 @@ if [ -n "$FTP_FILES" ]; then
         --export-markdown "$RESULTS_DIR/ftrex_zbdd_${MODEL}_${CURRENT_DATE}_summary.md" \
         --export-json    "$RESULTS_DIR/ftrex_zbdd_${MODEL}_${CURRENT_DATE}_results.json" \
         --parameter-list file "$FTP_FILES" \
-        "timeout 300 ftrex {file} $FTREX_OUT_ZBDD/\$(basename {file} .ftp).raw 1e-12 /BDD=0"
+        "timeout 30 ftrex {file} $FTREX_OUT_ZBDD/\$(basename {file} .ftp).raw 1e-12 /BDD=0"
     echo "FTREX ZBDD complete."
 else
     echo "WARNING: No FTAP files found — skipping FTREX benchmarks."
 fi
 
 # =============================================================================
-# COMPARISONS  (3 paired experiments)
+# PRAXIS BENCHMARKS
+# =============================================================================
+echo ""
+echo "###################################################################"
+echo "  PRAXIS BENCHMARKS"
+echo "###################################################################"
+
+# ── PRAXIS BDD ────────────────────────────────────────────────────────────────
+echo ""
+echo "--- PRAXIS BDD ($N_ALL models) ---"
+hyperfine \
+    --warmup 0 --runs 1 --ignore-failure \
+    --export-markdown "$RESULTS_DIR/praxis_bdd_${MODEL}_${CURRENT_DATE}_summary.md" \
+    --export-json    "$RESULTS_DIR/praxis_bdd_${MODEL}_${CURRENT_DATE}_results.json" \
+    --parameter-list file "$XML_FILES" \
+    "timeout 30 praxis-cli --algorithm bdd \
+        --output $PRAXIS_OUT_BDD/\$(basename {file} .xml).xml {file}"
+echo "PRAXIS BDD complete."
+
+# ── PRAXIS ZBDD REA ───────────────────────────────────────────────────────────
+echo ""
+echo "--- PRAXIS ZBDD REA ($N_ALL models) ---"
+hyperfine \
+    --warmup 0 --runs 1 --ignore-failure \
+    --export-markdown "$RESULTS_DIR/praxis_zbdd_rea_${MODEL}_${CURRENT_DATE}_summary.md" \
+    --export-json    "$RESULTS_DIR/praxis_zbdd_rea_${MODEL}_${CURRENT_DATE}_results.json" \
+    --parameter-list file "$XML_FILES" \
+    "timeout 30 praxis-cli --algorithm zbdd --approximation rare-event \
+        --cut-off 1e-12 --analysis cutsets-and-probability \
+        --output $PRAXIS_OUT_ZBDD_REA/\$(basename {file} .xml).xml {file}"
+echo "PRAXIS ZBDD REA complete."
+
+# ── PRAXIS ZBDD MCUB ──────────────────────────────────────────────────────────
+echo ""
+echo "--- PRAXIS ZBDD MCUB ($N_ALL models) ---"
+hyperfine \
+    --warmup 0 --runs 1 --ignore-failure \
+    --export-markdown "$RESULTS_DIR/praxis_zbdd_mcub_${MODEL}_${CURRENT_DATE}_summary.md" \
+    --export-json    "$RESULTS_DIR/praxis_zbdd_mcub_${MODEL}_${CURRENT_DATE}_results.json" \
+    --parameter-list file "$XML_FILES" \
+    "timeout 30 praxis-cli --algorithm zbdd --approximation mcub \
+        --cut-off 1e-12 --analysis cutsets-and-probability \
+        --output $PRAXIS_OUT_ZBDD_MCUB/\$(basename {file} .xml).xml {file}"
+echo "PRAXIS ZBDD MCUB complete."
+
+# =============================================================================
+# ZEBRA BENCHMARKS
+# =============================================================================
+echo ""
+echo "###################################################################"
+echo "  ZEBRA BENCHMARKS"
+echo "###################################################################"
+
+if [ -n "$FTP_FILES" ]; then
+    # ── ZEBRA ZTDD BDD probability (/ZTDD=0) ──────────────────────────────────
+    echo ""
+    echo "--- ZEBRA ZTDD BDD ($N_COMPAT models) ---"
+    hyperfine \
+        --warmup 0 --runs 1 --ignore-failure \
+        --export-markdown "$RESULTS_DIR/zebra_ztdd_bdd_${MODEL}_${CURRENT_DATE}_summary.md" \
+        --export-json    "$RESULTS_DIR/zebra_ztdd_bdd_${MODEL}_${CURRENT_DATE}_results.json" \
+        --parameter-list file "$FTP_FILES" \
+        "timeout 30 run_zebra {file} $ZEBRA_OUT_BDD 0"
+    echo "ZEBRA ZTDD BDD complete."
+
+    # ── ZEBRA ZTDD expanded MCS + probability (/ZTDD=2) ───────────────────────
+    echo ""
+    echo "--- ZEBRA ZTDD MCS ($N_COMPAT models) ---"
+    hyperfine \
+        --warmup 0 --runs 1 --ignore-failure \
+        --export-markdown "$RESULTS_DIR/zebra_ztdd_mcs_${MODEL}_${CURRENT_DATE}_summary.md" \
+        --export-json    "$RESULTS_DIR/zebra_ztdd_mcs_${MODEL}_${CURRENT_DATE}_results.json" \
+        --parameter-list file "$FTP_FILES" \
+        "timeout 30 run_zebra {file} $ZEBRA_OUT_MCS 2"
+    echo "ZEBRA ZTDD MCS complete."
+else
+    echo "WARNING: No FTAP files found — skipping ZEBRA benchmarks."
+fi
+
+# =============================================================================
+# SAPHSOLVE BENCHMARKS
+# =============================================================================
+echo ""
+echo "###################################################################"
+echo "  SAPHSOLVE BENCHMARKS"
+echo "###################################################################"
+
+# ── XML → JSInp conversion (runs in Docker, pure Python) ─────────────────────
+echo ""
+echo "--- SAPHSOLVE: XML → JSInp conversion ---"
+SAPHSOLVE_CONVERTED=()
+SAPHSOLVE_SKIPPED=()
+
+for xml_file in $(find /data -name '*.xml' -type f | sort); do
+    base=$(basename "$xml_file" .xml)
+    jsinp_file="$JSINP_DIR/$base.JSInp"
+    if python3 /build/pracciolini/src/openpsa_to_jsinp_converter.py \
+            "$xml_file" "$jsinp_file" --cutoff 1e-12 2>/dev/null; then
+        echo "  Converted: $base"
+        SAPHSOLVE_CONVERTED+=("$base")
+    else
+        echo "  SKIPPED:   $base  (unsupported gates or parse error)"
+        SAPHSOLVE_SKIPPED+=("$base")
+    fi
+done
+
+echo ""
+echo "SAPHSOLVE converted: ${#SAPHSOLVE_CONVERTED[@]} models"
+echo "SAPHSOLVE skipped:   ${#SAPHSOLVE_SKIPPED[@]} models"
+
+# ── SAPHSOLVE solve step (Windows-only — skipped when DLL absent) ─────────────
+JSINP_FILES=$(find "$JSINP_DIR" -name '*.JSInp' -type f | sort | tr '\n' ',' | sed 's/,$//')
+
+if command -v saphsolve-cli &>/dev/null && [ -n "$JSINP_FILES" ]; then
+    echo ""
+    echo "--- SAPHSOLVE MOCUS+MCUB (${#SAPHSOLVE_CONVERTED[@]} models) ---"
+    hyperfine \
+        --warmup 0 --runs 1 --ignore-failure \
+        --export-markdown "$RESULTS_DIR/saphsolve_${MODEL}_${CURRENT_DATE}_summary.md" \
+        --export-json    "$RESULTS_DIR/saphsolve_${MODEL}_${CURRENT_DATE}_results.json" \
+        --parameter-list file "$JSINP_FILES" \
+        "timeout 30 saphsolve-cli {file} \
+            $SAPHSOLVE_OUT/\$(basename {file} .JSInp).JSCut"
+    echo "SAPHSOLVE complete."
+else
+    echo ""
+    echo "WARNING: saphsolve-cli not available or no JSInp files — skipping SAPHSOLVE solve step."
+fi
+
+# =============================================================================
+# COMPARISONS  (10 paired experiments)
 # =============================================================================
 echo ""
 echo "###################################################################"
@@ -403,6 +603,75 @@ run_comparison \
     "$RESULTS_DIR/exp3_zbdd_mcub_comparison_${MODEL}_${CURRENT_DATE}.csv" \
     --mcs-cutoff 1e-12
 
+# ── Experiment 4: SCRAM BDD vs PRAXIS BDD (probability only) ─────────────────
+run_comparison_praxis \
+    "Exp 4: SCRAM BDD vs PRAXIS BDD (probability only)" \
+    "$SCRAM_OUT_BDD" "$PRAXIS_OUT_BDD" \
+    "$RESULTS_DIR/exp4_bdd_scram_praxis_${MODEL}_${CURRENT_DATE}.csv"
+
+# ── Experiment 5: SCRAM ZBDD REA vs PRAXIS ZBDD REA (prob + MCS) ─────────────
+run_comparison_praxis \
+    "Exp 5: SCRAM ZBDD REA vs PRAXIS ZBDD REA (probability + MCS)" \
+    "$SCRAM_OUT_ZBDD_REA" "$PRAXIS_OUT_ZBDD_REA" \
+    "$RESULTS_DIR/exp5_zbdd_rea_scram_praxis_${MODEL}_${CURRENT_DATE}.csv" \
+    --check-mcs
+
+# ── Experiment 6: SCRAM ZBDD MCUB vs PRAXIS ZBDD MCUB (prob + MCS) ───────────
+run_comparison_praxis \
+    "Exp 6: SCRAM ZBDD MCUB vs PRAXIS ZBDD MCUB (probability + MCS)" \
+    "$SCRAM_OUT_ZBDD_MCUB" "$PRAXIS_OUT_ZBDD_MCUB" \
+    "$RESULTS_DIR/exp6_zbdd_mcub_scram_praxis_${MODEL}_${CURRENT_DATE}.csv" \
+    --check-mcs
+
+# ── Experiment 7a: SCRAM BDD vs ZEBRA BDD (probability only) ─────────────────
+run_comparison_zebra \
+    "Exp 7a: SCRAM BDD vs ZEBRA ZTDD BDD (probability only)" \
+    "$SCRAM_OUT_BDD" "$ZEBRA_OUT_BDD" \
+    "$RESULTS_DIR/exp7a_bdd_scram_zebra_${MODEL}_${CURRENT_DATE}.csv" \
+    bdd
+
+# ── Experiment 7b: SCRAM ZBDD REA vs ZEBRA ZTDD P_SUM (prob; MCS informational)
+run_comparison_zebra \
+    "Exp 7b: SCRAM ZBDD REA vs ZEBRA ZTDD P_SUM (probability; MCS informational)" \
+    "$SCRAM_OUT_ZBDD_REA" "$ZEBRA_OUT_MCS" \
+    "$RESULTS_DIR/exp7b_zbdd_rea_scram_zebra_${MODEL}_${CURRENT_DATE}.csv" \
+    psum
+
+# ── Experiment 7c: SCRAM ZBDD MCUB vs ZEBRA ZTDD P_MCUB (prob; MCS informational)
+run_comparison_zebra \
+    "Exp 7c: SCRAM ZBDD MCUB vs ZEBRA ZTDD P_MCUB (probability; MCS informational)" \
+    "$SCRAM_OUT_ZBDD_MCUB" "$ZEBRA_OUT_MCS" \
+    "$RESULTS_DIR/exp7c_zbdd_mcub_scram_zebra_${MODEL}_${CURRENT_DATE}.csv" \
+    pmcub
+
+# ── Experiment 8: SCRAM ZBDD MCUB vs SAPHSOLVE MOCUS+MCUB (Windows-only) ─────
+SAPH_JSCUT_COUNT=$(find "$SAPHSOLVE_OUT" -name '*.JSCut' -type f 2>/dev/null | wc -l)
+if [ "$SAPH_JSCUT_COUNT" -gt 0 ]; then
+    run_comparison_saphsolve \
+        "Exp 8: SCRAM ZBDD MCUB vs SAPHSOLVE MOCUS+MCUB (probability + MCS)" \
+        "$SCRAM_OUT_ZBDD_MCUB" "$SAPHSOLVE_OUT" \
+        "$RESULTS_DIR/exp8_zbdd_mcub_scram_saphsolve_${MODEL}_${CURRENT_DATE}.csv"
+else
+    echo ""
+    echo "--- Comparison: Exp 8: SCRAM ZBDD MCUB vs SAPHSOLVE MOCUS+MCUB ---"
+    echo "    SKIPPED: No SAPHSOLVE .JSCut outputs found (solve step requires Windows)."
+fi
+
+# =============================================================================
+# PLOTTING
+# =============================================================================
+echo ""
+echo "###################################################################"
+echo "  PLOTTING"
+echo "###################################################################"
+echo ""
+echo "--- Generating interactive HTML report ---"
+REPORT_PATH="$RESULTS_DIR/benchmark_report_${MODEL}_${CURRENT_DATE}.html"
+python3 /build/pracciolini/src/plot_benchmark_results.py \
+    --results-dir "$RESULTS_DIR" \
+    --output      "$REPORT_PATH" \
+    --model       "$MODEL"
+
 # =============================================================================
 # Done
 # =============================================================================
@@ -416,8 +685,21 @@ echo "  scram_bdd_*           scram_zbdd_rea_*         scram_zbdd_mcub_*"
 echo "  xfta_bdd_*            ftrex_bdd_*              ftrex_zbdd_*"
 echo "  xfta_bdt_rea_*        xfta_bdt_mcub_*          xfta_bdt_pub_*"
 echo "  xfta_zbdd_rea_*       xfta_zbdd_mcub_*         xfta_zbdd_pub_*"
+echo "  praxis_bdd_*          praxis_zbdd_rea_*         praxis_zbdd_mcub_*"
+echo "  zebra_ztdd_bdd_*      zebra_ztdd_mcs_*"
+echo "  saphsolve_*           (Windows-only; skipped in Docker)"
 echo ""
 echo "Comparison CSVs  (probability + MCS count) in $RESULTS_DIR/:"
-echo "  exp1_bdd_comparison_*          — SCRAM BDD       vs XFTA BDD"
-echo "  exp2_zbdd_rea_comparison_*     — SCRAM ZBDD REA  vs XFTA ZBDD REA"
-echo "  exp3_zbdd_mcub_comparison_*    — SCRAM ZBDD MCUB vs XFTA ZBDD MCUB"
+echo "  exp1_bdd_comparison_*               — SCRAM BDD       vs XFTA BDD"
+echo "  exp2_zbdd_rea_comparison_*          — SCRAM ZBDD REA  vs XFTA ZBDD REA"
+echo "  exp3_zbdd_mcub_comparison_*         — SCRAM ZBDD MCUB vs XFTA ZBDD MCUB"
+echo "  exp4_bdd_scram_praxis_*             — SCRAM BDD       vs PRAXIS BDD"
+echo "  exp5_zbdd_rea_scram_praxis_*        — SCRAM ZBDD REA  vs PRAXIS ZBDD REA"
+echo "  exp6_zbdd_mcub_scram_praxis_*       — SCRAM ZBDD MCUB vs PRAXIS ZBDD MCUB"
+echo "  exp7a_bdd_scram_zebra_*             — SCRAM BDD       vs ZEBRA ZTDD BDD (probability)"
+echo "  exp7b_zbdd_rea_scram_zebra_*        — SCRAM ZBDD REA  vs ZEBRA ZTDD P_SUM (MCS informational)"
+echo "  exp7c_zbdd_mcub_scram_zebra_*       — SCRAM ZBDD MCUB vs ZEBRA ZTDD P_MCUB (MCS informational)"
+echo "  exp8_zbdd_mcub_scram_saphsolve_*    — SCRAM ZBDD MCUB vs SAPHSOLVE MOCUS+MCUB (Windows-only)"
+echo ""
+echo "Interactive HTML report:"
+echo "  benchmark_report_*                — all 4 charts, open in any browser"
