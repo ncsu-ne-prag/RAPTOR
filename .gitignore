@@ -73,6 +73,9 @@ fixtures/models/synthetic-models
 fixtures/models/benchexec-models
 fixtures/results/
 fixtures/benchmark_aralia
+fixtures/benchmark_chinese
+fixtures/benchmark_ent
+benchmark_report_multitab.html
 
 # FTREX sensitive files
 apps/solvers/ftrex

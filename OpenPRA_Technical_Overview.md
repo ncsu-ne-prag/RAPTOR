@@ -73,6 +73,7 @@ Both the GUI and the web application are backed by backend services. The CLI may
 Frontends implement the user interface layer for the GUI and the web application. They provide model authoring environments, results dashboards, and visualization components. Where the GUI and web application share interface logic, that logic is factored into shared frontend libraries within this category.
 
 Frontends consume backend APIs and do not communicate with solvers or microservices directly.
+IOS apps. The frontends need to be dynamic. The AI agents should be able to change the frontends on the fly depending on the result.
 
 ### 3.5 Interfaces
 
@@ -80,21 +81,29 @@ Interfaces define the data contracts that flow between components. This category
 
 Interface definitions also serve as the canonical specification for PRA model interchange, enabling external tools to read and write OpenPRA-compatible models.
 
-### 3.6 Tools
+### 3.6 Utility Tools
 
 Tools are purpose-built applications that extend the OpenPRA ecosystem with specialized capabilities. OpenPRA currently includes four tools:
 
 **Pracciolini — Model Conversion Tool**
 Pracciolini converts PRA models between OpenPRA's native format and external formats used by other industry tools. It enables interoperability with existing model libraries and supports migration workflows.
 
+**Benchmarking Tool**
+The benchmarking tool provides a structured pipeline for evaluating solver performance and result accuracy. It runs solvers against standardized model sets, collects quantitative metrics, and produces comparative reports. It is used for both internal validation and external performance characterization.
+
+**Technical Report Extraction Tool**
+There needs to be AI agents that can extract data from PRA technical reports and map them to the OpenPRA MEF schema or interfaces.
+
+**Report Generation Tool**
+These OpenPRA MEF formatted data then needs to be uploaded to OpenPRA Web App's tools. There needs to be AI agents that can generate reports from these tools in Word or PDF format.
+
+### 3.7 Prototyping
+
 **Synthetic Model Generation Tool**
 This tool generates synthetic PRA models programmatically for testing, benchmarking, and research purposes. It produces structurally valid models with configurable parameters, allowing controlled experiments at scales that are impractical with real-world models.
 
 **Automated Model Generation from P&ID and PFD**
 This tool constructs PRA models directly from engineering source documents — Piping and Instrumentation Diagrams (P&IDs) and Process Flow Diagrams (PFDs). It reduces manual model authoring effort by automating the extraction of system structure and failure logic from plant design documentation.
-
-**Benchmarking Tool**
-The benchmarking tool provides a structured pipeline for evaluating solver performance and result accuracy. It runs solvers against standardized model sets, collects quantitative metrics, and produces comparative reports. It is used for both internal validation and external performance characterization.
 
 ---
 

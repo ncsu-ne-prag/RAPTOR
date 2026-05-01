@@ -9,15 +9,27 @@ export interface Model {
 export interface FaultTree {
   name: string;
   description?: string;
+  gates?: Gate[];
   basicEvents?: BasicEvent[];
   houseEvents?: HouseEvent[];
   top: LogicExpr;
 }
 
+export interface Gate {
+  name: string;
+  description?: string;
+  expr: LogicExpr;
+}
+
+export type Probability =
+  | number
+  | { type: 'exponential'; lambda: number; time?: number }
+  | { type: 'parameter'; name: string };
+
 export interface BasicEvent {
   name: string;
   description?: string;
-  p: number;
+  p: Probability;
 }
 
 export interface HouseEvent {
@@ -27,6 +39,7 @@ export interface HouseEvent {
 }
 
 export type LogicExpr =
+  | { gate: string }
   | { event: string }
   | { op: 'and'; args: LogicExpr[] }
   | { op: 'or'; args: LogicExpr[] }

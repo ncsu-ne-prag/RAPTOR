@@ -1,8 +1,18 @@
-import argparse, csv, glob, json, os
+import argparse, glob, json, os, re
 from datetime import datetime
 import plotly.graph_objects as go
 
-TIMEOUT_S  = 30.0
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from parse_scram_log    import parse_scram_probability, parse_scram_mcs_count
+from parse_xfta_log     import parse_xfta_probability, parse_xfta_mcs_count
+from parse_praxis_log   import parse_praxis_probability, parse_praxis_mcs_count
+from parse_ftrex_log    import parse_ftrex_exact, parse_ftrex_psum, parse_ftrex_pmcub, parse_ftrex_mcs_count
+from parse_zebra_log    import parse_zebra_probability, parse_zebra_psum, parse_zebra_pmcub, parse_zebra_mcs_count
+from parse_saphsolve_log import parse_saphsolve_probability, parse_saphsolve_mcs_count
+
+TIMEOUT_S  = 300.0
 TIMEOUT_MS = TIMEOUT_S * 1000
 
 TIMING_CONFIGS = [
@@ -26,37 +36,83 @@ TIMING_CONFIGS = [
     ("SAPHSOLVE MOCUS+MCUB", "saphsolve_*_results.json",         "file",   ".JSInp", "SAPHSOLVE"),
 ]
 
-PROB_SOURCES = [
-    ("SCRAM BDD",            "exp1_bdd_comparison_*.csv",            "scram_probability",     True),
-    ("SCRAM ZBDD REA",       "exp2_zbdd_rea_comparison_*.csv",       "scram_probability",     False),
-    ("SCRAM ZBDD MCUB",      "exp3_zbdd_mcub_comparison_*.csv",      "scram_probability",     False),
-    ("XFTA BDD",             "exp1_bdd_comparison_*.csv",            "xfta_probability",      False),
-    ("XFTA ZBDD REA",        "exp2_zbdd_rea_comparison_*.csv",       "xfta_probability",      False),
-    ("XFTA ZBDD MCUB",       "exp3_zbdd_mcub_comparison_*.csv",      "xfta_probability",      False),
-    ("FTREX BDD",            "exp9a_bdd_scram_ftrex_*.csv",          "ftrex_probability",     False),
-    ("FTREX ZBDD REA",       "exp9b_zbdd_rea_scram_ftrex_*.csv",     "ftrex_probability",     False),
-    ("FTREX ZBDD MCUB",      "exp9c_zbdd_mcub_scram_ftrex_*.csv",    "ftrex_probability",     False),
-    ("PRAXIS BDD",           "exp4_bdd_scram_praxis_*.csv",          "praxis_probability",    False),
-    ("PRAXIS ZBDD REA",      "exp5_zbdd_rea_scram_praxis_*.csv",     "praxis_probability",    False),
-    ("PRAXIS ZBDD MCUB",     "exp6_zbdd_mcub_scram_praxis_*.csv",    "praxis_probability",    False),
-    ("ZEBRA ZTDD BDD",       "exp7a_bdd_scram_zebra_*.csv",          "zebra_probability",     False),
-    ("ZEBRA ZTDD REA",       "exp7b_zbdd_rea_scram_zebra_*.csv",     "zebra_probability",     False),
-    ("ZEBRA ZTDD MCUB",      "exp7c_zbdd_mcub_scram_zebra_*.csv",    "zebra_probability",     False),
-    ("SAPHSOLVE MOCUS+MCUB", "exp8_zbdd_mcub_scram_saphsolve_*.csv", "saphsolve_probability", False),
-]
 
-MCS_SOURCES = [
-    ("SCRAM ZBDD REA",       "exp2_zbdd_rea_comparison_*.csv",       "scram_mcs_count",       True),
-    ("SCRAM ZBDD MCUB",      "exp3_zbdd_mcub_comparison_*.csv",      "scram_mcs_count",       False),
-    ("XFTA ZBDD REA",        "exp2_zbdd_rea_comparison_*.csv",       "xfta_mcs_count",        False),
-    ("XFTA ZBDD MCUB",       "exp3_zbdd_mcub_comparison_*.csv",      "xfta_mcs_count",        False),
-    ("FTREX ZBDD REA",       "exp9b_zbdd_rea_scram_ftrex_*.csv",     "ftrex_mcs_count",       False),
-    ("FTREX ZBDD MCUB",      "exp9c_zbdd_mcub_scram_ftrex_*.csv",    "ftrex_mcs_count",       False),
-    ("PRAXIS ZBDD REA",      "exp5_zbdd_rea_scram_praxis_*.csv",     "praxis_mcs_count",      False),
-    ("PRAXIS ZBDD MCUB",     "exp6_zbdd_mcub_scram_praxis_*.csv",    "praxis_mcs_count",      False),
-    ("ZEBRA ZTDD REA",       "exp7b_zbdd_rea_scram_zebra_*.csv",     "zebra_mcs_count",       False),
-    ("ZEBRA ZTDD MCUB",      "exp7c_zbdd_mcub_scram_zebra_*.csv",    "zebra_mcs_count",       False),
-    ("SAPHSOLVE MOCUS+MCUB", "exp8_zbdd_mcub_scram_saphsolve_*.csv", "saphsolve_mcs_count",   False),
+def _scram(out_dir, model):
+    path = os.path.join(out_dir, f"{model}.xml")
+    return parse_scram_probability(path), parse_scram_mcs_count(path)
+
+
+def _xfta_prob(out_dir, model):
+    return parse_xfta_probability(os.path.join(out_dir, f"{model}_prob.tsv")), None
+
+
+def _xfta(out_dir, model):
+    prob = parse_xfta_probability(os.path.join(out_dir, f"{model}_prob.tsv"))
+    mcs  = parse_xfta_mcs_count(os.path.join(out_dir, f"{model}_mcs.tsv"))
+    return prob, mcs
+
+
+def _ftrex_exact(out_dir, model):
+    log = os.path.join(out_dir, f"{model}.log")
+    return parse_ftrex_exact(log), parse_ftrex_mcs_count(log)
+
+
+def _ftrex_psum(out_dir, model):
+    log = os.path.join(out_dir, f"{model}.log")
+    return parse_ftrex_psum(log), parse_ftrex_mcs_count(log)
+
+
+def _ftrex_pmcub(out_dir, model):
+    log = os.path.join(out_dir, f"{model}.log")
+    return parse_ftrex_pmcub(log), parse_ftrex_mcs_count(log)
+
+
+def _praxis(out_dir, model):
+    path = os.path.join(out_dir, f"{model}.xml")
+    return parse_praxis_probability(path), parse_praxis_mcs_count(path)
+
+
+def _zebra_bdd(out_dir, model):
+    return parse_zebra_probability(os.path.join(out_dir, f"{model}.log")), None
+
+
+def _zebra_rea(out_dir, model):
+    log = os.path.join(out_dir, f"{model}.log")
+    return parse_zebra_psum(log), parse_zebra_mcs_count(log)
+
+
+def _zebra_mcub(out_dir, model):
+    log = os.path.join(out_dir, f"{model}.log")
+    return parse_zebra_pmcub(log), parse_zebra_mcs_count(log)
+
+
+def _saphsolve(out_dir, model):
+    path = os.path.join(out_dir, f"{model}.JSCut")
+    return parse_saphsolve_probability(path), parse_saphsolve_mcs_count(path)
+
+
+OUTPUT_SOURCES = [
+    # label, out_dir_name, reader_fn, is_prob_ref, is_mcs_ref
+    ("SCRAM BDD",            "scram_bdd_output",        _scram,        True,  False),
+    ("SCRAM ZBDD REA",       "scram_zbdd_rea_output",   _scram,        False, True),
+    ("SCRAM ZBDD MCUB",      "scram_zbdd_mcub_output",  _scram,        False, False),
+    ("XFTA BDD",             "xfta_bdd_output",         _xfta_prob,    False, False),
+    ("XFTA BDT REA",         "xfta_bdt_rea_output",     _xfta,         False, False),
+    ("XFTA BDT MCUB",        "xfta_bdt_mcub_output",    _xfta,         False, False),
+    ("XFTA BDT PUB",         "xfta_bdt_pub_output",     _xfta,         False, False),
+    ("XFTA ZBDD REA",        "xfta_zbdd_rea_output",    _xfta,         False, False),
+    ("XFTA ZBDD MCUB",       "xfta_zbdd_mcub_output",   _xfta,         False, False),
+    ("XFTA ZBDD PUB",        "xfta_zbdd_pub_output",    _xfta,         False, False),
+    ("FTREX BDD",            "ftrex_bdd_output",        _ftrex_exact,  False, False),
+    ("FTREX ZBDD REA",       "ftrex_zbdd_output",       _ftrex_psum,   False, False),
+    ("FTREX ZBDD MCUB",      "ftrex_zbdd_output",       _ftrex_pmcub,  False, False),
+    ("PRAXIS BDD",           "praxis_bdd_output",       _praxis,       False, False),
+    ("PRAXIS ZBDD REA",      "praxis_zbdd_rea_output",  _praxis,       False, False),
+    ("PRAXIS ZBDD MCUB",     "praxis_zbdd_mcub_output", _praxis,       False, False),
+    ("ZEBRA ZTDD BDD",       "zebra_ztdd_bdd_output",   _zebra_bdd,    False, False),
+    ("ZEBRA ZTDD REA",       "zebra_ztdd_mcs_output",   _zebra_rea,    False, False),
+    ("ZEBRA ZTDD MCUB",      "zebra_ztdd_mcs_output",   _zebra_mcub,   False, False),
+    ("SAPHSOLVE MOCUS+MCUB", "saphsolve_output",        _saphsolve,    False, False),
 ]
 
 SOLVER_PALETTE = {
@@ -74,28 +130,6 @@ _FONT = dict(
     family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     size=12,
 )
-
-
-def _table_rows_meta():
-    seen = {}
-    order = []
-    for label, _, _, is_ref in PROB_SOURCES:
-        if label not in seen:
-            seen[label] = [is_ref, False]
-            order.append(label)
-        elif is_ref:
-            seen[label][0] = True
-    for label, _, _, is_ref in MCS_SOURCES:
-        if label not in seen:
-            seen[label] = [False, is_ref]
-            order.append(label)
-        else:
-            if is_ref:
-                seen[label][1] = True
-    return [(lbl, seen[lbl][0], seen[lbl][1]) for lbl in order]
-
-
-TABLE_META = _table_rows_meta()
 
 
 def _find_file(results_dir, pattern):
@@ -131,24 +165,17 @@ def load_timing(results_dir, pattern, param_key, ext):
     return out
 
 
-def load_csv_column(results_dir, pattern, col):
-    path = _find_file(results_dir, pattern)
-    if not path:
-        return {}
-    out = {}
-    try:
-        with open(path, encoding="utf-8", newline="") as f:
-            for row in csv.DictReader(f):
-                m = row.get("model", "")
-                v = row.get(col, "")
-                if m and v:
-                    try:
-                        out[m] = float(v)
-                    except ValueError:
-                        pass
-    except Exception:
-        pass
-    return out
+def load_values(results_dir, models):
+    values_all = {}
+    for label, out_dir_name, reader_fn, *_ in OUTPUT_SOURCES:
+        out_dir = os.path.join(results_dir, out_dir_name)
+        per_model = {}
+        for model in models:
+            prob, mcs = reader_fn(out_dir, model)
+            if prob is not None or mcs is not None:
+                per_model[model] = (prob, mcs)
+        values_all[label] = per_model
+    return values_all
 
 
 def _solver_color(label):
@@ -209,11 +236,13 @@ def _fig_spec(model, timing_all):
     return fig.to_json().replace("</", "<\\/")
 
 
-def _combined_table(model, prob_all, mcs_all):
+def _combined_table(model, values_all):
     rows = ""
-    for label, is_prob_ref, is_mcs_ref in TABLE_META:
-        prob_val = prob_all.get(label, {}).get(model)
-        mcs_val  = mcs_all.get(label, {}).get(model)
+    for label, _, _, is_prob_ref, is_mcs_ref in OUTPUT_SOURCES:
+        pair = values_all.get(label, {}).get(model)
+        if pair is None:
+            continue
+        prob_val, mcs_val = pair
         if prob_val is None and mcs_val is None:
             continue
         color     = _solver_color(label)
@@ -247,7 +276,7 @@ def _combined_table(model, prob_all, mcs_all):
         '</tr></thead>'
         f'<tbody>{rows}</tbody>'
         '</table>'
-        '<p class="note">† Probability reference (SCRAM BDD) ‡ MCS reference (SCRAM ZBDD REA)</p>'
+        '<p class="note">† Probability reference (SCRAM BDD) ‡ MCS reference (SCRAM ZBDD REA)</p>'
     )
 
 
@@ -269,9 +298,9 @@ def _timeout_banner(model, timing_all):
     )
 
 
-def _fragment_html(model, prob_all, mcs_all, timing_all):
-    banner    = _timeout_banner(model, timing_all)
-    table     = _combined_table(model, prob_all, mcs_all)
+def _fragment_html(model, values_all, timing_all):
+    banner     = _timeout_banner(model, timing_all)
+    table      = _combined_table(model, values_all)
     chart_spec = _fig_spec(model, timing_all)
     chart_part = ""
     if chart_spec:
@@ -287,12 +316,20 @@ def _fragment_html(model, prob_all, mcs_all, timing_all):
     )
 
 
+def _safe_id(label):
+    return re.sub(r'[^a-zA-Z0-9]', '_', label)
+
+
 CSS = """
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f2f5;color:#1a1a2e;line-height:1.5;display:flex;flex-direction:column;height:100vh;overflow:hidden}
-header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);color:#fff;padding:1.1rem 2rem;flex-shrink:0}
-header h1{font-size:1.35rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.2rem}
-header p{opacity:.6;font-size:.8rem}
+header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);color:#fff;padding:.9rem 2rem .7rem;flex-shrink:0}
+header h1{font-size:1.35rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.15rem}
+header p{opacity:.6;font-size:.8rem;margin-bottom:.55rem}
+.tab-bar{display:flex;gap:.35rem;flex-wrap:wrap}
+.tab-item{display:inline-block;padding:.28rem .85rem;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border-radius:4px;cursor:pointer;font-size:.8rem;font-weight:500;user-select:none;text-decoration:none;transition:background .12s,color .12s}
+.tab-item:hover{background:rgba(255,255,255,.2);color:#fff}
+.tab-item.active{background:#4361EE;color:#fff}
 .layout{display:flex;flex:1;overflow:hidden}
 nav{width:210px;background:#1a1a2e;overflow-y:auto;flex-shrink:0;padding:.5rem 0}
 .nav-label{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.3);padding:.5rem 1.2rem .2rem}
@@ -316,59 +353,85 @@ tr.ref-row td{font-weight:700;background:#eef2ff}
 """
 
 JS = """
-function loadModel(name) {
-    var tmpl = document.getElementById('frag-' + name);
+function loadModel(ds, name) {
+    var tmpl = document.getElementById('frag-' + ds + '-' + name);
     if (!tmpl) return;
     var content = document.getElementById('content');
     content.innerHTML = '';
     content.appendChild(tmpl.content.cloneNode(true));
     document.querySelectorAll('.nav-item').forEach(function(el) { el.classList.remove('active'); });
-    var navEl = document.querySelector('.nav-item[data-model="' + name + '"]');
+    var navEl = document.querySelector('.nav-item[data-ds="' + ds + '"][data-model="' + name + '"]');
     if (navEl) navEl.classList.add('active');
     content.querySelectorAll('.chart-spec').forEach(function(el) {
         var fig = JSON.parse(el.textContent);
         Plotly.react(el.previousElementSibling, fig.data, fig.layout, {responsive: true, displayModeBar: true});
     });
-    htmx.trigger(content, 'htmx:afterSwap', {target: content});
+}
+function loadDataset(ds) {
+    document.querySelectorAll('.nav-section').forEach(function(el) { el.style.display = 'none'; });
+    var sec = document.getElementById('nav-' + ds);
+    if (sec) sec.style.display = '';
+    document.querySelectorAll('.tab-item').forEach(function(el) { el.classList.toggle('active', el.dataset.tab === ds); });
+    document.getElementById('content').innerHTML = '';
+    var first = document.querySelector('.nav-item[data-ds="' + ds + '"]');
+    if (first) loadModel(ds, first.dataset.model);
 }
 document.addEventListener('DOMContentLoaded', function() {
-    var first = document.querySelector('.nav-item[data-model]');
-    if (first) loadModel(first.dataset.model);
+    var firstTab = document.querySelector('.tab-item[data-tab]');
+    if (firstTab) loadDataset(firstTab.dataset.tab);
 });
 """
 
 
-def build_html(now, model_label, models, fragments):
+def build_html(now, datasets_meta, fragments_by_dataset):
     date_str  = now.strftime("%Y-%m-%d")
     date_long = now.strftime("%B %d, %Y at %H:%M")
+    total_models = sum(len(models) for _, models in datasets_meta)
 
-    nav_items = "".join(
-        '<a class="nav-item" data-model="' + m + '" onclick="loadModel(\'' + m + '\')">' + m + '</a>'
-        for m in models
+    tab_bar = "".join(
+        '<a class="tab-item" data-tab="{sid}" onclick="loadDataset(\'{sid}\')">{label}</a>'.format(
+            sid=_safe_id(label), label=label)
+        for label, _ in datasets_meta
     )
+
+    nav_sections = "".join(
+        '<div class="nav-section" id="nav-{sid}" style="display:none">{items}</div>'.format(
+            sid=_safe_id(label),
+            items="".join(
+                '<a class="nav-item" data-ds="{sid}" data-model="{m}" onclick="loadModel(\'{sid}\',\'{m}\')">{m}</a>'.format(
+                    sid=_safe_id(label), m=m)
+                for m in models
+            )
+        )
+        for label, models in datasets_meta
+    )
+
     template_tags = "".join(
-        '<template id="frag-' + m + '">' + fragments[m] + '</template>'
+        '<template id="frag-{sid}-{m}">{html}</template>'.format(
+            sid=_safe_id(label), m=m, html=fragments_by_dataset[_safe_id(label)][m])
+        for label, models in datasets_meta
         for m in models
+        if m in fragments_by_dataset.get(_safe_id(label), {})
     )
 
     return (
         '<!DOCTYPE html>\n<html lang="en">\n<head>\n'
         '<meta charset="UTF-8">\n'
         '<meta name="viewport" content="width=device-width,initial-scale=1">\n'
-        '<title>RAPTOR Benchmark - ' + model_label + ' - ' + date_str + '</title>\n'
+        '<title>PRA Solvers: C2C Verification &amp; Benchmarking - ' + date_str + '</title>\n'
         '<script src="https://unpkg.com/htmx.org@2.0.4/dist/htmx.min.js"></script>\n'
         '<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>\n'
         '<style>\n' + CSS + '\n</style>\n'
         '</head>\n<body>\n'
         '<header>\n'
-        '<h1>RAPTOR Fault Tree Benchmark</h1>\n'
-        '<p>Dataset: <strong>' + model_label + '</strong>'
-        ' &nbsp;&middot;&nbsp; Generated ' + date_long +
-        ' &nbsp;&middot;&nbsp; Timeout: ' + str(int(TIMEOUT_S)) + 's per run'
-        ' &nbsp;&middot;&nbsp; ' + str(len(models)) + ' models</p>\n'
+        '<h1>PRA Solvers: Code-to-Code Verification &amp; Benchmarking</h1>\n'
+        '<p>Generated ' + date_long +
+        ' &nbsp;&middot;&nbsp; Timeout: ' + str(int(TIMEOUT_S)) + 's'
+        ' &nbsp;&middot;&nbsp; ' + str(total_models) + ' models</p>\n'
+        '<div class="tab-bar">' + tab_bar + '</div>\n'
         '</header>\n'
         '<div class="layout">\n'
-        '<nav>\n<div class="nav-label">Models</div>\n' + nav_items + '\n</nav>\n'
+        '<nav>\n<div class="nav-label">Models</div>\n' + nav_sections + '\n</nav>\n'
         '<div id="content"></div>\n'
         '</div>\n'
         + template_tags + '\n'
@@ -377,39 +440,45 @@ def build_html(now, model_label, models, fragments):
     )
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--results-dir", required=True)
-    ap.add_argument("--output",      required=True)
-    ap.add_argument("--model",       default="aralia")
-    args = ap.parse_args()
-
+def _load_dataset(results_dir):
     timing_all = {
-        label: load_timing(args.results_dir, pattern, param_key, ext)
+        label: load_timing(results_dir, pattern, param_key, ext)
         for label, pattern, param_key, ext, _ in TIMING_CONFIGS
     }
-    prob_all = {
-        label: load_csv_column(args.results_dir, pattern, col)
-        for label, pattern, col, _ in PROB_SOURCES
-    }
-    mcs_all = {
-        label: load_csv_column(args.results_dir, pattern, col)
-        for label, pattern, col, _ in MCS_SOURCES
-    }
-
     all_models = sorted({m for t in timing_all.values() for m in t})
-    print(f"  Models found: {len(all_models)}")
-
-    fragments = {}
+    values_all = load_values(results_dir, all_models)
+    frags = {}
     for model in all_models:
-        spec = _fig_spec(model, timing_all)
-        if spec is None:
-            continue
-        fragments[model] = _fragment_html(model, prob_all, mcs_all, timing_all)
+        if _fig_spec(model, timing_all) is not None:
+            frags[model] = _fragment_html(model, values_all, timing_all)
+    models = [m for m in all_models if m in frags]
+    return models, frags
 
-    models = [m for m in all_models if m in fragments]
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--dataset", nargs=2, metavar=("LABEL", "DIR"), action="append", default=[])
+    ap.add_argument("--results-dir", help="Single-dataset results dir (compat)")
+    ap.add_argument("--model",       default="dataset", help="Label for --results-dir mode")
+    ap.add_argument("--output",      required=True)
+    args = ap.parse_args()
+
+    specs = list(args.dataset)
+    if args.results_dir:
+        specs.insert(0, [args.model, args.results_dir])
+    if not specs:
+        ap.error("Provide at least one --dataset LABEL DIR (or --results-dir DIR --model LABEL)")
+
+    datasets_meta = []
+    fragments_by_dataset = {}
+    for label, results_dir in specs:
+        models, frags = _load_dataset(results_dir)
+        datasets_meta.append((label, models))
+        fragments_by_dataset[_safe_id(label)] = frags
+        print(f"  [{label}] {len(models)} models")
+
     now  = datetime.now()
-    html = build_html(now, args.model, models, fragments)
+    html = build_html(now, datasets_meta, fragments_by_dataset)
 
     os.makedirs(os.path.dirname(os.path.abspath(args.output)), exist_ok=True)
     with open(args.output, "w", encoding="utf-8") as f:

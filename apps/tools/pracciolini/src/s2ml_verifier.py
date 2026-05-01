@@ -2,13 +2,8 @@ import os
 import re
 import sys
 
-# S2ML+SBE keywords that are never identifier names in formulas.
 _KEYWORDS = frozenset({"and", "or", "not", "atleast", "true", "false"})
 
-# Valid S2ML+SBE identifier pattern (alphanumeric, hyphen, underscore).
-_IDENT_RE = re.compile(r"[a-zA-Z][a-zA-Z0-9_\-]*")
-
-# Line patterns for each declaration type.
 _LINE_PATTERNS = [
     ("gate",        re.compile(r"^gate\s+([^\s=]+)\s*=\s*(.+);$")),
     ("basic-event", re.compile(r"^basic-event\s+([^\s=]+)\s*=\s*(.+);$")),
@@ -18,8 +13,8 @@ _LINE_PATTERNS = [
 
 
 def _extract_refs(formula: str) -> set:
-    """Return all identifier tokens in a formula that are not keywords."""
-    return {t for t in _IDENT_RE.findall(formula) if t.lower() not in _KEYWORDS}
+    tokens = re.split(r'[\s,()]+', formula)
+    return {t for t in tokens if t and t.lower() not in _KEYWORDS and not t.isdigit()}
 
 
 def verify_s2ml_file(file_path: str) -> tuple:
