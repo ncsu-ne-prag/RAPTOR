@@ -1,0 +1,41 @@
+<opsa-mef>
+    <define-initiating-event name="INIT288" event-tree="EQK-BIN7"/>
+    <define-event-tree name="EQK-BIN7">
+        <define-functional-event name="FE132">
+            <label>CD-EQ7-FT</label>
+        </define-functional-event>
+        <define-sequence name="S1142"/>
+        <initial-state>
+            <fork functional-event="FE132">
+                <path state="Failure">
+                    <collect-formula>
+                        <gate name="FT132.TOP"/>
+                    </collect-formula>
+                    <sequence name="S1142"/>
+                </path>
+            </fork>
+        </initial-state>
+    </define-event-tree>
+    <define-fault-tree name="FT132">
+        <define-gate name="TOP" role="private">
+            <or>
+                <basic-event name="BE289"/>
+                <basic-event name="BE290"/>
+            </or>
+        </define-gate>
+    </define-fault-tree>
+    <model-data>
+        <define-basic-event name="BE288">
+            <label>IE-EQ-BIN7</label>
+            <float value="1.020000E-08"/>
+        </define-basic-event>
+        <define-basic-event name="BE289">
+            <label>STR-EQ7-CD</label>
+            <float value="8.304000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE290">
+            <label>SGS-EQ7-CD</label>
+            <float value="6.663000E-01"/>
+        </define-basic-event>
+    </model-data>
+</opsa-mef>

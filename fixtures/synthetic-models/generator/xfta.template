@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE xfta>
+<xfta>
+<load>
+<model input="models/xfta/NAME" />
+</load>
+<build>
+<minimal-cutsets top-event="g1" handle="MCS" minimum-probability="1.0e-14" />
+</build>
+<compute>
+<probability top-event="g1" handle="MCS" output="results/xfta/NAME_probability.txt" />
+<importance-factors top-event="g1" handle="MCS" output="results/xfta/NAME_importance_factor.txt" />
+</compute>
+</xfta>

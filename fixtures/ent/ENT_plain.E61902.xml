@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='ASCII'?>
+<opsa-mef>
+  <define-fault-tree name="default">
+    <define-gate name="E61902">
+      <label>GDAM051C-TR</label>
+      <and>
+        <event name="E673"/>
+        <event name="E868"/>
+      </and>
+    </define-gate>
+  </define-fault-tree>
+  <model-data>
+    <define-basic-event name="E673">
+      <label>JMV-2344HOI2</label>
+      <float value="0.000653"/>
+    </define-basic-event>
+    <define-basic-event name="E868">
+      <label>JMV-2344DPI2</label>
+      <float value="0.000653"/>
+    </define-basic-event>
+  </model-data>
+</opsa-mef>

@@ -1,0 +1,27 @@
+<!DOCTYPE benchmark PUBLIC "+//IDN sosy-lab.org//DTD BenchExec benchmark 2.3//EN" "https://www.sosy-lab.org/benchexec/benchmark-2.2.3dtd">
+<benchmark tool="scram"
+           timelimit="15min"
+           memlimit="63 GB"
+           cpuCores="2"
+           threads="1"
+>
+  <option name="-l">2000000</option>
+  <option name="--mocus" />
+  <option name="--probability" />
+  <option name="--cut-off">1e-20</option>
+
+  <rundefinition name="scram.mocus.trunc.rare-event">
+    <option name="--rare-event" />
+  </rundefinition>
+
+  <rundefinition name="scram.mocus.trunc.mcub">
+    <option name="--mcub" />  
+  </rundefinition>
+
+  <rundefinition name="scram.mocus.trunc.exact">
+  </rundefinition>
+
+  <tasks name="combined-and-or">
+    <includesfile>/home/bench/ft-bench/models/models3/scram/scram.txt</includesfile>
+  </tasks>
+</benchmark>

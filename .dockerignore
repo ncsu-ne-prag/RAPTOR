@@ -26,3 +26,8 @@ benchmarks
 coder
 scripts
 .nx
+
+# Exclude compiled Rust artifacts (Docker builds from source for Linux)
+apps/solvers/praxis/target/
+
+# saphsolve/tools/ DLLs are now needed — saphsolve-cli.exe loads them via Wine

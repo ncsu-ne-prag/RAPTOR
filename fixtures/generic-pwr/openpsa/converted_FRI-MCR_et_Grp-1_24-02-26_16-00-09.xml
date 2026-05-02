@@ -1,0 +1,3661 @@
+<opsa-mef>
+    <define-initiating-event name="INIT3975" event-tree="FRI-MCR"/>
+    <define-event-tree name="FRI-MCR">
+        <define-functional-event name="FE169">
+            <label>EVAC</label>
+        </define-functional-event>
+        <define-functional-event name="FE62">
+            <label>RPS-FT</label>
+        </define-functional-event>
+        <define-functional-event name="FE222">
+            <label>ASD-XHE-FT</label>
+        </define-functional-event>
+        <define-functional-event name="FE83">
+            <label>EPS-FT</label>
+        </define-functional-event>
+        <define-functional-event name="FE104">
+            <label>AFW-L-FT</label>
+        </define-functional-event>
+        <define-functional-event name="FE106">
+            <label>PORV-L-FT</label>
+        </define-functional-event>
+        <define-functional-event name="FE149">
+            <label>RCPSLOCA-FT</label>
+        </define-functional-event>
+        <define-sequence name="S1368"/>
+        <define-sequence name="S1369"/>
+        <define-sequence name="S1370"/>
+        <define-sequence name="S1371"/>
+        <define-sequence name="S1372"/>
+        <define-sequence name="S1373"/>
+        <initial-state>
+            <fork functional-event="FE169">
+                <path state="Failure">
+                    <collect-formula>
+                        <gate name="FT169.TOP"/>
+                    </collect-formula>
+                    <fork functional-event="FE62">
+                        <path state="Success">
+                            <collect-formula>
+                                <not>
+                                    <gate name="FT62.TOP"/>
+                                </not>
+                            </collect-formula>
+                            <fork functional-event="FE222">
+                                <path state="Success">
+                                    <collect-formula>
+                                        <not>
+                                            <gate name="FT222.TOP"/>
+                                        </not>
+                                    </collect-formula>
+                                    <fork functional-event="FE83">
+                                        <path state="Success">
+                                            <collect-formula>
+                                                <not>
+                                                    <gate name="FT83.TOP"/>
+                                                </not>
+                                            </collect-formula>
+                                            <fork functional-event="FE104">
+                                                <path state="Success">
+                                                    <collect-formula>
+                                                        <not>
+                                                            <gate name="FT104.TOP"/>
+                                                        </not>
+                                                    </collect-formula>
+                                                    <fork functional-event="FE106">
+                                                        <path state="Success">
+                                                            <collect-formula>
+                                                                <not>
+                                                                    <gate name="FT106.TOP"/>
+                                                                </not>
+                                                            </collect-formula>
+                                                            <fork functional-event="FE149">
+                                                                <path state="Failure">
+                                                                    <collect-formula>
+                                                                        <gate name="FT149.TOP"/>
+                                                                    </collect-formula>
+                                                                    <sequence name="S1373"/>
+                                                                </path>
+                                                            </fork>
+                                                        </path>
+                                                        <path state="Failure">
+                                                            <collect-formula>
+                                                                <gate name="FT106.TOP"/>
+                                                            </collect-formula>
+                                                            <sequence name="S1372"/>
+                                                        </path>
+                                                    </fork>
+                                                </path>
+                                                <path state="Failure">
+                                                    <collect-formula>
+                                                        <gate name="FT104.TOP"/>
+                                                    </collect-formula>
+                                                    <sequence name="S1371"/>
+                                                </path>
+                                            </fork>
+                                        </path>
+                                        <path state="Failure">
+                                            <collect-formula>
+                                                <gate name="FT83.TOP"/>
+                                            </collect-formula>
+                                            <sequence name="S1370"/>
+                                        </path>
+                                    </fork>
+                                </path>
+                                <path state="Failure">
+                                    <collect-formula>
+                                        <gate name="FT222.TOP"/>
+                                    </collect-formula>
+                                    <sequence name="S1369"/>
+                                </path>
+                            </fork>
+                        </path>
+                        <path state="Failure">
+                            <collect-formula>
+                                <gate name="FT62.TOP"/>
+                            </collect-formula>
+                            <sequence name="S1368"/>
+                        </path>
+                    </fork>
+                </path>
+            </fork>
+        </initial-state>
+    </define-event-tree>
+    <define-fault-tree name="FT62">
+        <define-gate name="TOP" role="private">
+            <or>
+                <gate name="G343"/>
+                <gate name="G716"/>
+                <basic-event name="BE3640"/>
+            </or>
+        </define-gate>
+        <define-gate name="G343" role="private">
+            <and>
+                <gate name="G344"/>
+                <gate name="G351"/>
+            </and>
+        </define-gate>
+        <define-gate name="G344" role="private">
+            <or>
+                <gate name="G345"/>
+                <gate name="G346"/>
+                <gate name="G347"/>
+                <gate name="G348"/>
+            </or>
+        </define-gate>
+        <define-gate name="G345" role="private">
+            <and>
+                <basic-event name="BE3641"/>
+                <basic-event name="BE3643"/>
+            </and>
+        </define-gate>
+        <define-gate name="G346" role="private">
+            <and>
+                <basic-event name="BE3636"/>
+                <basic-event name="BE3642"/>
+                <not>
+                    <basic-event name="BE3637"/>
+                </not>
+            </and>
+        </define-gate>
+        <define-gate name="G347" role="private">
+            <and>
+                <basic-event name="BE3635"/>
+                <basic-event name="BE3637"/>
+                <basic-event name="BE3642"/>
+            </and>
+        </define-gate>
+        <define-gate name="G348" role="private">
+            <or>
+                <gate name="G349"/>
+                <gate name="G350"/>
+                <basic-event name="BE3634"/>
+            </or>
+        </define-gate>
+        <define-gate name="G349" role="private">
+            <and>
+                <basic-event name="BE3639"/>
+                <basic-event name="BE3642"/>
+                <not>
+                    <basic-event name="BE3637"/>
+                </not>
+            </and>
+        </define-gate>
+        <define-gate name="G350" role="private">
+            <and>
+                <basic-event name="BE3637"/>
+                <basic-event name="BE3638"/>
+                <basic-event name="BE3642"/>
+            </and>
+        </define-gate>
+        <define-gate name="G351" role="private">
+            <and>
+                <not>
+                    <basic-event name="BE3456"/>
+                </not>
+                <not>
+                    <basic-event name="BE3647"/>
+                </not>
+            </and>
+        </define-gate>
+        <define-gate name="G650" role="private">
+            <and>
+                <basic-event name="BE445"/>
+                <basic-event name="BE3738"/>
+            </and>
+        </define-gate>
+        <define-gate name="G651" role="private">
+            <and>
+                <basic-event name="BE446"/>
+                <basic-event name="BE3817"/>
+            </and>
+        </define-gate>
+        <define-gate name="G652" role="private">
+            <and>
+                <basic-event name="BE447"/>
+                <basic-event name="BE3818"/>
+            </and>
+        </define-gate>
+        <define-gate name="G661" role="private">
+            <and>
+                <basic-event name="BE448"/>
+                <basic-event name="BE3819"/>
+            </and>
+        </define-gate>
+        <define-gate name="G716" role="private">
+            <or>
+                <gate name="G650"/>
+                <gate name="G651"/>
+                <gate name="G652"/>
+                <gate name="G661"/>
+                <gate name="G717"/>
+                <gate name="G718"/>
+            </or>
+        </define-gate>
+        <define-gate name="G717" role="private">
+            <and>
+                <basic-event name="BE449"/>
+                <basic-event name="BE3820"/>
+            </and>
+        </define-gate>
+        <define-gate name="G718" role="private">
+            <and>
+                <basic-event name="BE312"/>
+                <basic-event name="BE450"/>
+            </and>
+        </define-gate>
+    </define-fault-tree>
+    <define-fault-tree name="FT83">
+        <define-gate name="TOP" role="private">
+            <or>
+                <basic-event name="BE3533"/>
+                <basic-event name="BE3623"/>
+            </or>
+        </define-gate>
+        <define-gate name="G7" role="private">
+            <or>
+                <gate name="G433"/>
+                <gate name="G653"/>
+            </or>
+        </define-gate>
+        <define-gate name="G28" role="private">
+            <and>
+                <gate name="G29"/>
+                <basic-event name="BE10"/>
+            </and>
+        </define-gate>
+        <define-gate name="G29" role="private">
+            <or>
+                <basic-event name="BE45"/>
+                <basic-event name="BE3564"/>
+            </or>
+        </define-gate>
+        <define-gate name="G34" role="private">
+            <or>
+                <gate name="G442"/>
+                <gate name="G657"/>
+            </or>
+        </define-gate>
+        <define-gate name="G48" role="private">
+            <or>
+                <basic-event name="BE3553"/>
+                <basic-event name="BE3628"/>
+            </or>
+        </define-gate>
+        <define-gate name="G49" role="private">
+            <and>
+                <gate name="G104"/>
+                <basic-event name="BE10"/>
+            </and>
+        </define-gate>
+        <define-gate name="G51" role="private">
+            <or>
+                <gate name="G52"/>
+                <gate name="G73"/>
+                <gate name="G74"/>
+                <gate name="G75"/>
+                <gate name="G76"/>
+                <gate name="G77"/>
+            </or>
+        </define-gate>
+        <define-gate name="G52" role="private">
+            <and>
+                <basic-event name="BE335"/>
+                <basic-event name="BE3738"/>
+            </and>
+        </define-gate>
+        <define-gate name="G73" role="private">
+            <and>
+                <basic-event name="BE336"/>
+                <basic-event name="BE3817"/>
+            </and>
+        </define-gate>
+        <define-gate name="G74" role="private">
+            <and>
+                <basic-event name="BE337"/>
+                <basic-event name="BE3818"/>
+            </and>
+        </define-gate>
+        <define-gate name="G75" role="private">
+            <and>
+                <basic-event name="BE338"/>
+                <basic-event name="BE3819"/>
+            </and>
+        </define-gate>
+        <define-gate name="G76" role="private">
+            <and>
+                <basic-event name="BE339"/>
+                <basic-event name="BE3820"/>
+            </and>
+        </define-gate>
+        <define-gate name="G77" role="private">
+            <and>
+                <basic-event name="BE312"/>
+                <basic-event name="BE340"/>
+            </and>
+        </define-gate>
+        <define-gate name="G81" role="private">
+            <or>
+                <gate name="G82"/>
+                <gate name="G87"/>
+            </or>
+        </define-gate>
+        <define-gate name="G82" role="private">
+            <and>
+                <gate name="G300"/>
+                <basic-event name="BE3456"/>
+            </and>
+        </define-gate>
+        <define-gate name="G87" role="private">
+            <and>
+                <gate name="G300"/>
+                <gate name="G301"/>
+                <not>
+                    <basic-event name="BE3456"/>
+                </not>
+            </and>
+        </define-gate>
+        <define-gate name="G88" role="private">
+            <or>
+                <gate name="G94"/>
+                <gate name="G95"/>
+            </or>
+        </define-gate>
+        <define-gate name="G94" role="private">
+            <and>
+                <gate name="G306"/>
+                <basic-event name="BE3647"/>
+            </and>
+        </define-gate>
+        <define-gate name="G95" role="private">
+            <and>
+                <gate name="G302"/>
+                <gate name="G306"/>
+                <not>
+                    <basic-event name="BE3647"/>
+                </not>
+            </and>
+        </define-gate>
+        <define-gate name="G104" role="private">
+            <or>
+                <basic-event name="BE45"/>
+                <basic-event name="BE3565"/>
+            </or>
+        </define-gate>
+        <define-gate name="G170" role="private">
+            <or>
+                <gate name="G51"/>
+                <gate name="G81"/>
+                <gate name="G859"/>
+                <basic-event name="BE3341"/>
+            </or>
+        </define-gate>
+        <define-gate name="G171" role="private">
+            <or>
+                <gate name="G51"/>
+                <gate name="G88"/>
+                <gate name="G860"/>
+                <basic-event name="BE3544"/>
+            </or>
+        </define-gate>
+        <define-gate name="G286" role="private">
+            <and>
+                <gate name="G170"/>
+                <gate name="G171"/>
+            </and>
+        </define-gate>
+        <define-gate name="G300" role="private">
+            <or>
+                <gate name="G7"/>
+                <gate name="G305"/>
+            </or>
+        </define-gate>
+        <define-gate name="G301" role="private">
+            <or>
+                <basic-event name="BE3539"/>
+                <basic-event name="BE3540"/>
+                <basic-event name="BE3541"/>
+                <basic-event name="BE3542"/>
+                <basic-event name="BE3543"/>
+                <basic-event name="BE3622"/>
+            </or>
+        </define-gate>
+        <define-gate name="G302" role="private">
+            <or>
+                <basic-event name="BE3541"/>
+                <basic-event name="BE3545"/>
+                <basic-event name="BE3546"/>
+                <basic-event name="BE3547"/>
+                <basic-event name="BE3548"/>
+                <basic-event name="BE3549"/>
+            </or>
+        </define-gate>
+        <define-gate name="G305" role="private">
+            <or>
+                <gate name="G28"/>
+                <gate name="G698"/>
+                <basic-event name="BE3534"/>
+                <basic-event name="BE3535"/>
+                <basic-event name="BE3536"/>
+                <basic-event name="BE3559"/>
+                <basic-event name="BE3561"/>
+                <basic-event name="BE3562"/>
+                <basic-event name="BE3563"/>
+                <basic-event name="BE3564"/>
+            </or>
+        </define-gate>
+        <define-gate name="G306" role="private">
+            <or>
+                <gate name="G34"/>
+                <gate name="G48"/>
+                <gate name="G339"/>
+            </or>
+        </define-gate>
+        <define-gate name="G339" role="private">
+            <or>
+                <gate name="G49"/>
+                <gate name="G698"/>
+                <basic-event name="BE3554"/>
+                <basic-event name="BE3555"/>
+                <basic-event name="BE3556"/>
+                <basic-event name="BE3560"/>
+                <basic-event name="BE3561"/>
+                <basic-event name="BE3562"/>
+                <basic-event name="BE3563"/>
+            </or>
+        </define-gate>
+        <define-gate name="G433" role="private">
+            <or>
+                <gate name="G467"/>
+                <gate name="G653"/>
+                <gate name="G728"/>
+                <gate name="G838"/>
+                <gate name="G849"/>
+                <gate name="G867"/>
+                <basic-event name="BE3695"/>
+                <basic-event name="BE3698"/>
+                <basic-event name="BE3709"/>
+                <basic-event name="BE3710"/>
+                <basic-event name="BE3766"/>
+            </or>
+        </define-gate>
+        <define-gate name="G442" role="private">
+            <or>
+                <gate name="G466"/>
+                <gate name="G657"/>
+                <gate name="G728"/>
+                <gate name="G838"/>
+                <gate name="G849"/>
+                <gate name="G869"/>
+                <basic-event name="BE3696"/>
+                <basic-event name="BE3699"/>
+                <basic-event name="BE3704"/>
+                <basic-event name="BE3709"/>
+                <basic-event name="BE3710"/>
+            </or>
+        </define-gate>
+        <define-gate name="G453" role="private">
+            <or>
+                <gate name="G461"/>
+                <gate name="G469"/>
+                <gate name="G473"/>
+                <gate name="G474"/>
+                <gate name="G475"/>
+                <gate name="G476"/>
+            </or>
+        </define-gate>
+        <define-gate name="G461" role="private">
+            <and>
+                <basic-event name="BE391"/>
+                <basic-event name="BE3738"/>
+            </and>
+        </define-gate>
+        <define-gate name="G466" role="private">
+            <or>
+                <basic-event name="BE3687"/>
+                <basic-event name="BE3690"/>
+                <basic-event name="BE3693"/>
+                <basic-event name="BE3702"/>
+                <basic-event name="BE3703"/>
+            </or>
+        </define-gate>
+        <define-gate name="G467" role="private">
+            <or>
+                <basic-event name="BE3686"/>
+                <basic-event name="BE3689"/>
+                <basic-event name="BE3692"/>
+                <basic-event name="BE3702"/>
+                <basic-event name="BE3703"/>
+            </or>
+        </define-gate>
+        <define-gate name="G469" role="private">
+            <and>
+                <basic-event name="BE392"/>
+                <basic-event name="BE3817"/>
+            </and>
+        </define-gate>
+        <define-gate name="G473" role="private">
+            <and>
+                <basic-event name="BE393"/>
+                <basic-event name="BE3818"/>
+            </and>
+        </define-gate>
+        <define-gate name="G474" role="private">
+            <and>
+                <basic-event name="BE394"/>
+                <basic-event name="BE3819"/>
+            </and>
+        </define-gate>
+        <define-gate name="G475" role="private">
+            <and>
+                <basic-event name="BE395"/>
+                <basic-event name="BE3820"/>
+            </and>
+        </define-gate>
+        <define-gate name="G476" role="private">
+            <and>
+                <basic-event name="BE312"/>
+                <basic-event name="BE396"/>
+            </and>
+        </define-gate>
+        <define-gate name="G477" role="private">
+            <or>
+                <gate name="G478"/>
+                <gate name="G479"/>
+                <gate name="G503"/>
+                <gate name="G504"/>
+                <gate name="G505"/>
+                <gate name="G507"/>
+            </or>
+        </define-gate>
+        <define-gate name="G478" role="private">
+            <and>
+                <basic-event name="BE398"/>
+                <basic-event name="BE3738"/>
+            </and>
+        </define-gate>
+        <define-gate name="G479" role="private">
+            <and>
+                <basic-event name="BE399"/>
+                <basic-event name="BE3817"/>
+            </and>
+        </define-gate>
+        <define-gate name="G503" role="private">
+            <and>
+                <basic-event name="BE400"/>
+                <basic-event name="BE3818"/>
+            </and>
+        </define-gate>
+        <define-gate name="G504" role="private">
+            <and>
+                <basic-event name="BE401"/>
+                <basic-event name="BE3819"/>
+            </and>
+        </define-gate>
+        <define-gate name="G505" role="private">
+            <and>
+                <basic-event name="BE402"/>
+                <basic-event name="BE3820"/>
+            </and>
+        </define-gate>
+        <define-gate name="G507" role="private">
+            <and>
+                <basic-event name="BE312"/>
+                <basic-event name="BE403"/>
+            </and>
+        </define-gate>
+        <define-gate name="G508" role="private">
+            <or>
+                <basic-event name="BE318"/>
+                <basic-event name="BE405"/>
+            </or>
+        </define-gate>
+        <define-gate name="G509" role="private">
+            <or>
+                <basic-event name="BE414"/>
+                <basic-event name="BE415"/>
+            </or>
+        </define-gate>
+        <define-gate name="G514" role="private">
+            <or>
+                <basic-event name="BE316"/>
+                <basic-event name="BE416"/>
+            </or>
+        </define-gate>
+        <define-gate name="G515" role="private">
+            <or>
+                <basic-event name="BE417"/>
+                <basic-event name="BE418"/>
+            </or>
+        </define-gate>
+        <define-gate name="G516" role="private">
+            <or>
+                <basic-event name="BE421"/>
+                <basic-event name="BE422"/>
+            </or>
+        </define-gate>
+        <define-gate name="G517" role="private">
+            <and>
+                <gate name="G508"/>
+                <basic-event name="BE3738"/>
+            </and>
+        </define-gate>
+        <define-gate name="G518" role="private">
+            <and>
+                <gate name="G509"/>
+                <basic-event name="BE3817"/>
+            </and>
+        </define-gate>
+        <define-gate name="G523" role="private">
+            <and>
+                <gate name="G514"/>
+                <basic-event name="BE3818"/>
+            </and>
+        </define-gate>
+        <define-gate name="G524" role="private">
+            <and>
+                <gate name="G515"/>
+                <basic-event name="BE3819"/>
+            </and>
+        </define-gate>
+        <define-gate name="G614" role="private">
+            <or>
+                <basic-event name="BE419"/>
+                <basic-event name="BE420"/>
+            </or>
+        </define-gate>
+        <define-gate name="G653" role="private">
+            <or>
+                <gate name="G654"/>
+                <basic-event name="BE3593"/>
+            </or>
+        </define-gate>
+        <define-gate name="G654" role="private">
+            <or>
+                <gate name="G655"/>
+                <gate name="G656"/>
+            </or>
+        </define-gate>
+        <define-gate name="G655" role="private">
+            <or>
+                <gate name="G453"/>
+                <basic-event name="BE3582"/>
+                <basic-event name="BE3592"/>
+            </or>
+        </define-gate>
+        <define-gate name="G656" role="private">
+            <or>
+                <gate name="G477"/>
+                <basic-event name="BE3572"/>
+                <basic-event name="BE3575"/>
+                <basic-event name="BE3583"/>
+                <basic-event name="BE3588"/>
+            </or>
+        </define-gate>
+        <define-gate name="G657" role="private">
+            <or>
+                <gate name="G658"/>
+                <basic-event name="BE3584"/>
+            </or>
+        </define-gate>
+        <define-gate name="G658" role="private">
+            <or>
+                <gate name="G659"/>
+                <gate name="G660"/>
+            </or>
+        </define-gate>
+        <define-gate name="G659" role="private">
+            <or>
+                <gate name="G453"/>
+                <basic-event name="BE3591"/>
+                <basic-event name="BE3592"/>
+            </or>
+        </define-gate>
+        <define-gate name="G660" role="private">
+            <or>
+                <gate name="G477"/>
+                <basic-event name="BE3587"/>
+                <basic-event name="BE3588"/>
+                <basic-event name="BE3613"/>
+                <basic-event name="BE3758"/>
+            </or>
+        </define-gate>
+        <define-gate name="G674" role="private">
+            <and>
+                <basic-event name="BE481"/>
+                <basic-event name="BE3738"/>
+            </and>
+        </define-gate>
+        <define-gate name="G683" role="private">
+            <and>
+                <basic-event name="BE482"/>
+                <basic-event name="BE3817"/>
+            </and>
+        </define-gate>
+        <define-gate name="G698" role="private">
+            <or>
+                <gate name="G517"/>
+                <gate name="G518"/>
+                <gate name="G523"/>
+                <gate name="G524"/>
+                <gate name="G699"/>
+                <gate name="G700"/>
+            </or>
+        </define-gate>
+        <define-gate name="G699" role="private">
+            <and>
+                <gate name="G614"/>
+                <basic-event name="BE3820"/>
+            </and>
+        </define-gate>
+        <define-gate name="G700" role="private">
+            <and>
+                <gate name="G516"/>
+                <basic-event name="BE312"/>
+            </and>
+        </define-gate>
+        <define-gate name="G728" role="private">
+            <or>
+                <gate name="G674"/>
+                <gate name="G683"/>
+                <gate name="G740"/>
+                <gate name="G743"/>
+                <gate name="G744"/>
+                <gate name="G745"/>
+            </or>
+        </define-gate>
+        <define-gate name="G740" role="private">
+            <and>
+                <basic-event name="BE483"/>
+                <basic-event name="BE3818"/>
+            </and>
+        </define-gate>
+        <define-gate name="G743" role="private">
+            <and>
+                <basic-event name="BE484"/>
+                <basic-event name="BE3819"/>
+            </and>
+        </define-gate>
+        <define-gate name="G744" role="private">
+            <and>
+                <basic-event name="BE485"/>
+                <basic-event name="BE3820"/>
+            </and>
+        </define-gate>
+        <define-gate name="G745" role="private">
+            <and>
+                <basic-event name="BE312"/>
+                <basic-event name="BE486"/>
+            </and>
+        </define-gate>
+        <define-gate name="G838" role="private">
+            <or>
+                <gate name="G844"/>
+                <gate name="G845"/>
+                <gate name="G846"/>
+                <gate name="G847"/>
+                <gate name="G848"/>
+            </or>
+        </define-gate>
+        <define-gate name="G844" role="private">
+            <and>
+                <basic-event name="BE106"/>
+                <basic-event name="BE567"/>
+            </and>
+        </define-gate>
+        <define-gate name="G845" role="private">
+            <and>
+                <basic-event name="BE513"/>
+                <basic-event name="BE568"/>
+            </and>
+        </define-gate>
+        <define-gate name="G846" role="private">
+            <and>
+                <basic-event name="BE514"/>
+                <basic-event name="BE569"/>
+            </and>
+        </define-gate>
+        <define-gate name="G847" role="private">
+            <and>
+                <basic-event name="BE515"/>
+                <basic-event name="BE570"/>
+            </and>
+        </define-gate>
+        <define-gate name="G848" role="private">
+            <and>
+                <basic-event name="BE516"/>
+                <basic-event name="BE571"/>
+            </and>
+        </define-gate>
+        <define-gate name="G849" role="private">
+            <or>
+                <gate name="G855"/>
+                <gate name="G856"/>
+                <gate name="G857"/>
+            </or>
+        </define-gate>
+        <define-gate name="G855" role="private">
+            <and>
+                <basic-event name="BE517"/>
+                <basic-event name="BE569"/>
+            </and>
+        </define-gate>
+        <define-gate name="G856" role="private">
+            <and>
+                <basic-event name="BE518"/>
+                <basic-event name="BE574"/>
+            </and>
+        </define-gate>
+        <define-gate name="G857" role="private">
+            <and>
+                <basic-event name="BE519"/>
+                <basic-event name="BE575"/>
+            </and>
+        </define-gate>
+        <define-gate name="G859" role="private">
+            <and>
+                <basic-event name="BE105"/>
+                <basic-event name="BE461"/>
+            </and>
+        </define-gate>
+        <define-gate name="G860" role="private">
+            <and>
+                <basic-event name="BE116"/>
+                <basic-event name="BE461"/>
+            </and>
+        </define-gate>
+        <define-gate name="G867" role="private">
+            <or>
+                <gate name="G868"/>
+                <basic-event name="BE100"/>
+            </or>
+        </define-gate>
+        <define-gate name="G868" role="private">
+            <and>
+                <basic-event name="BE78"/>
+                <basic-event name="BE461"/>
+            </and>
+        </define-gate>
+        <define-gate name="G869" role="private">
+            <or>
+                <gate name="G870"/>
+                <basic-event name="BE101"/>
+            </or>
+        </define-gate>
+        <define-gate name="G870" role="private">
+            <and>
+                <basic-event name="BE78"/>
+                <basic-event name="BE461"/>
+            </and>
+        </define-gate>
+    </define-fault-tree>
+    <define-fault-tree name="FT104">
+        <define-gate name="TOP" role="private">
+            <or>
+                <gate name="G107"/>
+                <gate name="G578"/>
+            </or>
+        </define-gate>
+        <define-gate name="G3" role="private">
+            <or>
+                <basic-event name="BE3533"/>
+                <basic-event name="BE3623"/>
+            </or>
+        </define-gate>
+        <define-gate name="G7" role="private">
+            <or>
+                <gate name="G433"/>
+                <gate name="G653"/>
+            </or>
+        </define-gate>
+        <define-gate name="G8" role="private">
+            <or>
+                <gate name="G97"/>
+                <gate name="G102"/>
+                <gate name="G123"/>
+            </or>
+        </define-gate>
+        <define-gate name="G14" role="private">
+            <or>
+                <gate name="G106"/>
+                <gate name="G114"/>
+                <gate name="G129"/>
+            </or>
+        </define-gate>
+        <define-gate name="G20" role="private">
+            <or>
+                <gate name="G115"/>
+                <gate name="G116"/>
+                <gate name="G130"/>
+            </or>
+        </define-gate>
+        <define-gate name="G26" role="private">
+            <or>
+                <gate name="G121"/>
+                <gate name="G122"/>
+                <gate name="G139"/>
+            </or>
+        </define-gate>
+        <define-gate name="G28" role="private">
+            <and>
+                <gate name="G29"/>
+                <basic-event name="BE10"/>
+            </and>
+        </define-gate>
+        <define-gate name="G29" role="private">
+            <or>
+                <basic-event name="BE45"/>
+                <basic-event name="BE3564"/>
+            </or>
+        </define-gate>
+        <define-gate name="G34" role="private">
+            <or>
+                <gate name="G442"/>
+                <gate name="G657"/>
+            </or>
+        </define-gate>
+        <define-gate name="G41" role="private">
+            <or>
+                <gate name="G42"/>
+                <gate name="G43"/>
+                <gate name="G44"/>
+                <gate name="G46"/>
+                <gate name="G47"/>
+                <gate name="G50"/>
+            </or>
+        </define-gate>
+        <define-gate name="G42" role="private">
+            <and>
+                <basic-event name="BE326"/>
+                <basic-event name="BE3738"/>
+            </and>
+        </define-gate>
+        <define-gate name="G43" role="private">
+            <and>
+                <basic-event name="BE327"/>
+                <basic-event name="BE3817"/>
+            </and>
+        </define-gate>
+        <define-gate name="G44" role="private">
+            <and>
+                <basic-event name="BE328"/>
+                <basic-event name="BE3818"/>
+            </and>
+        </define-gate>
+        <define-gate name="G46" role="private">
+            <and>
+                <basic-event name="BE329"/>
+                <basic-event name="BE3819"/>
+            </and>
+        </define-gate>
+        <define-gate name="G47" role="private">
+            <and>
+                <basic-event name="BE330"/>
+                <basic-event name="BE3820"/>
+            </and>
+        </define-gate>
+        <define-gate name="G48" role="private">
+            <or>
+                <basic-event name="BE3553"/>
+                <basic-event name="BE3628"/>
+            </or>
+        </define-gate>
+        <define-gate name="G49" role="private">
+            <and>
+                <gate name="G104"/>
+                <basic-event name="BE10"/>
+            </and>
+        </define-gate>
+        <define-gate name="G50" role="private">
+            <and>
+                <basic-event name="BE312"/>
+                <basic-event name="BE333"/>
+            </and>
+        </define-gate>
+        <define-gate name="G51" role="private">
+            <or>
+                <gate name="G52"/>
+                <gate name="G73"/>
+                <gate name="G74"/>
+                <gate name="G75"/>
+                <gate name="G76"/>
+                <gate name="G77"/>
+            </or>
+        </define-gate>
+        <define-gate name="G52" role="private">
+            <and>
+                <basic-event name="BE335"/>
+                <basic-event name="BE3738"/>
+            </and>
+        </define-gate>
+        <define-gate name="G73" role="private">
+            <and>
+                <basic-event name="BE336"/>
+                <basic-event name="BE3817"/>
+            </and>
+        </define-gate>
+        <define-gate name="G74" role="private">
+            <and>
+                <basic-event name="BE337"/>
+                <basic-event name="BE3818"/>
+            </and>
+        </define-gate>
+        <define-gate name="G75" role="private">
+            <and>
+                <basic-event name="BE338"/>
+                <basic-event name="BE3819"/>
+            </and>
+        </define-gate>
+        <define-gate name="G76" role="private">
+            <and>
+                <basic-event name="BE339"/>
+                <basic-event name="BE3820"/>
+            </and>
+        </define-gate>
+        <define-gate name="G77" role="private">
+            <and>
+                <basic-event name="BE312"/>
+                <basic-event name="BE340"/>
+            </and>
+        </define-gate>
+        <define-gate name="G78" role="private">
+            <or>
+                <gate name="G79"/>
+                <gate name="G80"/>
+                <gate name="G83"/>
+                <gate name="G84"/>
+                <gate name="G85"/>
+                <gate name="G86"/>
+            </or>
+        </define-gate>
+        <define-gate name="G79" role="private">
+            <and>
+                <basic-event name="BE342"/>
+                <basic-event name="BE3738"/>
+            </and>
+        </define-gate>
+        <define-gate name="G80" role="private">
+            <and>
+                <basic-event name="BE343"/>
+                <basic-event name="BE3817"/>
+            </and>
+        </define-gate>
+        <define-gate name="G81" role="private">
+            <or>
+                <gate name="G82"/>
+                <gate name="G87"/>
+            </or>
+        </define-gate>
+        <define-gate name="G82" role="private">
+            <and>
+                <gate name="G300"/>
+                <basic-event name="BE3456"/>
+            </and>
+        </define-gate>
+        <define-gate name="G83" role="private">
+            <and>
+                <basic-event name="BE353"/>
+                <basic-event name="BE3818"/>
+            </and>
+        </define-gate>
+        <define-gate name="G84" role="private">
+            <and>
+                <basic-event name="BE354"/>
+                <basic-event name="BE3819"/>
+            </and>
+        </define-gate>
+        <define-gate name="G85" role="private">
+            <and>
+                <basic-event name="BE355"/>
+                <basic-event name="BE3820"/>
+            </and>
+        </define-gate>
+        <define-gate name="G86" role="private">
+            <and>
+                <basic-event name="BE312"/>
+                <basic-event name="BE356"/>
+            </and>
+        </define-gate>
+        <define-gate name="G87" role="private">
+            <and>
+                <gate name="G300"/>
+                <gate name="G301"/>
+                <not>
+                    <basic-event name="BE3456"/>
+                </not>
+            </and>
+        </define-gate>
+        <define-gate name="G88" role="private">
+            <or>
+                <gate name="G94"/>
+                <gate name="G95"/>
+            </or>
+        </define-gate>
+        <define-gate name="G93" role="private">
+            <or>
+                <gate name="G100"/>
+                <gate name="G686"/>
+                <gate name="G813"/>
+                <gate name="G825"/>
+                <gate name="G861"/>
+                <basic-event name="BE260"/>
+                <basic-event name="BE2941"/>
+                <basic-event name="BE2942"/>
+                <basic-event name="BE2965"/>
+                <basic-event name="BE2968"/>
+                <basic-event name="BE3685"/>
+            </or>
+        </define-gate>
+        <define-gate name="G94" role="private">
+            <and>
+                <gate name="G306"/>
+                <basic-event name="BE3647"/>
+            </and>
+        </define-gate>
+        <define-gate name="G95" role="private">
+            <and>
+                <gate name="G302"/>
+                <gate name="G306"/>
+                <not>
+                    <basic-event name="BE3647"/>
+                </not>
+            </and>
+        </define-gate>
+        <define-gate name="G96" role="private">
+            <or>
+                <gate name="G101"/>
+                <gate name="G108"/>
+                <gate name="G182"/>
+                <gate name="G686"/>
+                <gate name="G813"/>
+                <gate name="G825"/>
+                <gate name="G861"/>
+                <basic-event name="BE260"/>
+                <basic-event name="BE2943"/>
+                <basic-event name="BE2944"/>
+                <basic-event name="BE2965"/>
+                <basic-event name="BE2968"/>
+                <basic-event name="BE3685"/>
+            </or>
+        </define-gate>
+        <define-gate name="G97" role="private">
+            <or>
+                <basic-event name="BE23"/>
+                <basic-event name="BE28"/>
+            </or>
+        </define-gate>
+        <define-gate name="G98" role="private">
+            <or>
+                <gate name="G103"/>
+                <gate name="G686"/>
+                <gate name="G813"/>
+                <gate name="G825"/>
+                <gate name="G861"/>
+                <basic-event name="BE260"/>
+                <basic-event name="BE2939"/>
+                <basic-event name="BE2940"/>
+                <basic-event name="BE2955"/>
+                <basic-event name="BE2965"/>
+                <basic-event name="BE2968"/>
+                <basic-event name="BE3685"/>
+            </or>
+        </define-gate>
+        <define-gate name="G100" role="private">
+            <or>
+                <gate name="G78"/>
+                <gate name="G171"/>
+                <gate name="G174"/>
+                <gate name="G427"/>
+                <basic-event name="BE19"/>
+                <basic-event name="BE25"/>
+                <basic-event name="BE30"/>
+                <basic-event name="BE2966"/>
+                <basic-event name="BE2967"/>
+            </or>
+        </define-gate>
+        <define-gate name="G101" role="private">
+            <or>
+                <basic-event name="BE18"/>
+                <basic-event name="BE20"/>
+                <basic-event name="BE22"/>
+            </or>
+        </define-gate>
+        <define-gate name="G102" role="private">
+            <and>
+                <gate name="G111"/>
+                <gate name="G112"/>
+            </and>
+        </define-gate>
+        <define-gate name="G103" role="private">
+            <or>
+                <gate name="G78"/>
+                <gate name="G170"/>
+                <gate name="G172"/>
+                <gate name="G426"/>
+                <basic-event name="BE21"/>
+                <basic-event name="BE29"/>
+                <basic-event name="BE2962"/>
+                <basic-event name="BE2966"/>
+                <basic-event name="BE2967"/>
+            </or>
+        </define-gate>
+        <define-gate name="G104" role="private">
+            <or>
+                <basic-event name="BE45"/>
+                <basic-event name="BE3565"/>
+            </or>
+        </define-gate>
+        <define-gate name="G106" role="private">
+            <or>
+                <basic-event name="BE24"/>
+                <basic-event name="BE47"/>
+            </or>
+        </define-gate>
+        <define-gate name="G107" role="private">
+            <or>
+                <basic-event name="BE2963"/>
+                <basic-event name="BE2971"/>
+            </or>
+        </define-gate>
+        <define-gate name="G108" role="private">
+            <or>
+                <gate name="G109"/>
+                <gate name="G113"/>
+                <gate name="G120"/>
+                <gate name="G127"/>
+                <gate name="G140"/>
+                <gate name="G142"/>
+            </or>
+        </define-gate>
+        <define-gate name="G109" role="private">
+            <and>
+                <basic-event name="BE358"/>
+                <basic-event name="BE3738"/>
+            </and>
+        </define-gate>
+        <define-gate name="G111" role="private">
+            <or>
+                <gate name="G93"/>
+                <basic-event name="BE31"/>
+                <basic-event name="BE2948"/>
+            </or>
+        </define-gate>
+        <define-gate name="G112" role="private">
+            <or>
+                <gate name="G96"/>
+                <basic-event name="BE46"/>
+                <basic-event name="BE2949"/>
+            </or>
+        </define-gate>
+        <define-gate name="G113" role="private">
+            <and>
+                <basic-event name="BE359"/>
+                <basic-event name="BE3817"/>
+            </and>
+        </define-gate>
+        <define-gate name="G114" role="private">
+            <and>
+                <gate name="G118"/>
+                <gate name="G119"/>
+            </and>
+        </define-gate>
+        <define-gate name="G115" role="private">
+            <or>
+                <basic-event name="BE26"/>
+                <basic-event name="BE55"/>
+            </or>
+        </define-gate>
+        <define-gate name="G116" role="private">
+            <and>
+                <gate name="G125"/>
+                <gate name="G126"/>
+            </and>
+        </define-gate>
+        <define-gate name="G118" role="private">
+            <or>
+                <gate name="G98"/>
+                <basic-event name="BE48"/>
+                <basic-event name="BE2950"/>
+            </or>
+        </define-gate>
+        <define-gate name="G119" role="private">
+            <or>
+                <gate name="G96"/>
+                <basic-event name="BE49"/>
+                <basic-event name="BE2951"/>
+            </or>
+        </define-gate>
+        <define-gate name="G120" role="private">
+            <and>
+                <basic-event name="BE360"/>
+                <basic-event name="BE3818"/>
+            </and>
+        </define-gate>
+        <define-gate name="G121" role="private">
+            <or>
+                <basic-event name="BE27"/>
+                <basic-event name="BE2927"/>
+            </or>
+        </define-gate>
+        <define-gate name="G122" role="private">
+            <and>
+                <gate name="G131"/>
+                <gate name="G132"/>
+            </and>
+        </define-gate>
+        <define-gate name="G123" role="private">
+            <and>
+                <basic-event name="BE3827"/>
+                <basic-event name="BE3869"/>
+            </and>
+        </define-gate>
+        <define-gate name="G125" role="private">
+            <or>
+                <gate name="G98"/>
+                <basic-event name="BE2923"/>
+                <basic-event name="BE2952"/>
+            </or>
+        </define-gate>
+        <define-gate name="G126" role="private">
+            <or>
+                <gate name="G96"/>
+                <basic-event name="BE2924"/>
+                <basic-event name="BE2953"/>
+            </or>
+        </define-gate>
+        <define-gate name="G127" role="private">
+            <and>
+                <basic-event name="BE361"/>
+                <basic-event name="BE3819"/>
+            </and>
+        </define-gate>
+        <define-gate name="G129" role="private">
+            <and>
+                <basic-event name="BE3827"/>
+                <basic-event name="BE3870"/>
+            </and>
+        </define-gate>
+        <define-gate name="G130" role="private">
+            <and>
+                <basic-event name="BE3827"/>
+                <basic-event name="BE3871"/>
+            </and>
+        </define-gate>
+        <define-gate name="G131" role="private">
+            <or>
+                <gate name="G93"/>
+                <basic-event name="BE2937"/>
+                <basic-event name="BE2946"/>
+            </or>
+        </define-gate>
+        <define-gate name="G132" role="private">
+            <or>
+                <gate name="G96"/>
+                <basic-event name="BE2938"/>
+                <basic-event name="BE2947"/>
+            </or>
+        </define-gate>
+        <define-gate name="G139" role="private">
+            <and>
+                <basic-event name="BE3827"/>
+                <basic-event name="BE3868"/>
+            </and>
+        </define-gate>
+        <define-gate name="G140" role="private">
+            <and>
+                <basic-event name="BE362"/>
+                <basic-event name="BE3820"/>
+            </and>
+        </define-gate>
+        <define-gate name="G142" role="private">
+            <and>
+                <basic-event name="BE312"/>
+                <basic-event name="BE363"/>
+            </and>
+        </define-gate>
+        <define-gate name="G146" role="private">
+            <or>
+                <gate name="G477"/>
+                <gate name="G497"/>
+                <basic-event name="BE3587"/>
+                <basic-event name="BE3588"/>
+                <basic-event name="BE3613"/>
+            </or>
+        </define-gate>
+        <define-gate name="G170" role="private">
+            <or>
+                <gate name="G51"/>
+                <gate name="G81"/>
+                <gate name="G859"/>
+                <basic-event name="BE3341"/>
+            </or>
+        </define-gate>
+        <define-gate name="G171" role="private">
+            <or>
+                <gate name="G51"/>
+                <gate name="G88"/>
+                <gate name="G860"/>
+                <basic-event name="BE3544"/>
+            </or>
+        </define-gate>
+        <define-gate name="G172" role="private">
+            <or>
+                <gate name="G543"/>
+                <basic-event name="BE3593"/>
+            </or>
+        </define-gate>
+        <define-gate name="G174" role="private">
+            <or>
+                <gate name="G535"/>
+                <basic-event name="BE3584"/>
+            </or>
+        </define-gate>
+        <define-gate name="G178" role="private">
+            <or>
+                <gate name="G170"/>
+                <gate name="G428"/>
+                <gate name="G520"/>
+                <gate name="G728"/>
+                <gate name="G838"/>
+                <gate name="G849"/>
+                <basic-event name="BE3695"/>
+                <basic-event name="BE3698"/>
+                <basic-event name="BE3709"/>
+                <basic-event name="BE3710"/>
+            </or>
+        </define-gate>
+        <define-gate name="G179" role="private">
+            <or>
+                <gate name="G171"/>
+                <gate name="G440"/>
+                <gate name="G521"/>
+                <gate name="G728"/>
+                <gate name="G838"/>
+                <gate name="G849"/>
+                <basic-event name="BE3696"/>
+                <basic-event name="BE3699"/>
+                <basic-event name="BE3704"/>
+                <basic-event name="BE3709"/>
+            </or>
+        </define-gate>
+        <define-gate name="G182" role="private">
+            <and>
+                <gate name="G172"/>
+                <gate name="G174"/>
+            </and>
+        </define-gate>
+        <define-gate name="G265" role="private">
+            <and>
+                <basic-event name="BE378"/>
+                <basic-event name="BE3738"/>
+            </and>
+        </define-gate>
+        <define-gate name="G273" role="private">
+            <and>
+                <basic-event name="BE379"/>
+                <basic-event name="BE3817"/>
+            </and>
+        </define-gate>
+        <define-gate name="G274" role="private">
+            <and>
+                <basic-event name="BE380"/>
+                <basic-event name="BE3818"/>
+            </and>
+        </define-gate>
+        <define-gate name="G275" role="private">
+            <and>
+                <basic-event name="BE381"/>
+                <basic-event name="BE3819"/>
+            </and>
+        </define-gate>
+        <define-gate name="G300" role="private">
+            <or>
+                <gate name="G3"/>
+                <gate name="G7"/>
+                <gate name="G305"/>
+            </or>
+        </define-gate>
+        <define-gate name="G301" role="private">
+            <or>
+                <basic-event name="BE3539"/>
+                <basic-event name="BE3540"/>
+                <basic-event name="BE3541"/>
+                <basic-event name="BE3542"/>
+                <basic-event name="BE3543"/>
+                <basic-event name="BE3622"/>
+            </or>
+        </define-gate>
+        <define-gate name="G302" role="private">
+            <or>
+                <basic-event name="BE3541"/>
+                <basic-event name="BE3545"/>
+                <basic-event name="BE3546"/>
+                <basic-event name="BE3547"/>
+                <basic-event name="BE3548"/>
+                <basic-event name="BE3549"/>
+            </or>
+        </define-gate>
+        <define-gate name="G305" role="private">
+            <or>
+                <gate name="G28"/>
+                <gate name="G698"/>
+                <basic-event name="BE3534"/>
+                <basic-event name="BE3535"/>
+                <basic-event name="BE3536"/>
+                <basic-event name="BE3559"/>
+                <basic-event name="BE3561"/>
+                <basic-event name="BE3562"/>
+                <basic-event name="BE3563"/>
+                <basic-event name="BE3564"/>
+            </or>
+        </define-gate>
+        <define-gate name="G306" role="private">
+            <or>
+                <gate name="G34"/>
+                <gate name="G48"/>
+                <gate name="G339"/>
+            </or>
+        </define-gate>
+        <define-gate name="G323" role="private">
+            <or>
+                <gate name="G477"/>
+                <gate name="G494"/>
+                <basic-event name="BE3575"/>
+                <basic-event name="BE3583"/>
+                <basic-event name="BE3588"/>
+            </or>
+        </define-gate>
+        <define-gate name="G339" role="private">
+            <or>
+                <gate name="G49"/>
+                <gate name="G698"/>
+                <basic-event name="BE3554"/>
+                <basic-event name="BE3555"/>
+                <basic-event name="BE3556"/>
+                <basic-event name="BE3560"/>
+                <basic-event name="BE3561"/>
+                <basic-event name="BE3562"/>
+                <basic-event name="BE3563"/>
+            </or>
+        </define-gate>
+        <define-gate name="G422" role="private">
+            <or>
+                <gate name="G434"/>
+                <gate name="G522"/>
+                <gate name="G728"/>
+                <gate name="G838"/>
+                <gate name="G849"/>
+                <basic-event name="BE3697"/>
+                <basic-event name="BE3700"/>
+                <basic-event name="BE3709"/>
+                <basic-event name="BE3710"/>
+            </or>
+        </define-gate>
+        <define-gate name="G426" role="private">
+            <or>
+                <gate name="G871"/>
+                <gate name="G872"/>
+            </or>
+        </define-gate>
+        <define-gate name="G427" role="private">
+            <or>
+                <gate name="G874"/>
+                <gate name="G875"/>
+            </or>
+        </define-gate>
+        <define-gate name="G428" role="private">
+            <or>
+                <gate name="G429"/>
+                <basic-event name="BE0"/>
+            </or>
+        </define-gate>
+        <define-gate name="G429" role="private">
+            <or>
+                <gate name="G172"/>
+                <basic-event name="BE3689"/>
+                <basic-event name="BE3702"/>
+            </or>
+        </define-gate>
+        <define-gate name="G432" role="private">
+            <or>
+                <gate name="G422"/>
+                <basic-event name="BE222"/>
+            </or>
+        </define-gate>
+        <define-gate name="G433" role="private">
+            <or>
+                <gate name="G467"/>
+                <gate name="G653"/>
+                <gate name="G728"/>
+                <gate name="G838"/>
+                <gate name="G849"/>
+                <gate name="G867"/>
+                <basic-event name="BE3695"/>
+                <basic-event name="BE3698"/>
+                <basic-event name="BE3709"/>
+                <basic-event name="BE3710"/>
+                <basic-event name="BE3766"/>
+            </or>
+        </define-gate>
+        <define-gate name="G434" role="private">
+            <and>
+                <gate name="G437"/>
+                <gate name="G438"/>
+            </and>
+        </define-gate>
+        <define-gate name="G435" role="private">
+            <or>
+                <gate name="G170"/>
+                <gate name="G172"/>
+            </or>
+        </define-gate>
+        <define-gate name="G436" role="private">
+            <or>
+                <gate name="G171"/>
+                <gate name="G174"/>
+            </or>
+        </define-gate>
+        <define-gate name="G437" role="private">
+            <and>
+                <gate name="G435"/>
+                <basic-event name="BE221"/>
+            </and>
+        </define-gate>
+        <define-gate name="G438" role="private">
+            <and>
+                <gate name="G436"/>
+                <basic-event name="BE225"/>
+            </and>
+        </define-gate>
+        <define-gate name="G439" role="private">
+            <or>
+                <gate name="G422"/>
+                <basic-event name="BE224"/>
+            </or>
+        </define-gate>
+        <define-gate name="G440" role="private">
+            <or>
+                <gate name="G441"/>
+                <basic-event name="BE0"/>
+            </or>
+        </define-gate>
+        <define-gate name="G441" role="private">
+            <or>
+                <gate name="G174"/>
+                <basic-event name="BE3690"/>
+                <basic-event name="BE3702"/>
+            </or>
+        </define-gate>
+        <define-gate name="G442" role="private">
+            <or>
+                <gate name="G466"/>
+                <gate name="G657"/>
+                <gate name="G728"/>
+                <gate name="G838"/>
+                <gate name="G849"/>
+                <gate name="G869"/>
+                <basic-event name="BE3696"/>
+                <basic-event name="BE3699"/>
+                <basic-event name="BE3704"/>
+                <basic-event name="BE3709"/>
+                <basic-event name="BE3710"/>
+            </or>
+        </define-gate>
+        <define-gate name="G453" role="private">
+            <or>
+                <gate name="G461"/>
+                <gate name="G469"/>
+                <gate name="G473"/>
+                <gate name="G474"/>
+                <gate name="G475"/>
+                <gate name="G476"/>
+            </or>
+        </define-gate>
+        <define-gate name="G461" role="private">
+            <and>
+                <basic-event name="BE391"/>
+                <basic-event name="BE3738"/>
+            </and>
+        </define-gate>
+        <define-gate name="G466" role="private">
+            <or>
+                <basic-event name="BE3687"/>
+                <basic-event name="BE3690"/>
+                <basic-event name="BE3693"/>
+                <basic-event name="BE3702"/>
+                <basic-event name="BE3703"/>
+            </or>
+        </define-gate>
+        <define-gate name="G467" role="private">
+            <or>
+                <basic-event name="BE3686"/>
+                <basic-event name="BE3689"/>
+                <basic-event name="BE3692"/>
+                <basic-event name="BE3702"/>
+                <basic-event name="BE3703"/>
+            </or>
+        </define-gate>
+        <define-gate name="G469" role="private">
+            <and>
+                <basic-event name="BE392"/>
+                <basic-event name="BE3817"/>
+            </and>
+        </define-gate>
+        <define-gate name="G473" role="private">
+            <and>
+                <basic-event name="BE393"/>
+                <basic-event name="BE3818"/>
+            </and>
+        </define-gate>
+        <define-gate name="G474" role="private">
+            <and>
+                <basic-event name="BE394"/>
+                <basic-event name="BE3819"/>
+            </and>
+        </define-gate>
+        <define-gate name="G475" role="private">
+            <and>
+                <basic-event name="BE395"/>
+                <basic-event name="BE3820"/>
+            </and>
+        </define-gate>
+        <define-gate name="G476" role="private">
+            <and>
+                <basic-event name="BE312"/>
+                <basic-event name="BE396"/>
+            </and>
+        </define-gate>
+        <define-gate name="G477" role="private">
+            <or>
+                <gate name="G478"/>
+                <gate name="G479"/>
+                <gate name="G503"/>
+                <gate name="G504"/>
+                <gate name="G505"/>
+                <gate name="G507"/>
+            </or>
+        </define-gate>
+        <define-gate name="G478" role="private">
+            <and>
+                <basic-event name="BE398"/>
+                <basic-event name="BE3738"/>
+            </and>
+        </define-gate>
+        <define-gate name="G479" role="private">
+            <and>
+                <basic-event name="BE399"/>
+                <basic-event name="BE3817"/>
+            </and>
+        </define-gate>
+        <define-gate name="G494" role="private">
+            <or>
+                <gate name="G41"/>
+                <gate name="G170"/>
+                <gate name="G698"/>
+                <basic-event name="BE3458"/>
+                <basic-event name="BE3572"/>
+                <basic-event name="BE3573"/>
+                <basic-event name="BE3574"/>
+            </or>
+        </define-gate>
+        <define-gate name="G497" role="private">
+            <or>
+                <gate name="G41"/>
+                <gate name="G171"/>
+                <gate name="G698"/>
+                <basic-event name="BE3758"/>
+                <basic-event name="BE3759"/>
+                <basic-event name="BE3760"/>
+                <basic-event name="BE3761"/>
+            </or>
+        </define-gate>
+        <define-gate name="G503" role="private">
+            <and>
+                <basic-event name="BE400"/>
+                <basic-event name="BE3818"/>
+            </and>
+        </define-gate>
+        <define-gate name="G504" role="private">
+            <and>
+                <basic-event name="BE401"/>
+                <basic-event name="BE3819"/>
+            </and>
+        </define-gate>
+        <define-gate name="G505" role="private">
+            <and>
+                <basic-event name="BE402"/>
+                <basic-event name="BE3820"/>
+            </and>
+        </define-gate>
+        <define-gate name="G507" role="private">
+            <and>
+                <basic-event name="BE312"/>
+                <basic-event name="BE403"/>
+            </and>
+        </define-gate>
+        <define-gate name="G508" role="private">
+            <or>
+                <basic-event name="BE318"/>
+                <basic-event name="BE405"/>
+            </or>
+        </define-gate>
+        <define-gate name="G509" role="private">
+            <or>
+                <basic-event name="BE414"/>
+                <basic-event name="BE415"/>
+            </or>
+        </define-gate>
+        <define-gate name="G514" role="private">
+            <or>
+                <basic-event name="BE316"/>
+                <basic-event name="BE416"/>
+            </or>
+        </define-gate>
+        <define-gate name="G515" role="private">
+            <or>
+                <basic-event name="BE417"/>
+                <basic-event name="BE418"/>
+            </or>
+        </define-gate>
+        <define-gate name="G516" role="private">
+            <or>
+                <basic-event name="BE421"/>
+                <basic-event name="BE422"/>
+            </or>
+        </define-gate>
+        <define-gate name="G517" role="private">
+            <and>
+                <gate name="G508"/>
+                <basic-event name="BE3738"/>
+            </and>
+        </define-gate>
+        <define-gate name="G518" role="private">
+            <and>
+                <gate name="G509"/>
+                <basic-event name="BE3817"/>
+            </and>
+        </define-gate>
+        <define-gate name="G520" role="private">
+            <or>
+                <basic-event name="BE3686"/>
+                <basic-event name="BE3692"/>
+                <basic-event name="BE3703"/>
+            </or>
+        </define-gate>
+        <define-gate name="G521" role="private">
+            <or>
+                <basic-event name="BE3687"/>
+                <basic-event name="BE3693"/>
+                <basic-event name="BE3703"/>
+            </or>
+        </define-gate>
+        <define-gate name="G522" role="private">
+            <or>
+                <basic-event name="BE223"/>
+                <basic-event name="BE3688"/>
+                <basic-event name="BE3691"/>
+                <basic-event name="BE3694"/>
+                <basic-event name="BE3702"/>
+                <basic-event name="BE3703"/>
+            </or>
+        </define-gate>
+        <define-gate name="G523" role="private">
+            <and>
+                <gate name="G514"/>
+                <basic-event name="BE3818"/>
+            </and>
+        </define-gate>
+        <define-gate name="G524" role="private">
+            <and>
+                <gate name="G515"/>
+                <basic-event name="BE3819"/>
+            </and>
+        </define-gate>
+        <define-gate name="G535" role="private">
+            <or>
+                <gate name="G536"/>
+                <gate name="G538"/>
+            </or>
+        </define-gate>
+        <define-gate name="G536" role="private">
+            <and>
+                <gate name="G537"/>
+                <not>
+                    <basic-event name="BE3665"/>
+                </not>
+            </and>
+        </define-gate>
+        <define-gate name="G537" role="private">
+            <and>
+                <gate name="G146"/>
+                <gate name="G960"/>
+            </and>
+        </define-gate>
+        <define-gate name="G538" role="private">
+            <and>
+                <gate name="G539"/>
+                <basic-event name="BE3665"/>
+            </and>
+        </define-gate>
+        <define-gate name="G539" role="private">
+            <and>
+                <gate name="G540"/>
+                <gate name="G541"/>
+            </and>
+        </define-gate>
+        <define-gate name="G540" role="private">
+            <or>
+                <gate name="G453"/>
+                <basic-event name="BE3591"/>
+                <basic-event name="BE3592"/>
+            </or>
+        </define-gate>
+        <define-gate name="G541" role="private">
+            <or>
+                <gate name="G477"/>
+                <gate name="G497"/>
+                <basic-event name="BE3587"/>
+                <basic-event name="BE3588"/>
+                <basic-event name="BE3613"/>
+            </or>
+        </define-gate>
+        <define-gate name="G543" role="private">
+            <or>
+                <gate name="G545"/>
+                <gate name="G549"/>
+            </or>
+        </define-gate>
+        <define-gate name="G545" role="private">
+            <and>
+                <gate name="G548"/>
+                <not>
+                    <basic-event name="BE3665"/>
+                </not>
+            </and>
+        </define-gate>
+        <define-gate name="G548" role="private">
+            <and>
+                <gate name="G323"/>
+                <gate name="G959"/>
+            </and>
+        </define-gate>
+        <define-gate name="G549" role="private">
+            <and>
+                <gate name="G566"/>
+                <basic-event name="BE3665"/>
+            </and>
+        </define-gate>
+        <define-gate name="G566" role="private">
+            <and>
+                <gate name="G567"/>
+                <gate name="G568"/>
+            </and>
+        </define-gate>
+        <define-gate name="G567" role="private">
+            <or>
+                <gate name="G453"/>
+                <basic-event name="BE3582"/>
+                <basic-event name="BE3592"/>
+            </or>
+        </define-gate>
+        <define-gate name="G568" role="private">
+            <or>
+                <gate name="G477"/>
+                <gate name="G494"/>
+                <basic-event name="BE3575"/>
+                <basic-event name="BE3583"/>
+                <basic-event name="BE3588"/>
+            </or>
+        </define-gate>
+        <define-gate name="G578" role="private">
+            <atleast min="3">
+                <gate name="G8"/>
+                <gate name="G14"/>
+                <gate name="G20"/>
+                <gate name="G26"/>
+            </atleast>
+        </define-gate>
+        <define-gate name="G614" role="private">
+            <or>
+                <basic-event name="BE419"/>
+                <basic-event name="BE420"/>
+            </or>
+        </define-gate>
+        <define-gate name="G653" role="private">
+            <or>
+                <gate name="G654"/>
+                <basic-event name="BE3593"/>
+            </or>
+        </define-gate>
+        <define-gate name="G654" role="private">
+            <or>
+                <gate name="G655"/>
+                <gate name="G656"/>
+            </or>
+        </define-gate>
+        <define-gate name="G655" role="private">
+            <or>
+                <gate name="G453"/>
+                <basic-event name="BE3582"/>
+                <basic-event name="BE3592"/>
+            </or>
+        </define-gate>
+        <define-gate name="G656" role="private">
+            <or>
+                <gate name="G477"/>
+                <basic-event name="BE3572"/>
+                <basic-event name="BE3575"/>
+                <basic-event name="BE3583"/>
+                <basic-event name="BE3588"/>
+            </or>
+        </define-gate>
+        <define-gate name="G657" role="private">
+            <or>
+                <gate name="G658"/>
+                <basic-event name="BE3584"/>
+            </or>
+        </define-gate>
+        <define-gate name="G658" role="private">
+            <or>
+                <gate name="G659"/>
+                <gate name="G660"/>
+            </or>
+        </define-gate>
+        <define-gate name="G659" role="private">
+            <or>
+                <gate name="G453"/>
+                <basic-event name="BE3591"/>
+                <basic-event name="BE3592"/>
+            </or>
+        </define-gate>
+        <define-gate name="G660" role="private">
+            <or>
+                <gate name="G477"/>
+                <basic-event name="BE3587"/>
+                <basic-event name="BE3588"/>
+                <basic-event name="BE3613"/>
+                <basic-event name="BE3758"/>
+            </or>
+        </define-gate>
+        <define-gate name="G674" role="private">
+            <and>
+                <basic-event name="BE481"/>
+                <basic-event name="BE3738"/>
+            </and>
+        </define-gate>
+        <define-gate name="G683" role="private">
+            <and>
+                <basic-event name="BE482"/>
+                <basic-event name="BE3817"/>
+            </and>
+        </define-gate>
+        <define-gate name="G686" role="private">
+            <or>
+                <gate name="G265"/>
+                <gate name="G273"/>
+                <gate name="G274"/>
+                <gate name="G275"/>
+                <gate name="G687"/>
+                <gate name="G688"/>
+            </or>
+        </define-gate>
+        <define-gate name="G687" role="private">
+            <and>
+                <basic-event name="BE382"/>
+                <basic-event name="BE3820"/>
+            </and>
+        </define-gate>
+        <define-gate name="G688" role="private">
+            <and>
+                <basic-event name="BE312"/>
+                <basic-event name="BE383"/>
+            </and>
+        </define-gate>
+        <define-gate name="G698" role="private">
+            <or>
+                <gate name="G517"/>
+                <gate name="G518"/>
+                <gate name="G523"/>
+                <gate name="G524"/>
+                <gate name="G699"/>
+                <gate name="G700"/>
+            </or>
+        </define-gate>
+        <define-gate name="G699" role="private">
+            <and>
+                <gate name="G614"/>
+                <basic-event name="BE3820"/>
+            </and>
+        </define-gate>
+        <define-gate name="G700" role="private">
+            <and>
+                <gate name="G516"/>
+                <basic-event name="BE312"/>
+            </and>
+        </define-gate>
+        <define-gate name="G728" role="private">
+            <or>
+                <gate name="G674"/>
+                <gate name="G683"/>
+                <gate name="G740"/>
+                <gate name="G743"/>
+                <gate name="G744"/>
+                <gate name="G745"/>
+            </or>
+        </define-gate>
+        <define-gate name="G740" role="private">
+            <and>
+                <basic-event name="BE483"/>
+                <basic-event name="BE3818"/>
+            </and>
+        </define-gate>
+        <define-gate name="G743" role="private">
+            <and>
+                <basic-event name="BE484"/>
+                <basic-event name="BE3819"/>
+            </and>
+        </define-gate>
+        <define-gate name="G744" role="private">
+            <and>
+                <basic-event name="BE485"/>
+                <basic-event name="BE3820"/>
+            </and>
+        </define-gate>
+        <define-gate name="G745" role="private">
+            <and>
+                <basic-event name="BE312"/>
+                <basic-event name="BE486"/>
+            </and>
+        </define-gate>
+        <define-gate name="G813" role="private">
+            <or>
+                <gate name="G814"/>
+                <gate name="G815"/>
+                <gate name="G816"/>
+                <gate name="G817"/>
+                <gate name="G818"/>
+            </or>
+        </define-gate>
+        <define-gate name="G814" role="private">
+            <and>
+                <basic-event name="BE106"/>
+                <basic-event name="BE469"/>
+            </and>
+        </define-gate>
+        <define-gate name="G815" role="private">
+            <and>
+                <basic-event name="BE470"/>
+                <basic-event name="BE513"/>
+            </and>
+        </define-gate>
+        <define-gate name="G816" role="private">
+            <and>
+                <basic-event name="BE471"/>
+                <basic-event name="BE514"/>
+            </and>
+        </define-gate>
+        <define-gate name="G817" role="private">
+            <and>
+                <basic-event name="BE472"/>
+                <basic-event name="BE515"/>
+            </and>
+        </define-gate>
+        <define-gate name="G818" role="private">
+            <and>
+                <basic-event name="BE473"/>
+                <basic-event name="BE516"/>
+            </and>
+        </define-gate>
+        <define-gate name="G825" role="private">
+            <or>
+                <gate name="G831"/>
+                <gate name="G832"/>
+                <gate name="G833"/>
+            </or>
+        </define-gate>
+        <define-gate name="G831" role="private">
+            <and>
+                <basic-event name="BE517"/>
+                <basic-event name="BE559"/>
+            </and>
+        </define-gate>
+        <define-gate name="G832" role="private">
+            <and>
+                <basic-event name="BE518"/>
+                <basic-event name="BE560"/>
+            </and>
+        </define-gate>
+        <define-gate name="G833" role="private">
+            <and>
+                <basic-event name="BE519"/>
+                <basic-event name="BE561"/>
+            </and>
+        </define-gate>
+        <define-gate name="G838" role="private">
+            <or>
+                <gate name="G844"/>
+                <gate name="G845"/>
+                <gate name="G846"/>
+                <gate name="G847"/>
+                <gate name="G848"/>
+            </or>
+        </define-gate>
+        <define-gate name="G844" role="private">
+            <and>
+                <basic-event name="BE106"/>
+                <basic-event name="BE567"/>
+            </and>
+        </define-gate>
+        <define-gate name="G845" role="private">
+            <and>
+                <basic-event name="BE513"/>
+                <basic-event name="BE568"/>
+            </and>
+        </define-gate>
+        <define-gate name="G846" role="private">
+            <and>
+                <basic-event name="BE514"/>
+                <basic-event name="BE569"/>
+            </and>
+        </define-gate>
+        <define-gate name="G847" role="private">
+            <and>
+                <basic-event name="BE515"/>
+                <basic-event name="BE570"/>
+            </and>
+        </define-gate>
+        <define-gate name="G848" role="private">
+            <and>
+                <basic-event name="BE516"/>
+                <basic-event name="BE571"/>
+            </and>
+        </define-gate>
+        <define-gate name="G849" role="private">
+            <or>
+                <gate name="G855"/>
+                <gate name="G856"/>
+                <gate name="G857"/>
+            </or>
+        </define-gate>
+        <define-gate name="G855" role="private">
+            <and>
+                <basic-event name="BE517"/>
+                <basic-event name="BE569"/>
+            </and>
+        </define-gate>
+        <define-gate name="G856" role="private">
+            <and>
+                <basic-event name="BE518"/>
+                <basic-event name="BE574"/>
+            </and>
+        </define-gate>
+        <define-gate name="G857" role="private">
+            <and>
+                <basic-event name="BE519"/>
+                <basic-event name="BE575"/>
+            </and>
+        </define-gate>
+        <define-gate name="G859" role="private">
+            <and>
+                <basic-event name="BE105"/>
+                <basic-event name="BE461"/>
+            </and>
+        </define-gate>
+        <define-gate name="G860" role="private">
+            <and>
+                <basic-event name="BE116"/>
+                <basic-event name="BE461"/>
+            </and>
+        </define-gate>
+        <define-gate name="G861" role="private">
+            <or>
+                <basic-event name="BE76"/>
+                <basic-event name="BE0"/>
+            </or>
+        </define-gate>
+        <define-gate name="G867" role="private">
+            <or>
+                <gate name="G868"/>
+                <basic-event name="BE100"/>
+            </or>
+        </define-gate>
+        <define-gate name="G868" role="private">
+            <and>
+                <basic-event name="BE78"/>
+                <basic-event name="BE461"/>
+            </and>
+        </define-gate>
+        <define-gate name="G869" role="private">
+            <or>
+                <gate name="G870"/>
+                <basic-event name="BE101"/>
+            </or>
+        </define-gate>
+        <define-gate name="G870" role="private">
+            <and>
+                <basic-event name="BE78"/>
+                <basic-event name="BE461"/>
+            </and>
+        </define-gate>
+        <define-gate name="G871" role="private">
+            <and>
+                <gate name="G178"/>
+                <gate name="G432"/>
+            </and>
+        </define-gate>
+        <define-gate name="G872" role="private">
+            <or>
+                <gate name="G873"/>
+                <basic-event name="BE100"/>
+            </or>
+        </define-gate>
+        <define-gate name="G873" role="private">
+            <and>
+                <basic-event name="BE78"/>
+                <basic-event name="BE461"/>
+            </and>
+        </define-gate>
+        <define-gate name="G874" role="private">
+            <and>
+                <gate name="G179"/>
+                <gate name="G439"/>
+            </and>
+        </define-gate>
+        <define-gate name="G875" role="private">
+            <or>
+                <gate name="G876"/>
+                <basic-event name="BE101"/>
+            </or>
+        </define-gate>
+        <define-gate name="G876" role="private">
+            <and>
+                <basic-event name="BE78"/>
+                <basic-event name="BE461"/>
+            </and>
+        </define-gate>
+        <define-gate name="G959" role="private">
+            <or>
+                <gate name="G453"/>
+                <basic-event name="BE3582"/>
+                <basic-event name="BE3592"/>
+            </or>
+        </define-gate>
+        <define-gate name="G960" role="private">
+            <or>
+                <gate name="G453"/>
+                <basic-event name="BE3591"/>
+                <basic-event name="BE3592"/>
+            </or>
+        </define-gate>
+    </define-fault-tree>
+    <define-fault-tree name="FT106">
+        <define-gate name="TOP" role="private">
+            <or>
+                <basic-event name="BE3731"/>
+                <basic-event name="BE0"/>
+            </or>
+        </define-gate>
+        <define-gate name="G22" role="private">
+            <or>
+                <basic-event name="BE3754"/>
+                <basic-event name="BE0"/>
+            </or>
+        </define-gate>
+        <define-gate name="G23" role="private">
+            <or>
+                <basic-event name="BE3755"/>
+                <basic-event name="BE3756"/>
+                <basic-event name="BE3757"/>
+            </or>
+        </define-gate>
+        <define-gate name="G290" role="private">
+            <and>
+                <gate name="G303"/>
+                <basic-event name="BE206"/>
+            </and>
+        </define-gate>
+        <define-gate name="G303" role="private">
+            <or>
+                <gate name="G22"/>
+                <gate name="G23"/>
+                <gate name="G881"/>
+            </or>
+        </define-gate>
+        <define-gate name="G881" role="private">
+            <and>
+                <basic-event name="BE466"/>
+                <basic-event name="BE581"/>
+            </and>
+        </define-gate>
+    </define-fault-tree>
+    <define-fault-tree name="FT149">
+        <define-gate name="TOP" role="private">
+            <or>
+                <basic-event name="BE3409"/>
+                <basic-event name="BE0"/>
+            </or>
+        </define-gate>
+    </define-fault-tree>
+    <define-fault-tree name="FT169">
+        <define-gate name="TOP" role="private">
+            <or>
+                <basic-event name="BE3456"/>
+                <basic-event name="BE0"/>
+            </or>
+        </define-gate>
+    </define-fault-tree>
+    <define-fault-tree name="FT222">
+        <define-gate name="TOP" role="private">
+            <or>
+                <basic-event name="BE463"/>
+                <basic-event name="BE0"/>
+            </or>
+        </define-gate>
+    </define-fault-tree>
+    <model-data>
+        <define-basic-event name="BE312">
+            <label>HE-EQ6</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE445">
+            <label>RPS-ROD-EQ1-BE</label>
+            <float value="2.497000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE446">
+            <label>RPS-ROD-EQ2-BE</label>
+            <float value="3.823000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE447">
+            <label>RPS-ROD-EQ3-BE</label>
+            <float value="5.625000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE448">
+            <label>RPS-ROD-EQ4-BE</label>
+            <float value="2.210000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE449">
+            <label>RPS-ROD-EQ5-BE</label>
+            <float value="5.194000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE450">
+            <label>RPS-ROD-EQ6-BE</label>
+            <float value="9.103000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE3456">
+            <label>HE-LOOP-A</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3634">
+            <label>RPS-BME-CF-RTBAB</label>
+            <float value="1.610000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3635">
+            <label>RPS-CBI-CF-4OF6</label>
+            <float value="8.210000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3636">
+            <label>RPS-CBI-CF-6OF8</label>
+            <float value="2.700000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3637">
+            <label>RPS-CCP-TM-CHA</label>
+            <float value="5.000000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3638">
+            <label>RPS-CCX-CF-4OF6</label>
+            <float value="6.330000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3639">
+            <label>RPS-CCX-CF-6OF8</label>
+            <float value="1.830000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3640">
+            <label>RPS-CRM-CF-RCCAS</label>
+            <float value="1.210000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3641">
+            <label>RPS-UVL-CF-UVDAB</label>
+            <float value="1.040000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3642">
+            <label>RPS-XHE-XM-NSGNL</label>
+            <float value="1.200000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE3643">
+            <label>RPS-XHE-XM-SIGNL</label>
+            <float value="1.000000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE3647">
+            <label>HE-LOOP-B</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3738">
+            <label>HE-EQ1</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3817">
+            <label>HE-EQ2</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3818">
+            <label>HE-EQ3</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3819">
+            <label>HE-EQ4</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3820">
+            <label>HE-EQ5</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3917">
+            <label>RPS-EQ-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3975">
+            <label>IE-FRI-MCR-EVAC</label>
+            <float value="3.000000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE10">
+            <label>EPS-XHE-XM-DGSEQ</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE45">
+            <label>EPS-SEQ-CF-DGAB</label>
+            <float value="3.488000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE78">
+            <label>HE-FLD-SWS</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE100">
+            <label>HE-FLD-SWSA</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE101">
+            <label>HE-FLD-SWSB</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE105">
+            <label>HE-FLD-4160VACA</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE106">
+            <label>HE-HWD</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE116">
+            <label>HE-FLD-4160VACB</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE316">
+            <label>EPS-TNK-EQ3-DGN</label>
+            <float value="2.556000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE318">
+            <label>EPS-TNK-EQ1-DGN</label>
+            <float value="4.146000E-07"/>
+        </define-basic-event>
+        <define-basic-event name="BE335">
+            <label>ACP-BAC-EQ1-4KV</label>
+            <float value="2.497000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE336">
+            <label>ACP-BAC-EQ2-4KV</label>
+            <float value="3.823000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE337">
+            <label>ACP-BAC-EQ3-4KV</label>
+            <float value="5.625000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE338">
+            <label>ACP-BAC-EQ4-4KV</label>
+            <float value="2.210000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE339">
+            <label>ACP-BAC-EQ5-4KV</label>
+            <float value="5.194000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE340">
+            <label>ACP-BAC-EQ6-4KV</label>
+            <float value="9.103000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE341">
+            <label>ACP-4KV-EQ-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE391">
+            <label>DCP-BAT-EQ1-BE</label>
+            <float value="4.928000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE392">
+            <label>DCP-BAT-EQ2-BE</label>
+            <float value="8.122000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE393">
+            <label>DCP-BAT-EQ3-BE</label>
+            <float value="3.758000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE394">
+            <label>DCP-BAT-EQ4-BE</label>
+            <float value="6.920000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE395">
+            <label>DCP-BAT-EQ5-BE</label>
+            <float value="9.064000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE396">
+            <label>DCP-BAT-EQ6-BE</label>
+            <float value="9.955000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE397">
+            <label>DCP-BAT-EQ-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE398">
+            <label>DCP-BCH-EQ1-BE</label>
+            <float value="7.894000E-08"/>
+        </define-basic-event>
+        <define-basic-event name="BE399">
+            <label>DCP-BCH-EQ2-BE</label>
+            <float value="4.108000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE400">
+            <label>DCP-BCH-EQ3-BE</label>
+            <float value="1.175000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE401">
+            <label>DCP-BCH-EQ4-BE</label>
+            <float value="7.396000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE402">
+            <label>DCP-BCH-EQ5-BE</label>
+            <float value="2.645000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE403">
+            <label>DCP-BCH-EQ6-BE</label>
+            <float value="7.468000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE404">
+            <label>DCP-BCH-EQ-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE405">
+            <label>EPS-DGN-EQ1-BE</label>
+            <float value="6.504000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE414">
+            <label>EPS-DGN-EQ2-BE</label>
+            <float value="6.904000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE415">
+            <label>EPS-TNK-EQ2-DGN</label>
+            <float value="1.220000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE416">
+            <label>EPS-DGN-EQ3-BE</label>
+            <float value="8.349000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE417">
+            <label>EPS-DGN-EQ4-BE</label>
+            <float value="2.865000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE418">
+            <label>EPS-TNK-EQ4-DGN</label>
+            <float value="1.288000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE419">
+            <label>EPS-DGN-EQ5-BE</label>
+            <float value="6.001000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE420">
+            <label>EPS-TNK-EQ5-DGN</label>
+            <float value="3.765000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE421">
+            <label>EPS-DGN-EQ6-BE</label>
+            <float value="9.391000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE422">
+            <label>EPS-TNK-EQ6-DGN</label>
+            <float value="8.362000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE461">
+            <label>FLI-XHE-XM-25MIN</label>
+            <float value="1.000000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE481">
+            <label>SWS-MDP-EQ1-BE</label>
+            <float value="6.504000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE482">
+            <label>SWS-MDP-EQ2-BE</label>
+            <float value="6.904000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE483">
+            <label>SWS-MDP-EQ3-BE</label>
+            <float value="8.349000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE484">
+            <label>SWS-MDP-EQ4-BE</label>
+            <float value="2.865000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE485">
+            <label>SWS-MDP-EQ5-BE</label>
+            <float value="6.001000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE486">
+            <label>SWS-MDP-EQ6-BE</label>
+            <float value="9.391000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE513">
+            <label>HE-HCN1</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE514">
+            <label>HE-HCN2</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE515">
+            <label>HE-HCN3</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE516">
+            <label>HE-HCN4</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE517">
+            <label>HE-TOR1</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE518">
+            <label>HE-TOR2</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE519">
+            <label>HE-TOR3</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE566">
+            <label>SWS-STR-HWD</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE567">
+            <label>SWS-STR-HWD-STRC</label>
+            <float value="2.000000E-12"/>
+        </define-basic-event>
+        <define-basic-event name="BE568">
+            <label>SWS-STR-HC1-STRC</label>
+            <float value="3.000000E-10"/>
+        </define-basic-event>
+        <define-basic-event name="BE569">
+            <label>SWS-STR-HC2-STRC</label>
+            <float value="4.000000E-08"/>
+        </define-basic-event>
+        <define-basic-event name="BE570">
+            <label>SWS-STR-HC3-STRC</label>
+            <float value="5.000000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE571">
+            <label>SWS-STR-HC4-STRC</label>
+            <float value="6.000000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE572">
+            <label>SWS-STR-TOR</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE574">
+            <label>SWS-STR-TD2-STRC</label>
+            <float value="5.000000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE575">
+            <label>SWS-STR-TD3-STRC</label>
+            <float value="6.000000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE2958">
+            <label>ACP-4160-A-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3003">
+            <label>ACP-4160-B-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3341">
+            <label>ACP-BAC-LP-1A</label>
+            <float value="2.292000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3387">
+            <label>EPS-DCP-125-1A-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3446">
+            <label>EPS-DCP-125-1B-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3533">
+            <label>EPS-CRB-OO-A104</label>
+            <float value="2.490000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3534">
+            <label>EPS-DGN-LR-DGNA</label>
+            <float value="3.713000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3535">
+            <label>EPS-DGN-FR-DGNA</label>
+            <float value="3.436000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE3536">
+            <label>EPS-DGN-FS-DGNA</label>
+            <float value="2.880000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3537">
+            <label>EPS-DGNA-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3538">
+            <label>ACP-4160-A-FT-T</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3539">
+            <label>ACP-CRB-OO-A102</label>
+            <float value="2.490000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3540">
+            <label>ACP-TFM-FC-X1A</label>
+            <float value="6.936000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3541">
+            <label>ACP-BAC-LP-SWY101</label>
+            <float value="2.292000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3542">
+            <label>ACP-CRB-CO-A103</label>
+            <float value="2.760000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3543">
+            <label>ACP-BAC-LP-X1A</label>
+            <float value="2.292000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3544">
+            <label>ACP-BAC-LP-1B</label>
+            <float value="2.292000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3545">
+            <label>ACP-CRB-CC-B101</label>
+            <float value="2.490000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3546">
+            <label>ACP-CRB-OC-B103</label>
+            <float value="2.760000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3547">
+            <label>ACP-CRB-OO-B102</label>
+            <float value="2.490000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3548">
+            <label>ACP-TFM-FC-XB</label>
+            <float value="6.936000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3549">
+            <label>ACP-BAC-LP-XB</label>
+            <float value="2.292000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3550">
+            <label>ACP-4160-B-FT-T</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3552">
+            <label>EPS-DGNB-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3553">
+            <label>EPS-CRB-OO-B104</label>
+            <float value="2.490000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3554">
+            <label>EPS-DGN-LR-DGNB</label>
+            <float value="3.713000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3555">
+            <label>EPS-DGN-FR-DGNB</label>
+            <float value="3.436000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE3556">
+            <label>EPS-DGN-FS-DGNB</label>
+            <float value="2.880000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3559">
+            <label>EPS-DGN-TM-DGNA</label>
+            <float value="1.340000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE3560">
+            <label>EPS-DGN-TM-DGNB</label>
+            <float value="1.340000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE3561">
+            <label>EPS-DGN-CF-FS</label>
+            <float value="2.759000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3562">
+            <label>EPS-DGN-CF-FR</label>
+            <float value="5.429000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE3563">
+            <label>EPS-DGN-CF-FTLR</label>
+            <float value="2.135000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3564">
+            <label>EPS-SEQ-FC-DGNA</label>
+            <float value="1.140000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE3565">
+            <label>EPS-SEQ-FC-DGNB</label>
+            <float value="1.140000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE3572">
+            <label>ACP-BAC-LP-480V1A</label>
+            <float value="2.292000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3575">
+            <label>DCP-BCH-FC-A01</label>
+            <float value="6.216000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3577">
+            <label>EPS-EQ-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3582">
+            <label>DCP-BAT-LP-A01</label>
+            <float value="8.928000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3583">
+            <label>DCP-BCH-TM-A01</label>
+            <float value="2.000000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3584">
+            <label>DCP-BDC-LP-1B</label>
+            <float value="5.208000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3587">
+            <label>DCP-BCH-FC-B01</label>
+            <float value="6.216000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3588">
+            <label>DCP-BCH-CF-ALL</label>
+            <float value="7.894000E-07"/>
+        </define-basic-event>
+        <define-basic-event name="BE3591">
+            <label>DCP-BAT-LP-B01</label>
+            <float value="8.928000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3592">
+            <label>DCP-BAT-CF-ALL</label>
+            <float value="1.562000E-07"/>
+        </define-basic-event>
+        <define-basic-event name="BE3593">
+            <label>DCP-BDC-LP-1A</label>
+            <float value="5.208000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3613">
+            <label>DCP-BCH-TM-B01</label>
+            <float value="2.000000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3622">
+            <label>ACP-CRB-CC-A101</label>
+            <float value="2.490000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3623">
+            <label>ACP-CRB-CC-A001</label>
+            <float value="2.490000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3628">
+            <label>ACP-CRB-CC-B001</label>
+            <float value="2.490000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3632">
+            <label>DGNA-HW-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3633">
+            <label>DGNB-HW-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3686">
+            <label>SWS-MDP-FR-1A</label>
+            <float value="1.574000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE3687">
+            <label>SWS-MDP-FR-1B</label>
+            <float value="1.574000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE3689">
+            <label>SWS-MDP-FS-1A</label>
+            <float value="8.410000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE3690">
+            <label>SWS-MDP-FS-1B</label>
+            <float value="8.410000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE3692">
+            <label>SWS-MDP-TM-1A</label>
+            <float value="4.220000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3693">
+            <label>SWS-MDP-TM-1B</label>
+            <float value="4.220000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3695">
+            <label>SWS-CKV-CC-001A</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3696">
+            <label>SWS-CKV-CC-001B</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3698">
+            <label>SWS-STR-PG-1A</label>
+            <float value="3.312000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3699">
+            <label>SWS-STR-PG-1B</label>
+            <float value="3.312000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3702">
+            <label>SWS-MDP-CF-FTS</label>
+            <float value="3.689000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3703">
+            <label>SWS-MDP-CF-FTR</label>
+            <float value="4.022000E-07"/>
+        </define-basic-event>
+        <define-basic-event name="BE3704">
+            <label>SWS-XVM-CO-002B</label>
+            <float value="1.217000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3709">
+            <label>SWS-CKV-CF-CC001</label>
+            <float value="6.071000E-08"/>
+        </define-basic-event>
+        <define-basic-event name="BE3710">
+            <label>SWS-STR-CF-PG</label>
+            <float value="6.592000E-07"/>
+        </define-basic-event>
+        <define-basic-event name="BE3711">
+            <label>EPS-SWS-1A-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3714">
+            <label>EPS-SWS-1B-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3758">
+            <label>ACP-BAC-LP-480V1B</label>
+            <float value="2.292000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3766">
+            <label>SWS-XVM-OO-002A</label>
+            <float value="4.590000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE3919">
+            <label>SWS-MDP-EQ-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE4">
+            <label>AFW-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE18">
+            <label>AFW-TDP-FR-TDP</label>
+            <float value="4.715000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE19">
+            <label>AFW-MDP-FR-B</label>
+            <float value="3.865000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE20">
+            <label>AFW-TDP-FS-TDP</label>
+            <float value="6.010000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE21">
+            <label>AFW-MDP-TM-A</label>
+            <float value="3.950000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE22">
+            <label>AFW-TDP-TM-TDP</label>
+            <float value="5.440000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE23">
+            <label>MFW-CKV-CC-001</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE24">
+            <label>MFW-CKV-CC-002</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE25">
+            <label>AFW-MDP-FS-B</label>
+            <float value="7.940000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE26">
+            <label>MFW-CKV-CC-003</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE27">
+            <label>MFW-CKV-CC-004</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE28">
+            <label>AFW-CKV-CC-001A</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE29">
+            <label>AFW-MDP-FS-A</label>
+            <float value="7.940000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE30">
+            <label>AFW-MDP-TM-B</label>
+            <float value="3.950000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE31">
+            <label>AFW-CKV-CC-002A</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE46">
+            <label>AFW-CKV-CC-003A</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE47">
+            <label>AFW-CKV-CC-001B</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE48">
+            <label>AFW-CKV-CC-002B</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE49">
+            <label>AFW-CKV-CC-003B</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE55">
+            <label>AFW-CKV-CC-001C</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE76">
+            <label>HE-FLD-AFW</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE219">
+            <label>SWS-TRNA-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE220">
+            <label>SWS-TRNB-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE221">
+            <label>SWS-TRN-OP-STDYA</label>
+            <float value="5.000000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE222">
+            <label>SWS-MOV-OC-001A</label>
+            <float value="7.776000E-07"/>
+        </define-basic-event>
+        <define-basic-event name="BE223">
+            <label>SWS-XHE-XM-TRNC</label>
+            <float value="1.000000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE224">
+            <label>SWS-MOV-OC-001B</label>
+            <float value="7.776000E-07"/>
+        </define-basic-event>
+        <define-basic-event name="BE225">
+            <label>SWS-TRN-OP-STDYB</label>
+            <float value="5.000000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE260">
+            <label>AFW-PMP-CF-FR</label>
+            <float value="1.570000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE326">
+            <label>ACP-BAC-EQ1-480V</label>
+            <float value="5.075000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE327">
+            <label>ACP-BAC-EQ2-480V</label>
+            <float value="2.334000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE328">
+            <label>ACP-BAC-EQ3-480V</label>
+            <float value="1.817000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE329">
+            <label>ACP-BAC-EQ4-480V</label>
+            <float value="4.638000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE330">
+            <label>ACP-BAC-EQ5-480V</label>
+            <float value="7.663000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE333">
+            <label>ACP-BAC-EQ6-480V</label>
+            <float value="9.783000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE334">
+            <label>ACP-480V-EQ-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE342">
+            <label>AFW-MDP-EQ1-BE</label>
+            <float value="6.504000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE343">
+            <label>AFW-MDP-EQ2-BE</label>
+            <float value="6.904000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE353">
+            <label>AFW-MDP-EQ3-BE</label>
+            <float value="8.349000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE354">
+            <label>AFW-MDP-EQ4-BE</label>
+            <float value="2.865000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE355">
+            <label>AFW-MDP-EQ5-BE</label>
+            <float value="6.001000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE356">
+            <label>AFW-MDP-EQ6-BE</label>
+            <float value="9.391000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE357">
+            <label>AFW-MDP-EQ-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE358">
+            <label>AFW-TDP-EQ1-BE</label>
+            <float value="4.928000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE359">
+            <label>AFW-TDP-EQ2-BE</label>
+            <float value="8.122000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE360">
+            <label>AFW-TDP-EQ3-BE</label>
+            <float value="3.758000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE361">
+            <label>AFW-TDP-EQ4-BE</label>
+            <float value="6.920000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE362">
+            <label>AFW-TDP-EQ5-BE</label>
+            <float value="9.064000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE363">
+            <label>AFW-TDP-EQ6-BE</label>
+            <float value="9.955000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE364">
+            <label>AFW-TDP-EQ-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE378">
+            <label>AFW-TNK-EQ1-CST</label>
+            <float value="1.535000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE379">
+            <label>AFW-TNK-EQ2-CST</label>
+            <float value="4.348000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE380">
+            <label>AFW-TNK-EQ3-CST</label>
+            <float value="2.639000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE381">
+            <label>AFW-TNK-EQ4-CST</label>
+            <float value="5.741000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE382">
+            <label>AFW-TNK-EQ5-CST</label>
+            <float value="8.424000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE383">
+            <label>AFW-TNK-EQ6-CST</label>
+            <float value="9.892000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE469">
+            <label>AFW-TNK-HWD-CST</label>
+            <float value="2.000000E-10"/>
+        </define-basic-event>
+        <define-basic-event name="BE470">
+            <label>AFW-TNK-HCN1-CST</label>
+            <float value="3.000000E-08"/>
+        </define-basic-event>
+        <define-basic-event name="BE471">
+            <label>AFW-TNK-HCN2-CST</label>
+            <float value="5.000000E-07"/>
+        </define-basic-event>
+        <define-basic-event name="BE472">
+            <label>AFW-TNK-HCN3-CST</label>
+            <float value="7.000000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE473">
+            <label>AFW-TNK-HCN4-CST</label>
+            <float value="9.000000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE474">
+            <label>CST-TNK-HWD</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE558">
+            <label>CST-TNK-TOR</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE559">
+            <label>AFW-TNK-TOR1-CST</label>
+            <float value="2.000000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE560">
+            <label>AFW-TNK-TOR2-CST</label>
+            <float value="4.000000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE561">
+            <label>AFW-TNK-TOR3-CST</label>
+            <float value="6.000000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE2923">
+            <label>AFW-CKV-CC-002C</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE2924">
+            <label>AFW-CKV-CC-003C</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE2927">
+            <label>AFW-CKV-CC-001D</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE2937">
+            <label>AFW-CKV-CC-002D</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE2938">
+            <label>AFW-CKV-CC-003D</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE2939">
+            <label>AFW-CKV-CC-MPA01</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE2940">
+            <label>AFW-CKV-CC-MPA02</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE2941">
+            <label>AFW-CKV-CC-MPB01</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE2942">
+            <label>AFW-CKV-CC-MPB02</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE2943">
+            <label>AFW-CKV-CC-TP01</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE2944">
+            <label>AFW-CKV-CC-TP02</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE2946">
+            <label>AFW-MOV-OC-004D</label>
+            <float value="7.776000E-07"/>
+        </define-basic-event>
+        <define-basic-event name="BE2947">
+            <label>AFW-AOV-OC-TDPSGD</label>
+            <float value="2.520000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE2948">
+            <label>AFW-MOV-OC-004A</label>
+            <float value="7.776000E-07"/>
+        </define-basic-event>
+        <define-basic-event name="BE2949">
+            <label>AFW-AOV-OC-TDPSGA</label>
+            <float value="2.520000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE2950">
+            <label>AFW-MOV-OC-004B</label>
+            <float value="7.776000E-07"/>
+        </define-basic-event>
+        <define-basic-event name="BE2951">
+            <label>AFW-AOV-OC-TDPSGB</label>
+            <float value="2.520000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE2952">
+            <label>AFW-MOV-OC-004C</label>
+            <float value="7.776000E-07"/>
+        </define-basic-event>
+        <define-basic-event name="BE2953">
+            <label>AFW-AOV-OC-TDPSGC</label>
+            <float value="2.520000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE2955">
+            <label>AFW-FCV-OC-MDPA</label>
+            <float value="7.776000E-07"/>
+        </define-basic-event>
+        <define-basic-event name="BE2957">
+            <label>AFW-MDP-B-SEG-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE2959">
+            <label>AFW-TDP-SEG-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE2960">
+            <label>AFW-MDP-A-SEG-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE2962">
+            <label>AFW-MDP-FR-A</label>
+            <float value="3.865000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE2963">
+            <label>MFW-CKV-CF-CC</label>
+            <float value="1.214000E-07"/>
+        </define-basic-event>
+        <define-basic-event name="BE2965">
+            <label>AFW-CKV-CF-MPTP2</label>
+            <float value="6.071000E-08"/>
+        </define-basic-event>
+        <define-basic-event name="BE2966">
+            <label>AFW-MDP-CF-FS</label>
+            <float value="3.136000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE2967">
+            <label>AFW-MDP-CF-FR</label>
+            <float value="1.059000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE2968">
+            <label>AFW-CKV-CF-MPTP1</label>
+            <float value="6.071000E-08"/>
+        </define-basic-event>
+        <define-basic-event name="BE2971">
+            <label>AFW-CKV-CF-001</label>
+            <float value="1.214000E-07"/>
+        </define-basic-event>
+        <define-basic-event name="BE3004">
+            <label>DCP-125-1A-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3008">
+            <label>DCP-125-1B-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3350">
+            <label>SWS-1A-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3351">
+            <label>SWS-1B-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3458">
+            <label>ACP-CRB-CO-A106</label>
+            <float value="2.393000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3570">
+            <label>CST-EQ-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3573">
+            <label>ACP-CRB-CO-A105</label>
+            <float value="2.393000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3574">
+            <label>ACP-TFM-FC-480V1A</label>
+            <float value="6.936000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3665">
+            <label>HE-SBO</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3666">
+            <label>SWS-1C-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3685">
+            <label>AFW-TNK-FC-CST</label>
+            <float value="6.264000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3688">
+            <label>SWS-MDP-FR-1C</label>
+            <float value="1.574000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE3691">
+            <label>SWS-MDP-FS-1C</label>
+            <float value="8.410000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE3694">
+            <label>SWS-MDP-TM-1C</label>
+            <float value="4.220000E-03"/>
+        </define-basic-event>
+        <define-basic-event name="BE3697">
+            <label>SWS-CKV-CC-001C</label>
+            <float value="9.240000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3700">
+            <label>SWS-STR-PG-1C</label>
+            <float value="3.312000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3739">
+            <label>ACP480-1A-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3742">
+            <label>ACP480-1B-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3759">
+            <label>ACP-TFM-FC-480V1B</label>
+            <float value="6.936000E-05"/>
+        </define-basic-event>
+        <define-basic-event name="BE3760">
+            <label>ACP-CRB-CO-B105</label>
+            <float value="2.393000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3761">
+            <label>ACP-CRB-CO-B106</label>
+            <float value="2.393000E-06"/>
+        </define-basic-event>
+        <define-basic-event name="BE3827">
+            <label>HE-SGTR</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3837">
+            <label>AFW-SG-A</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3838">
+            <label>AFW-SG-B</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3839">
+            <label>AFW-SG-C</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3840">
+            <label>AFW-SG-D</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3868">
+            <label>MSS-SYS-RF-SGTRD</label>
+            <float value="2.500000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE3869">
+            <label>MSS-SYS-RF-SGTRA</label>
+            <float value="2.500000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE3870">
+            <label>MSS-SYS-RF-SGTRB</label>
+            <float value="2.500000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE3871">
+            <label>MSS-SYS-RF-SGTRC</label>
+            <float value="2.500000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE4690">
+            <label>HE-LOOP</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE204">
+            <label>PORV-RES-FT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE206">
+            <label>PORV-PRV-CO-L</label>
+            <float value="1.480000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE466">
+            <label>FRI-PRV-SO-001AB</label>
+            <float value="1.000000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE581">
+            <label>HE-FRI-AB-SIS</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3731">
+            <label>PPR-PRV-OO-001</label>
+            <float value="7.340000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE3754">
+            <label>PPR-PRV-OO-002</label>
+            <float value="7.340000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE3755">
+            <label>PPR-SRV-OO-001</label>
+            <float value="7.340000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE3756">
+            <label>PPR-SRV-OO-002</label>
+            <float value="7.340000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE3757">
+            <label>PPR-SRV-OO-003</label>
+            <float value="7.340000E-04"/>
+        </define-basic-event>
+        <define-basic-event name="BE3409">
+            <label>RCS-MDP-LK</label>
+            <float value="2.100000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE463">
+            <label>OPR-XHE-FA-ASD</label>
+            <float value="8.700000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE0">
+            <label>TEMP-BE-TO-ADD-GATES-WITH-A-SINGLE-ELEMENT</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+    </model-data>
+</opsa-mef>

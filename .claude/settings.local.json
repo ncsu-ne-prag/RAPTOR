@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cargo build *)",
+      "Bash(/c/Users/hrashee/AppData/Local/Programs/Python/Python312/python -)",
+      "Bash(./apps/solvers/praxis/target/debug/praxis-cli --visualize --visualize-stdout --visualize-out-dir ./tmp_viz_test tests/fixtures/fta/SmallTree/SmallTree.xml)",
+      "Bash(./target/debug/praxis-cli --visualize --visualize-stdout --visualize-out-dir ./tmp_viz_test ../../../tests/fixtures/fta/SmallTree/SmallTree.xml)",
+      "Bash(./target/debug/praxis-cli --visualize --visualize-stdout --visualize-out-dir ./tmp_viz_test tests/fixtures/fta/SmallTree/SmallTree.xml)",
+      "Bash(./target/debug/praxis-cli --visualize --visualize-stdout --visualize-out-dir ./tmp_viz_test tests/fixtures/fta/Baobab/baobab1.xml)",
+      "Bash(./target/debug/praxis-cli --visualize --visualize-stdout tests/fixtures/fta/Baobab/baobab1.xml)",
+      "Bash(./target/debug/praxis-cli --visualize --visualize-stdout tests/fixtures/eta/EventTrees/bcd.xml)"
+    ]
+  }
+}

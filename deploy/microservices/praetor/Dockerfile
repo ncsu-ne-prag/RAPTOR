@@ -55,7 +55,7 @@ WORKDIR /usr/src/app
 # Copy built artifacts from builder
 COPY --from=builder /usr/src/app/node_modules ./node_modules  
 COPY --from=builder /usr/src/app/apps/microservices/praetor/dist ./dist
-COPY --from=builder /usr/src/app/apps/solvers/scram/node-addon ./apps/solvers/scram/node-addon
+COPY --from=builder /usr/src/app/apps/solvers/scram ./apps/solvers/scram
 
 # Ensure the library paths are set for scram-node
 ENV LD_LIBRARY_PATH="/root/.local/lib/scram:/root/.local/lib:${LD_LIBRARY_PATH}"

@@ -1,0 +1,41 @@
+<opsa-mef>
+    <define-initiating-event name="INIT3346" event-tree="XLOCA"/>
+    <define-event-tree name="XLOCA">
+        <define-functional-event name="FE133">
+            <label>RXVESSEL</label>
+        </define-functional-event>
+        <define-sequence name="S49"/>
+        <initial-state>
+            <fork functional-event="FE133">
+                <path state="Failure">
+                    <collect-formula>
+                        <gate name="FT133.TOP"/>
+                    </collect-formula>
+                    <sequence name="S49"/>
+                </path>
+            </fork>
+        </initial-state>
+    </define-event-tree>
+    <define-fault-tree name="FT133">
+        <define-gate name="TOP" role="private">
+            <or>
+                <basic-event name="BE0"/>
+                <basic-event name="BE00"/>
+            </or>
+        </define-gate>
+    </define-fault-tree>
+    <model-data>
+        <define-basic-event name="BE3346">
+            <label>IE-XLOCA</label>
+            <float value="1.000000E-07"/>
+        </define-basic-event>
+        <define-basic-event name="BE0">
+            <label>TEMP-BE-TO-ADD-GATES-WITH-A-SINGLE-ELEMENT</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE00">
+            <label>TEMP-BE-TO-ADD-GATES-WITH-A-SINGLE-ELEMENT</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+    </model-data>
+</opsa-mef>

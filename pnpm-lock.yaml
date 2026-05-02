@@ -57,8 +57,8 @@ importers:
         specifier: 7.8.1
         version: 7.8.1
       scram-node:
-        specifier: file:./apps/solvers/scram/node-addon
-        version: file:apps/solvers/scram/node-addon
+        specifier: file:./apps/solvers/scram
+        version: file:apps/solvers/scram
       tmp:
         specifier: 0.2.3
         version: 0.2.3
@@ -137,7 +137,7 @@ importers:
         version: 7.1.4
       ts-loader:
         specifier: 9.4.3
-        version: 9.4.3(typescript@5.5.4)(webpack@5.87.0(@swc/core@1.15.3))
+        version: 9.4.3(typescript@5.5.4)(webpack@5.105.4(@swc/core@1.15.3))
       ts-node:
         specifier: 10.9.1
         version: 10.9.1(@swc/core@1.15.3)(@types/node@20.3.1)(typescript@5.5.4)
@@ -4886,8 +4886,8 @@ packages:
     resolution: {integrity: sha512-eflK8wEtyOE6+hsaRVPxvUKYCpRgzLqDTb8krvAsRIwOGlHoSgYLgBXoubGgLd2fT41/OUYdb48v4k4WWHQurA==}
     engines: {node: '>= 10.13.0'}
 
-  scram-node@file:apps/solvers/scram/node-addon:
-    resolution: {directory: apps/solvers/scram/node-addon, type: directory}
+  scram-node@file:apps/solvers/scram:
+    resolution: {directory: apps/solvers/scram, type: directory}
     engines: {node: '>=20.0.0'}
 
   search-params@3.0.0:
@@ -10973,7 +10973,7 @@ snapshots:
       ajv-formats: 2.1.1(ajv@8.18.0)
       ajv-keywords: 5.1.0(ajv@8.18.0)
 
-  scram-node@file:apps/solvers/scram/node-addon:
+  scram-node@file:apps/solvers/scram:
     dependencies:
       cmake-js: 7.3.0
       glob: 11.0.0
@@ -11421,15 +11421,6 @@ snapshots:
       semver: 7.7.4
       typescript: 5.5.4
       webpack: 5.105.4(@swc/core@1.15.3)
-
-  ts-loader@9.4.3(typescript@5.5.4)(webpack@5.87.0(@swc/core@1.15.3)):
-    dependencies:
-      chalk: 4.1.2
-      enhanced-resolve: 5.20.1
-      micromatch: 4.0.8
-      semver: 7.7.4
-      typescript: 5.5.4
-      webpack: 5.87.0(@swc/core@1.15.3)
 
   ts-node@10.9.1(@swc/core@1.15.3)(@types/node@20.3.1)(typescript@5.5.4):
     dependencies:

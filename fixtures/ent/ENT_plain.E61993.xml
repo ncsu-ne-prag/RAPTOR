@@ -1,0 +1,355 @@
+<?xml version='1.0' encoding='ASCII'?>
+<opsa-mef>
+  <define-fault-tree name="default">
+    <define-gate name="E61993">
+      <label>GDAM412-TR</label>
+      <or>
+        <event name="E61891"/>
+        <event name="E61892"/>
+        <event name="E61893"/>
+        <event name="E61894"/>
+        <event name="E61895"/>
+        <event name="E61896"/>
+        <event name="E61952"/>
+        <event name="E61955"/>
+        <event name="E61956"/>
+        <event name="E61957"/>
+        <event name="E61958"/>
+        <event name="E61959"/>
+        <event name="E61960"/>
+        <event name="E61964"/>
+        <event name="E61989"/>
+        <event name="E61991"/>
+        <event name="E61996"/>
+      </or>
+    </define-gate>
+    <define-gate name="E61891">
+      <label>GDAM136C-TR</label>
+      <and>
+        <event name="E3864"/>
+        <event name="E61890"/>
+      </and>
+    </define-gate>
+    <define-gate name="E61892">
+      <label>GDAM135C-TR</label>
+      <and>
+        <event name="E4727"/>
+        <event name="E4742"/>
+      </and>
+    </define-gate>
+    <define-gate name="E61893">
+      <label>GDAM132C-TR</label>
+      <and>
+        <event name="E4740"/>
+        <event name="E4776"/>
+      </and>
+    </define-gate>
+    <define-gate name="E61894">
+      <label>GDAM129C-TR</label>
+      <and>
+        <event name="E4738"/>
+        <event name="E4755"/>
+      </and>
+    </define-gate>
+    <define-gate name="E61895">
+      <label>GDAM124C-TR</label>
+      <and>
+        <event name="E4770"/>
+        <event name="E4783"/>
+      </and>
+    </define-gate>
+    <define-gate name="E61896">
+      <label>GDAM123C-TR</label>
+      <and>
+        <event name="E4771"/>
+        <event name="E4782"/>
+      </and>
+    </define-gate>
+    <define-gate name="E61952">
+      <label>GDAM1284-TR</label>
+      <atleast min="2">
+        <event name="E317"/>
+        <event name="E315"/>
+        <event name="E311"/>
+        <event name="E307"/>
+      </atleast>
+    </define-gate>
+    <define-gate name="E61955">
+      <label>GDAM1281-TR</label>
+      <atleast min="2">
+        <event name="E1023"/>
+        <event name="E1051"/>
+        <event name="E1059"/>
+        <event name="E1032"/>
+      </atleast>
+    </define-gate>
+    <define-gate name="E61956">
+      <label>GDAM1185-TR</label>
+      <atleast min="2">
+        <event name="E1123"/>
+        <event name="E1135"/>
+        <event name="E23"/>
+      </atleast>
+    </define-gate>
+    <define-gate name="E61957">
+      <label>GDAM1183-TR</label>
+      <atleast min="2">
+        <event name="E2179"/>
+        <event name="E29"/>
+        <event name="E2194"/>
+      </atleast>
+    </define-gate>
+    <define-gate name="E61958">
+      <label>GDAM1180-TR</label>
+      <atleast min="2">
+        <event name="E2180"/>
+        <event name="E2187"/>
+        <event name="E2195"/>
+      </atleast>
+    </define-gate>
+    <define-gate name="E61959">
+      <label>GDAM1155-TR</label>
+      <and>
+        <event name="E45"/>
+        <event name="E2613"/>
+      </and>
+    </define-gate>
+    <define-gate name="E61960">
+      <label>GDAM1135-TR</label>
+      <and>
+        <event name="E45"/>
+        <event name="E2406"/>
+      </and>
+    </define-gate>
+    <define-gate name="E61964">
+      <label>GDAM1074-TR</label>
+      <and>
+        <event name="E2874"/>
+        <event name="E4705"/>
+      </and>
+    </define-gate>
+    <define-gate name="E61989">
+      <label>GDAM581-TR</label>
+      <and>
+        <event name="E3865"/>
+        <event name="E6428"/>
+      </and>
+    </define-gate>
+    <define-gate name="E61991">
+      <label>GDAM520-TR</label>
+      <and>
+        <event name="E6422"/>
+        <event name="E59393"/>
+      </and>
+    </define-gate>
+    <define-gate name="E61996">
+      <label>GDAM433-TR</label>
+      <and>
+        <event name="E59393"/>
+        <event name="E61995"/>
+      </and>
+    </define-gate>
+    <define-gate name="E61890">
+      <label>GDAM139C-TR</label>
+      <or>
+        <event name="E8179"/>
+        <event name="E8180"/>
+      </or>
+    </define-gate>
+    <define-gate name="E59393">
+      <label>GIEC282-TR</label>
+      <or>
+        <event name="E894"/>
+        <event name="E60125"/>
+      </or>
+    </define-gate>
+    <define-gate name="E61995">
+      <label>GDAM443-TR</label>
+      <or>
+        <event name="E5033"/>
+        <event name="E59187"/>
+      </or>
+    </define-gate>
+    <define-gate name="E60125">
+      <label>GIEC067C-TR</label>
+      <and>
+        <event name="E945"/>
+        <event name="E946"/>
+      </and>
+    </define-gate>
+  </define-fault-tree>
+  <model-data>
+    <define-basic-event name="E3864">
+      <label>BPHS1WTRDXI2</label>
+      <float value="0.1"/>
+    </define-basic-event>
+    <define-basic-event name="E4727">
+      <label>YXV16536DPI0</label>
+      <float value="0.000192"/>
+    </define-basic-event>
+    <define-basic-event name="E4742">
+      <label>YXV16536DNI0</label>
+      <float value="0.000192"/>
+    </define-basic-event>
+    <define-basic-event name="E4740">
+      <label>YXV16515DNI0</label>
+      <float value="0.000192"/>
+    </define-basic-event>
+    <define-basic-event name="E4776">
+      <label>YXV16515DPI0</label>
+      <float value="0.000192"/>
+    </define-basic-event>
+    <define-basic-event name="E4738">
+      <label>YXV16508DNI0</label>
+      <float value="0.000192"/>
+    </define-basic-event>
+    <define-basic-event name="E4755">
+      <label>YXV16508HQI0</label>
+      <float value="7.199997e-07"/>
+    </define-basic-event>
+    <define-basic-event name="E4770">
+      <label>YCV-520BDPI0</label>
+      <float value="1.07e-05"/>
+    </define-basic-event>
+    <define-basic-event name="E4783">
+      <label>YCV-520BHOI0</label>
+      <float value="8.352e-08"/>
+    </define-basic-event>
+    <define-basic-event name="E4771">
+      <label>YCV-520AHOI0</label>
+      <float value="8.352e-08"/>
+    </define-basic-event>
+    <define-basic-event name="E4782">
+      <label>YCV-520ADPI0</label>
+      <float value="1.07e-05"/>
+    </define-basic-event>
+    <define-basic-event name="E311">
+      <label>ICMCK001DSI2</label>
+      <float value="0.0171"/>
+    </define-basic-event>
+    <define-basic-event name="E315">
+      <label>ICMBK001DSI2</label>
+      <float value="0.0171"/>
+    </define-basic-event>
+    <define-basic-event name="E317">
+      <label>ICMAK001DSI2</label>
+      <float value="0.0171"/>
+    </define-basic-event>
+    <define-basic-event name="E307">
+      <label>ICMDK001DSI2</label>
+      <float value="0.0171"/>
+    </define-basic-event>
+    <define-basic-event name="E1032">
+      <label>ICMDK001HRIE2</label>
+      <float value="0.7446"/>
+    </define-basic-event>
+    <define-basic-event name="E1023">
+      <label>ICMAK001HRIE2</label>
+      <float value="0.7446"/>
+    </define-basic-event>
+    <define-basic-event name="E1059">
+      <label>ICMCK001HRIE2</label>
+      <float value="0.7446"/>
+    </define-basic-event>
+    <define-basic-event name="E1051">
+      <label>ICMBK001HRIE2</label>
+      <float value="0.7446"/>
+    </define-basic-event>
+    <define-basic-event name="E23">
+      <label>WPNCP004HRIE2</label>
+      <float value="0.0309228"/>
+    </define-basic-event>
+    <define-basic-event name="E1135">
+      <label>WPNBP004HRIE2</label>
+      <float value="0.0309228"/>
+    </define-basic-event>
+    <define-basic-event name="E1123">
+      <label>WPNAP004HRIE2</label>
+      <float value="0.0309228"/>
+    </define-basic-event>
+    <define-basic-event name="E29">
+      <label>WPNBP004DSI2</label>
+      <float value="0.00136"/>
+    </define-basic-event>
+    <define-basic-event name="E2194">
+      <label>WPNCP004DSI2</label>
+      <float value="0.00136"/>
+    </define-basic-event>
+    <define-basic-event name="E2179">
+      <label>WPNAP004DSI2</label>
+      <float value="0.00136"/>
+    </define-basic-event>
+    <define-basic-event name="E2180">
+      <label>WPNAP004TM2</label>
+      <float value="0.0116"/>
+    </define-basic-event>
+    <define-basic-event name="E2187">
+      <label>WPNBP004TM2</label>
+      <float value="0.0116"/>
+    </define-basic-event>
+    <define-basic-event name="E2195">
+      <label>WPNCP004TM2</label>
+      <float value="0.0116"/>
+    </define-basic-event>
+    <define-basic-event name="E45">
+      <label>WMV-0498DNI0</label>
+      <float value="0.000963"/>
+    </define-basic-event>
+    <define-basic-event name="E2613">
+      <label>WXV11200SXI0</label>
+      <float value="2.52e-06"/>
+    </define-basic-event>
+    <define-basic-event name="E2406">
+      <label>WXV-0498HQI0</label>
+      <float value="7.199997e-07"/>
+    </define-basic-event>
+    <define-basic-event name="E2874">
+      <label>EHB-SU25HOI0</label>
+      <float value="1.939181e-05"/>
+    </define-basic-event>
+    <define-basic-event name="E4705">
+      <label>EHB-SU25DPI0</label>
+      <float value="0.00666"/>
+    </define-basic-event>
+    <define-basic-event name="E3865">
+      <label>%S1</label>
+      <float value="0.0017"/>
+    </define-basic-event>
+    <define-basic-event name="E6428">
+      <label>AHUBTL-RDXI2</label>
+      <float value="0.0032"/>
+    </define-basic-event>
+    <define-basic-event name="E6422">
+      <label>AHU--XTRDXI2</label>
+      <float value="0.141"/>
+    </define-basic-event>
+    <define-basic-event name="E8179">
+      <label>BPHS1STMDXI2</label>
+      <float value="0.9"/>
+    </define-basic-event>
+    <define-basic-event name="E8180">
+      <label>APHS1DEPDXI2</label>
+      <float value="0.783"/>
+    </define-basic-event>
+    <define-basic-event name="E894">
+      <label>%S3</label>
+      <float value="0.00428"/>
+    </define-basic-event>
+    <define-basic-event name="E5033">
+      <label>CE</label>
+      <float value="3.7e-06"/>
+    </define-basic-event>
+    <define-basic-event name="E59187">
+      <label>IE-CM</label>
+      <float value="2.1e-06"/>
+    </define-basic-event>
+    <define-basic-event name="E945">
+      <label>%TI</label>
+      <float value="0.014"/>
+    </define-basic-event>
+    <define-basic-event name="E946">
+      <label>APH--RECDXI2</label>
+      <float value="0.85"/>
+    </define-basic-event>
+  </model-data>
+</opsa-mef>

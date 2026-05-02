@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE xfta>
+<xfta>
+    <set>
+        <option name="print-minimal-cutset-rank" value="on"/>
+        <option name="print-minimal-cutset-order" value="on"/>
+        <option name="print-minimal-cutset-probability" value="on"/>
+        <option name="print-minimal-cutset-contribution" value="on"/>
+        <option name="top-event" value="root80000"/>
+        <option name="handle" value="MCS"/>
+        <option name="minimum-probability" value="1e-308"/>
+        <option name="maximum-order" value="2147483647"/>
+    </set>
+    <build>
+        <minimal-cutsets />
+    </build>
+    <print>
+        <minimal-cutsets top-event="root80000" handle="MCS" output="/dev/fd/1" mode="append" />
+        <options output="/dev/fd/1" mode="append" />
+    </print>
+    <compute>
+        <probability top-event="root80000" handle="MCS" mission-time="8760" output="/dev/fd/1" mode="append" />
+    </compute>
+</xfta>

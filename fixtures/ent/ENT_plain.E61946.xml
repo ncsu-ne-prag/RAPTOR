@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='ASCII'?>
+<opsa-mef>
+  <define-fault-tree name="default">
+    <define-gate name="E61946">
+      <label>GDAM812-TR</label>
+      <or>
+        <event name="E2788"/>
+        <event name="E3008"/>
+        <event name="E3229"/>
+        <event name="E3466"/>
+        <event name="E3684"/>
+        <event name="E4248"/>
+        <event name="E4255"/>
+        <event name="E61951"/>
+      </or>
+    </define-gate>
+  </define-fault-tree>
+  <model-data>
+    <define-basic-event name="E2788">
+      <label>%TDC3B</label>
+      <float value="0.000183"/>
+    </define-basic-event>
+    <define-basic-event name="E3008">
+      <label>%TACBUSE43</label>
+      <float value="0.00108"/>
+    </define-basic-event>
+    <define-basic-event name="E3229">
+      <label>%TACBUSE33</label>
+      <float value="0.00108"/>
+    </define-basic-event>
+    <define-basic-event name="E3466">
+      <label>%TACBUSE23</label>
+      <float value="0.00108"/>
+    </define-basic-event>
+    <define-basic-event name="E3684">
+      <label>%TACBUSE13</label>
+      <float value="0.00108"/>
+    </define-basic-event>
+    <define-basic-event name="E4248">
+      <label>%TDC3D</label>
+      <float value="0.000183"/>
+    </define-basic-event>
+    <define-basic-event name="E4255">
+      <label>%TDC3C</label>
+      <float value="0.000183"/>
+    </define-basic-event>
+    <define-basic-event name="E61951">
+      <label>%TDC3A</label>
+      <float value="0.000183"/>
+    </define-basic-event>
+  </model-data>
+</opsa-mef>

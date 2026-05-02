@@ -1,0 +1,98 @@
+<opsa-mef>
+    <define-initiating-event name="INIT3985" event-tree="ISL-RHR-HL"/>
+    <define-event-tree name="ISL-RHR-HL">
+        <define-functional-event name="FE69">
+            <label>ISL-RPT-RHR-FT</label>
+        </define-functional-event>
+        <define-functional-event name="FE167">
+            <label>ISL-DIAG-FT</label>
+        </define-functional-event>
+        <define-functional-event name="FE71">
+            <label>ISL-RHR-HL-REC-FT</label>
+        </define-functional-event>
+        <define-sequence name="S3"/>
+        <define-sequence name="S4"/>
+        <initial-state>
+            <fork functional-event="FE69">
+                <path state="Failure">
+                    <collect-formula>
+                        <gate name="FT69.TOP"/>
+                    </collect-formula>
+                    <fork functional-event="FE167">
+                        <path state="Success">
+                            <collect-formula>
+                                <not>
+                                    <gate name="FT167.TOP"/>
+                                </not>
+                            </collect-formula>
+                            <fork functional-event="FE71">
+                                <path state="Failure">
+                                    <collect-formula>
+                                        <gate name="FT71.TOP"/>
+                                    </collect-formula>
+                                    <sequence name="S4"/>
+                                </path>
+                            </fork>
+                        </path>
+                        <path state="Failure">
+                            <collect-formula>
+                                <gate name="FT167.TOP"/>
+                            </collect-formula>
+                            <sequence name="S3"/>
+                        </path>
+                    </fork>
+                </path>
+            </fork>
+        </initial-state>
+    </define-event-tree>
+    <define-fault-tree name="FT69">
+        <define-gate name="TOP" role="private">
+            <or>
+                <basic-event name="BE168"/>
+                <basic-event name="BE0"/>
+            </or>
+        </define-gate>
+    </define-fault-tree>
+    <define-fault-tree name="FT71">
+        <define-gate name="TOP" role="private">
+            <or>
+                <basic-event name="BE185"/>
+                <basic-event name="BE186"/>
+            </or>
+        </define-gate>
+    </define-fault-tree>
+    <define-fault-tree name="FT167">
+        <define-gate name="TOP" role="private">
+            <or>
+                <basic-event name="BE4011"/>
+                <basic-event name="BE0"/>
+            </or>
+        </define-gate>
+    </define-fault-tree>
+    <model-data>
+        <define-basic-event name="BE168">
+            <label>ISL-PSF-RP-RHR</label>
+            <float value="1.000000E+00"/>
+        </define-basic-event>
+        <define-basic-event name="BE3985">
+            <label>IEFT-ISL-RHR-HLS-FT</label>
+            <float value="8.968000E-08"/>
+        </define-basic-event>
+        <define-basic-event name="BE185">
+            <label>ISL-XHE-XE-RECRHR</label>
+            <float value="1.000000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE186">
+            <label>ISL-XHE-XE-NRECRHR</label>
+            <float value="1.000000E-01"/>
+        </define-basic-event>
+        <define-basic-event name="BE4011">
+            <label>ISL-XHE-XD-DIAG</label>
+            <float value="4.000000E-02"/>
+        </define-basic-event>
+        <define-basic-event name="BE0">
+            <label>TEMP-BE-TO-ADD-GATES-WITH-A-SINGLE-ELEMENT</label>
+            <float value="0.000000E+00"/>
+        </define-basic-event>
+    </model-data>
+</opsa-mef>

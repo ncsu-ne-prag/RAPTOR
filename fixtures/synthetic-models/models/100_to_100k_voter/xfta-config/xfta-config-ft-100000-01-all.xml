@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE xfta>
+<xfta>
+	<load>
+		<model input="ft-100000-01-all.xml" />
+	</load>
+	<build>
+		<minimal-cutsets top-event="root" handle="MCS" minimum-probability="1.0e-14" />
+	</build>
+	<set>
+		<option name="print-minimal-cutset-rank" value="on" />
+		<option name="print-minimal-cutset-order" value="on" />
+		<option name="print-minimal-cutset-probability" value="on" />
+		<option name="print-minimal-cutset-contribution" value="on" />
+	</set>
+	<print>
+		<minimal-cutsets top-event="root" handle="MCS" output="ft-100000-01-all_minimalcutset.txt" />
+	</print>
+	<compute>
+		<probability top-event="root" handle="MCS" mission-time="8760" output="ft-100000-01-all_probability.txt" />
+		<importance-factors top-event="root" handle="MCS" output="ft-100000-01-all_importance_factor.txt" />
+	</compute>
+</xfta>
