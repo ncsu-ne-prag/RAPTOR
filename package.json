@@ -41,7 +41,7 @@
     "minio": "8.0.6",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.8.1",
-    "scram-node": "file:./apps/solvers/scram/node-addon",
+    "scram-node": "file:./apps/solvers/scram",
     "tmp": "0.2.3",
     "typescript": "5.5.4",
     "typia": "6.9.0",
