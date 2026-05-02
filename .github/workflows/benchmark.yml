@@ -1,3 +1,4 @@
+# Runs the Aralia fault-tree benchmark suite on the self-hosted cluster runner.
 name: C2C Benchmark
 
 on:
