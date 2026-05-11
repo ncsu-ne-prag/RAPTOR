@@ -3,6 +3,7 @@ set -e
 
 MODEL=${MODEL_NAME:-aralia}
 CURRENT_DATE=$(date +"%Y-%m-%d")
+SOLVER_TIMEOUT=${SOLVER_TIMEOUT:-300}
 
 # =============================================================================
 # Directory layout
@@ -267,7 +268,7 @@ run_xfta() {
         --export-markdown "$md_out" \
         --export-json    "$json_out" \
         --parameter-list script "$scripts" \
-        "timeout 300 xftar {script}"
+        "timeout $SOLVER_TIMEOUT xftar {script}"
     echo "$label complete."
 }
 
@@ -287,7 +288,7 @@ hyperfine \
     --export-markdown "$RESULTS_DIR/scram_bdd_${MODEL}_${CURRENT_DATE}_summary.md" \
     --export-json    "$RESULTS_DIR/scram_bdd_${MODEL}_${CURRENT_DATE}_results.json" \
     --parameter-list file "$OPENPSA_FILES" \
-    "timeout 300 scram --bdd {file} \
+    "timeout $SOLVER_TIMEOUT scram --bdd {file} \
         --output $SCRAM_OUT_BDD/\$(basename {file} .xml).xml"
 echo "SCRAM BDD complete."
 
@@ -299,7 +300,7 @@ hyperfine \
     --export-markdown "$RESULTS_DIR/scram_zbdd_rea_${MODEL}_${CURRENT_DATE}_summary.md" \
     --export-json    "$RESULTS_DIR/scram_zbdd_rea_${MODEL}_${CURRENT_DATE}_results.json" \
     --parameter-list file "$OPENPSA_FILES" \
-    "timeout 300 scram --zbdd --rare-event --cut-off 1e-12 {file} \
+    "timeout $SOLVER_TIMEOUT scram --zbdd --rare-event --cut-off 1e-12 {file} \
         --output $SCRAM_OUT_ZBDD_REA/\$(basename {file} .xml).xml"
 echo "SCRAM ZBDD REA complete."
 
@@ -311,7 +312,7 @@ hyperfine \
     --export-markdown "$RESULTS_DIR/scram_zbdd_mcub_${MODEL}_${CURRENT_DATE}_summary.md" \
     --export-json    "$RESULTS_DIR/scram_zbdd_mcub_${MODEL}_${CURRENT_DATE}_results.json" \
     --parameter-list file "$OPENPSA_FILES" \
-    "timeout 300 scram --zbdd --mcub --cut-off 1e-12 {file} \
+    "timeout $SOLVER_TIMEOUT scram --zbdd --mcub --cut-off 1e-12 {file} \
         --output $SCRAM_OUT_ZBDD_MCUB/\$(basename {file} .xml).xml"
 echo "SCRAM ZBDD MCUB complete."
 
@@ -377,7 +378,7 @@ if [ -n "$FTP_FILES" ]; then
         --export-markdown "$RESULTS_DIR/ftrex_bdd_${MODEL}_${CURRENT_DATE}_summary.md" \
         --export-json    "$RESULTS_DIR/ftrex_bdd_${MODEL}_${CURRENT_DATE}_results.json" \
         --parameter-list file "$FTP_FILES" \
-        "timeout 300 run_ftrex {file} $FTREX_OUT_BDD/\$(basename {file} .ftp).raw 0.0 /BDD=1"
+        "timeout $SOLVER_TIMEOUT run_ftrex {file} $FTREX_OUT_BDD/\$(basename {file} .ftp).raw 0.0 /BDD=1"
     echo "FTREX BDD complete."
 
     # ── FTREX ZBDD (MCS) ───────────────────────────────────────────────────────
@@ -388,7 +389,7 @@ if [ -n "$FTP_FILES" ]; then
         --export-markdown "$RESULTS_DIR/ftrex_zbdd_${MODEL}_${CURRENT_DATE}_summary.md" \
         --export-json    "$RESULTS_DIR/ftrex_zbdd_${MODEL}_${CURRENT_DATE}_results.json" \
         --parameter-list file "$FTP_FILES" \
-        "timeout 300 run_ftrex {file} $FTREX_OUT_ZBDD/\$(basename {file} .ftp).raw 1e-12 /BDD=0"
+        "timeout $SOLVER_TIMEOUT run_ftrex {file} $FTREX_OUT_ZBDD/\$(basename {file} .ftp).raw 1e-12 /BDD=0"
     echo "FTREX ZBDD complete."
 else
     echo "WARNING: No FTAP files found — skipping FTREX benchmarks."
@@ -410,7 +411,7 @@ hyperfine \
     --export-markdown "$RESULTS_DIR/praxis_bdd_${MODEL}_${CURRENT_DATE}_summary.md" \
     --export-json    "$RESULTS_DIR/praxis_bdd_${MODEL}_${CURRENT_DATE}_results.json" \
     --parameter-list file "$OPENPSA_FILES" \
-    "timeout 300 praxis-cli --algorithm bdd \
+    "timeout $SOLVER_TIMEOUT praxis-cli --algorithm bdd \
         --output $PRAXIS_OUT_BDD/\$(basename {file} .xml).xml {file}"
 echo "PRAXIS BDD complete."
 
@@ -422,7 +423,7 @@ hyperfine \
     --export-markdown "$RESULTS_DIR/praxis_zbdd_rea_${MODEL}_${CURRENT_DATE}_summary.md" \
     --export-json    "$RESULTS_DIR/praxis_zbdd_rea_${MODEL}_${CURRENT_DATE}_results.json" \
     --parameter-list file "$OPENPSA_FILES" \
-    "timeout 300 praxis-cli --algorithm zbdd --approximation rare-event \
+    "timeout $SOLVER_TIMEOUT praxis-cli --algorithm zbdd --approximation rare-event \
         --cut-off 1e-12 --analysis cutsets-and-probability \
         --output $PRAXIS_OUT_ZBDD_REA/\$(basename {file} .xml).xml {file}"
 echo "PRAXIS ZBDD REA complete."
@@ -435,7 +436,7 @@ hyperfine \
     --export-markdown "$RESULTS_DIR/praxis_zbdd_mcub_${MODEL}_${CURRENT_DATE}_summary.md" \
     --export-json    "$RESULTS_DIR/praxis_zbdd_mcub_${MODEL}_${CURRENT_DATE}_results.json" \
     --parameter-list file "$OPENPSA_FILES" \
-    "timeout 300 praxis-cli --algorithm zbdd --approximation mcub \
+    "timeout $SOLVER_TIMEOUT praxis-cli --algorithm zbdd --approximation mcub \
         --cut-off 1e-12 --analysis cutsets-and-probability \
         --output $PRAXIS_OUT_ZBDD_MCUB/\$(basename {file} .xml).xml {file}"
 echo "PRAXIS ZBDD MCUB complete."
@@ -461,7 +462,7 @@ if [ -n "$FTP_FILES" ]; then
         --export-markdown "$RESULTS_DIR/zebra_ztdd_bdd_${MODEL}_${CURRENT_DATE}_summary.md" \
         --export-json    "$RESULTS_DIR/zebra_ztdd_bdd_${MODEL}_${CURRENT_DATE}_results.json" \
         --parameter-list file "$FTP_FILES" \
-        "timeout 300 run_zebra {file} $ZEBRA_OUT_BDD 0"
+        "timeout $SOLVER_TIMEOUT run_zebra {file} $ZEBRA_OUT_BDD 0"
     echo "ZEBRA ZTDD BDD complete."
 
     # ── ZEBRA ZTDD expanded MCS + probability (/ZTDD=2) ───────────────────────
@@ -472,7 +473,7 @@ if [ -n "$FTP_FILES" ]; then
         --export-markdown "$RESULTS_DIR/zebra_ztdd_mcs_${MODEL}_${CURRENT_DATE}_summary.md" \
         --export-json    "$RESULTS_DIR/zebra_ztdd_mcs_${MODEL}_${CURRENT_DATE}_results.json" \
         --parameter-list file "$FTP_FILES" \
-        "timeout 300 run_zebra {file} $ZEBRA_OUT_MCS 2"
+        "timeout $SOLVER_TIMEOUT run_zebra {file} $ZEBRA_OUT_MCS 2"
     echo "ZEBRA ZTDD MCS complete."
 else
     echo "WARNING: No FTAP files found — skipping ZEBRA benchmarks."
@@ -520,7 +521,7 @@ if command -v saphsolve-cli &>/dev/null && [ -n "$JSINP_FILES" ]; then
         --export-markdown "$RESULTS_DIR/saphsolve_${MODEL}_${CURRENT_DATE}_summary.md" \
         --export-json    "$RESULTS_DIR/saphsolve_${MODEL}_${CURRENT_DATE}_results.json" \
         --parameter-list file "$JSINP_FILES" \
-        "timeout 300 saphsolve-cli {file} \
+        "timeout $SOLVER_TIMEOUT saphsolve-cli {file} \
             $SAPHSOLVE_OUT/\$(basename {file} .JSInp).JSCut"
     echo "SAPHSOLVE complete."
 else
@@ -539,7 +540,7 @@ echo ""
 echo "--- Generating interactive HTML report ---"
 REPORT_PATH="$RESULTS_DIR/benchmark_report_${MODEL}_${CURRENT_DATE}.html"
 python3 /build/pracciolini/src/plot_benchmark_results.py \
-    --dataset "$MODEL" "$RESULTS_DIR" \
+    --dataset "$MODEL" "$RESULTS_DIR" "/data" \
     --output  "$REPORT_PATH"
 
 # =============================================================================

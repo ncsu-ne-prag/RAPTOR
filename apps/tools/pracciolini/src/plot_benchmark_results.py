@@ -313,7 +313,7 @@ def _model_stats_html(stats):
     return '<div class="model-stats">' + "".join(blocks) + "</div>"
 
 
-def _fig_spec(model, timing_all):
+def _fig_spec(model, timing_all, values_all):
     labels, times, colors, texts = [], [], [], []
     group_boundaries = []
 
@@ -321,9 +321,12 @@ def _fig_spec(model, timing_all):
         group_start = len(labels)
         for subgroup_labels in subgroups:
             available = [
-                (lbl, timing_all.get(lbl, {}).get(model))
+                (lbl, t)
                 for lbl in subgroup_labels
-                if timing_all.get(lbl, {}).get(model) is not None
+                for t in [timing_all.get(lbl, {}).get(model)]
+                if t is not None
+                and not t["timed_out"]
+                and values_all.get(lbl, {}).get(model) is not None
             ]
             available.sort(key=lambda x: x[1]["mean"])
             for label, t in available:
@@ -465,7 +468,7 @@ def _fragment_html(model, values_all, timing_all, stats=None):
     stats_part = _model_stats_html(stats)
     banner     = _timeout_banner(model, timing_all)
     table      = _combined_table(model, values_all, timing_all)
-    chart_spec = _fig_spec(model, timing_all)
+    chart_spec = _fig_spec(model, timing_all, values_all)
     chart_part = ""
     if chart_spec:
         chart_part = (
@@ -619,7 +622,7 @@ def _load_dataset(results_dir, data_dir=None):
     values_all = load_values(results_dir, all_models)
     frags = {}
     for model in all_models:
-        if _fig_spec(model, timing_all) is not None:
+        if _fig_spec(model, timing_all, values_all) is not None:
             stats = load_model_stats(data_dir, model)
             frags[model] = _fragment_html(model, values_all, timing_all, stats)
     models = [m for m in all_models if m in frags]
